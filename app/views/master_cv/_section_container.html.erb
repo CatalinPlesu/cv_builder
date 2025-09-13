@@ -1,0 +1,11 @@
+<div class="max-w-4xl mx-auto p-6">
+<div class="border border-<%= border_color || 'blue-500' %> rounded-lg p-4 mb-6 bg-white">
+  <!-- Heading with colored background -->
+  <div class="bg-<%= heading_color || 'blue-500' %> text-white py-2 px-4 rounded-t-md mb-4">
+    <h2 class="text-lg font-semibold"><%= heading_text || 'Heading' %></h2>
+  </div>
+  
+  <!-- Render the enclosed content -->
+  <%= yield %>
+</div>
+</div>

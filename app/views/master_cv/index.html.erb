@@ -1,1 +1,6 @@
-<%= render "heading", locals: { full_name: @full_name, heading: @heading } %>
+<%= render 'section_container', 
+            heading_text: "Heading", 
+            heading_color: "blue-500", 
+            border_color: "blue-500" do %>
+  <%= render "heading", locals: { full_name: @full_name, heading: @heading } %>
+<% end %>
