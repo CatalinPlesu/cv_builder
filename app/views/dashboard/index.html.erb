@@ -1,2 +1,204 @@
-<h1>Dashboard#index</h1>
-<p>Find me in app/views/dashboard/index.html.erb</p>
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Quick Stats Sidebar -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+      <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 shadow-lg border border-blue-100">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-blue-800">Master CV Stats</h3>
+          <div class="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-gray-600">Total Educations</span>
+            <span class="font-bold text-blue-700">3</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Total Projects</span>
+            <span class="font-bold text-blue-700">7</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Skill Categories</span>
+            <span class="font-bold text-blue-700">5</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Total Skills</span>
+            <span class="font-bold text-blue-700">24</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-lg border border-green-100">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-green-800">Recent Activity</h3>
+          <div class="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm">Last updated: <span class="font-semibold text-green-700">2 hours ago</span></p>
+        <p class="text-gray-600 text-sm">Presets created: <span class="font-semibold text-green-700">2 this week</span></p>
+      </div>
+
+      <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 shadow-lg border border-purple-100 lg:col-span-2">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-purple-800">Master CV</h3>
+          <div class="w-12 h-12 bg-purple-200 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+        </div>
+        <p class="text-gray-600 mb-4">Your complete professional profile with all skills, experiences, projects, and education and more.</p>
+        <a href="#" class="inline-flex items-center px-5 py-2.5 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-all duration-300 transform hover:-translate-y-1 shadow-md">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          Open Master CV
+        </a>
+      </div>
+    </div>
+
+    <!-- CV Presets Section -->
+    <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+      <div class="bg-gradient-to-r from-purple-500 to-pink-500 p-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-white mb-1">CV Presets</h2>
+            <p class="text-purple-100">Tag-based profiles for quick CV generation</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="p-8">
+        <!-- Presets Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <% presets = [
+            { id: 1, name: "Frontend Specialist", tags: ["frontend", "javascript", "react", "css"], icon: "🎨" },
+            { id: 2, name: "Backend Developer", tags: ["backend", "python", "django", "api"], icon: "⚙️" },
+            { id: 3, name: "Full Stack Engineer", tags: ["frontend", "backend", "react", "nodejs", "database"], icon: "🌐" },
+            { id: 4, name: "DevOps Engineer", tags: ["devops", "aws", "docker", "ci-cd"], icon: "🔧" },
+            { id: 5, name: "UI/UX Designer", tags: ["design", "figma", "ux", "prototyping"], icon: "📱" },
+            { id: 6, name: "Data Scientist", tags: ["data", "python", "ml", "analytics"], icon: "📊" }
+          ] %>
+          
+          <% presets.each do |preset| %>
+            <div class="border border-gray-200 rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:border-purple-300">
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <span class="text-3xl mr-3"><%= preset[:icon] %></span>
+                  <div>
+                    <h3 class="font-bold text-xl text-gray-900"><%= preset[:name] %></h3>
+                    <p class="text-gray-500 text-sm"><%= preset[:tags].size %> tags selected</p>
+                  </div>
+                </div>
+                <button class="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Actions">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                  </svg>
+                </button>
+              </div>
+              
+              <div class="mb-4">
+                <p class="text-xs text-gray-500 mb-2">TAGS:</p>
+                <div class="flex flex-wrap gap-2">
+                  <% preset[:tags].each do |tag| %>
+                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium"><%= tag %></span>
+                  <% end %>
+                </div>
+              </div>
+              
+              <div class="flex gap-2">
+                <button class="flex-1 px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors">
+                  Generate CV
+                </button>
+                <button class="flex-1 px-3 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors">
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Save New Preset Section -->
+        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-semibold text-gray-900">Create New Preset</h3>
+            <button onclick="togglePresetForm()" class="text-gray-400 hover:text-gray-600">
+              <svg id="toggle-icon" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+          </div>
+          
+          <div id="preset-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Preset Name</label>
+              <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all" placeholder="e.g., Frontend Specialist">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Select Tags</label>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="frontend">
+                  <span class="text-sm">Frontend</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="backend">
+                  <span class="text-sm">Backend</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="devops">
+                  <span class="text-sm">DevOps</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="design">
+                  <span class="text-sm">Design</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="data">
+                  <span class="text-sm">Data</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="mobile">
+                  <span class="text-sm">Mobile</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="cloud">
+                  <span class="text-sm">Cloud</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="security">
+                  <span class="text-sm">Security</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3 pt-4">
+              <button class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                Cancel
+              </button>
+              <button class="px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                Create Preset
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function togglePresetForm() {
+      const form = document.getElementById('preset-form');
+      const icon = document.getElementById('toggle-icon');
+      form.style.maxHeight = form.style.maxHeight ? null : form.scrollHeight + 'px';
+      icon.classList.toggle('rotate-180');
+    }
+  </script>
+</div>

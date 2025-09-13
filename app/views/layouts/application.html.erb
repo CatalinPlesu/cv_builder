@@ -27,17 +27,28 @@
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
 
-    <nav class="flex justify-between items-center py-4 px-8 bg-white border-b border-gray-200 mb-8">
-      <%= link_to "CVBuilder", root_path, class: "text-2xl font-bold no-underline text-inherit" %>
-
+    <nav class="flex justify-between items-center py-6 px-8 bg-gradient-to-r from-purple-600 via-indigo-700 to-blue-600 shadow-xl">
+      <%= link_to root_path, class: "no-underline group" do %>
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-pink-500 rounded-lg flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
+            <span class="text-white font-black text-lg">CV</span>
+          </div>
+          <span class="text-3xl font-black tracking-tight text-white group-hover:text-yellow-200 transition-colors duration-300 hero-text-shadow">
+            Smart CV Builder
+          </span>
+        </div>
+      <% end %>
+      
       <div class="flex gap-4 items-center">
         <% if user_signed_in? %>
-          <%= link_to "Dashboard", dashboard_path, class: "no-underline py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600" %>
-          <span><%= current_user.email %></span>
-          <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
+          <%= link_to "Dashboard", dashboard_path, class: "no-underline bg-white bg-opacity-90 text-indigo-700 font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl hover:bg-opacity-100 transform hover:-translate-y-1 hover:scale-105 transition-all duration-200 backdrop-blur-sm" %>
+          <div class="glass-effect text-white font-medium px-4 py-2 rounded-lg shadow-lg">
+            <span class="hero-text-shadow"><%= current_user.email %></span>
+          </div>
+          <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "no-underline bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-200" %>
         <% else %>
-          <%= link_to "Login", new_user_session_path, class: "no-underline py-2 px-4" %>
-          <%= link_to "Signup", new_user_registration_path, class: "no-underline py-2 px-4" %>
+          <%= link_to "Login", new_user_session_path, class:"no-underline glass-effect border-2 border-white border-opacity-50 text-white font-bold py-3 px-6 rounded-xl hover:bg-white hover:bg-opacity-20 hover:border-opacity-80 transform hover:scale-105 transition-all duration-200 hero-text-shadow" %>
+          <%= link_to "Get Started Free", new_user_registration_path, class:"no-underline bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-black py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-200 hero-text-shadow" %>
         <% end %>
       </div>
     </nav>
