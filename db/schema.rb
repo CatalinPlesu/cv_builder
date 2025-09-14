@@ -25,6 +25,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "achievements_tags", id: false, force: :cascade do |t|
     t.integer "achievement_id", null: false
     t.integer "tag_id", null: false
+    t.index ["achievement_id", "tag_id"], name: "index_achievements_tags_on_achievement_id_and_tag_id"
+    t.index ["tag_id", "achievement_id"], name: "index_achievements_tags_on_tag_id_and_achievement_id"
   end
 
   create_table "certificates", force: :cascade do |t|
@@ -42,6 +44,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "certificates_tags", id: false, force: :cascade do |t|
     t.integer "certificate_id", null: false
     t.integer "tag_id", null: false
+    t.index ["certificate_id", "tag_id"], name: "index_certificates_tags_on_certificate_id_and_tag_id"
+    t.index ["tag_id", "certificate_id"], name: "index_certificates_tags_on_tag_id_and_certificate_id"
   end
 
   create_table "cv_heading_items", force: :cascade do |t|
@@ -83,6 +87,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "educations_tags", id: false, force: :cascade do |t|
     t.integer "education_id", null: false
     t.integer "tag_id", null: false
+    t.index ["education_id", "tag_id"], name: "index_educations_tags_on_education_id_and_tag_id"
+    t.index ["tag_id", "education_id"], name: "index_educations_tags_on_tag_id_and_education_id"
   end
 
   create_table "experience_bullets", force: :cascade do |t|
@@ -97,6 +103,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "experience_bullets_tags", id: false, force: :cascade do |t|
     t.integer "experience_bullet_id", null: false
     t.integer "tag_id", null: false
+    t.index ["experience_bullet_id", "tag_id"], name: "idx_on_experience_bullet_id_tag_id_83fffd2f42"
+    t.index ["tag_id", "experience_bullet_id"], name: "idx_on_tag_id_experience_bullet_id_fec40f1835"
   end
 
   create_table "experiences", force: :cascade do |t|
@@ -116,6 +124,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "experiences_tags", id: false, force: :cascade do |t|
     t.integer "experience_id", null: false
     t.integer "tag_id", null: false
+    t.index ["experience_id", "tag_id"], name: "index_experiences_tags_on_experience_id_and_tag_id"
+    t.index ["tag_id", "experience_id"], name: "index_experiences_tags_on_tag_id_and_experience_id"
   end
 
   create_table "languages", force: :cascade do |t|
@@ -131,6 +141,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "languages_tags", id: false, force: :cascade do |t|
     t.integer "language_id", null: false
     t.integer "tag_id", null: false
+    t.index ["language_id", "tag_id"], name: "index_languages_tags_on_language_id_and_tag_id"
+    t.index ["tag_id", "language_id"], name: "index_languages_tags_on_tag_id_and_language_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -148,6 +160,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "organizations_tags", id: false, force: :cascade do |t|
     t.integer "organization_id", null: false
     t.integer "tag_id", null: false
+    t.index ["organization_id", "tag_id"], name: "index_organizations_tags_on_organization_id_and_tag_id"
+    t.index ["tag_id", "organization_id"], name: "index_organizations_tags_on_tag_id_and_organization_id"
   end
 
   create_table "project_bullets", force: :cascade do |t|
@@ -162,6 +176,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "project_bullets_tags", id: false, force: :cascade do |t|
     t.integer "project_bullet_id", null: false
     t.integer "tag_id", null: false
+    t.index ["project_bullet_id", "tag_id"], name: "index_project_bullets_tags_on_project_bullet_id_and_tag_id"
+    t.index ["tag_id", "project_bullet_id"], name: "index_project_bullets_tags_on_tag_id_and_project_bullet_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -178,6 +194,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "projects_tags", id: false, force: :cascade do |t|
     t.integer "project_id", null: false
     t.integer "tag_id", null: false
+    t.index ["project_id", "tag_id"], name: "index_projects_tags_on_project_id_and_tag_id"
+    t.index ["tag_id", "project_id"], name: "index_projects_tags_on_tag_id_and_project_id"
   end
 
   create_table "references", force: :cascade do |t|
@@ -194,6 +212,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "references_tags", id: false, force: :cascade do |t|
     t.integer "reference_id", null: false
     t.integer "tag_id", null: false
+    t.index ["reference_id", "tag_id"], name: "index_references_tags_on_reference_id_and_tag_id"
+    t.index ["tag_id", "reference_id"], name: "index_references_tags_on_tag_id_and_reference_id"
   end
 
   create_table "skill_categories", force: :cascade do |t|
@@ -208,6 +228,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "skill_categories_tags", id: false, force: :cascade do |t|
     t.integer "skill_category_id", null: false
     t.integer "tag_id", null: false
+    t.index ["skill_category_id", "tag_id"], name: "index_skill_categories_tags_on_skill_category_id_and_tag_id"
+    t.index ["tag_id", "skill_category_id"], name: "index_skill_categories_tags_on_tag_id_and_skill_category_id"
   end
 
   create_table "skills", force: :cascade do |t|
@@ -222,6 +244,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
   create_table "skills_tags", id: false, force: :cascade do |t|
     t.integer "skill_id", null: false
     t.integer "tag_id", null: false
+    t.index ["skill_id", "tag_id"], name: "index_skills_tags_on_skill_id_and_tag_id"
+    t.index ["tag_id", "skill_id"], name: "index_skills_tags_on_tag_id_and_skill_id"
   end
 
   create_table "tags", force: :cascade do |t|
