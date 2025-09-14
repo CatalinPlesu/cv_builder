@@ -3,21 +3,32 @@ class CvHeadingsController < ApplicationController
   # before_action :set_heading, only: %i[ edit ]
 
   def edit
-    @cv_heading = current_user.cv_heading # or however you fetch it
-    @full_name = @cv_heading&.full_name || ""
-    @heading_items = @cv_heading&.cv_heading_items&.order(:position) || []
-
-    # Convert to the format your template expects
-    @heading_items = @heading_items.map do |item|
-      {
-        icon: item.icon,
-        text: item.text,
-        url: item.url
-      }
+    if current_user.cv_heading.present?
+      @cv_heading = current_user.cv_heading
+      @heading_items = @cv_heading&.cv_heading_items&.order(:position) || []
+      @heading_items = @heading_items.map do |item|
+        {
+          icon: item.icon,
+          text: item.text,
+          url: item.url
+        }
+    end
+    else
+      @cv_heading = CvHeading.create!(user_id: current_user.id, full_name: current_user.email)
+      @heading_items = []
     end
 
-    # Ensure at least one empty item if none exist
-    @heading_items = [ { icon: "", text: "", url: "" } ] if @heading_items.empty?
+
+    if @heading_items.empty?
+      @heading_items = [
+          { icon: "mobile", text: "+1 (555) 123-4567", url: "tel:15551234567" },
+          { icon: "at", text: "johndoe@email.com", url: "mailto:johndoe@email.com" },
+          { icon: "linkedin-square", text: "LinkedIn", url: "https://www.linkedin.com/in/johndoe" },
+          { icon: "camera", text: "GitHub", url: "https://github.com/johndoe" },
+          { icon: "globe", text: "Portfolio", url: "https://johndoe.github.io" },
+          { icon: "map-marker", text: "City, Country", url: "http://google.com/maps" }
+        ]
+    end
   end
 
   def upsert
