@@ -13,6 +13,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :experiences, only: [] do
+    collection do
+      get :edit
+      put :upsert
+    end
+  end
+
   resources :educations, only: [] do
     collection do
       get :edit
