@@ -1,4 +1,5 @@
 class MasterCvController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_heading, only: %i[ index edit ]
 
   def index
