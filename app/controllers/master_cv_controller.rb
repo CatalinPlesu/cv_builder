@@ -9,6 +9,12 @@ class MasterCvController < ApplicationController
       { icon: "globe", text: "site", url: "https://catalinplesu.xyz" },
       { icon: "map-marker", text: "Chișinău, Moldova", url: nil }
     ]
+
+    @tags = [
+      { name: "frontend", color: "#FF5733" },
+      { name: "backend", color: "#33FF57" },
+      { name: "core", color: "#3357FF" }
+    ]
   end
 
   def show
