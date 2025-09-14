@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_153421) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
+  create_table "achievements", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "date"
+    t.integer "position"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_achievements_on_user_id"
+  end
+
   create_table "achievements_tags", id: false, force: :cascade do |t|
     t.integer "achievement_id", null: false
     t.integer "tag_id", null: false
@@ -250,6 +261,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153421) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "achievements", "users"
   add_foreign_key "certificates", "users"
   add_foreign_key "cv_heading_items", "cv_headings"
   add_foreign_key "cv_headings", "users"
