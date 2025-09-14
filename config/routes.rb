@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :cv_headings, except: [ :index, :show ] do
+    resources :cv_heading_items, except: [ :index, :show ]
+  end
   resources :master_cv, only: [ :index, :new, :create, :edit, :update, :destroy ]
   get "dashboard", to: "dashboard#index", as: :dashboard
   devise_for :users
