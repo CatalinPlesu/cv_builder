@@ -8,6 +8,8 @@ class MasterCvController < ApplicationController
       { name: "backend", color: "#33FF57" },
       { name: "core", color: "#3357FF" }
     ]
+
+    @educations = current_user.educations.order(:position)
   end
 
   def edit

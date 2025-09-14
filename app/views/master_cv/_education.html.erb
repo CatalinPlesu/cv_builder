@@ -1,0 +1,32 @@
+<!-- Education Section -->
+<%= render 'section_container',
+           heading_text: "Education",
+           heading_color: "blue-500",
+           border_color: "blue-500",
+           edit_path: "#" do %>
+
+  <% if @educations.any? %>
+    <ul class="space-y-4">
+      <% @educations.each do |edu| %>
+        <li class="border-l-4 border-blue-500 pl-4 py-2">
+          <h3 class="font-semibold text-lg"><%= edu.institution %></h3>
+          <p class="text-gray-600"><%= edu.degree %></p>
+          <p class="text-sm text-gray-500">
+            <%= edu.location %> •
+            <%= edu.start_date.strftime("%b %Y") if edu.start_date %> –
+            <%= edu.end_date ? edu.end_date.strftime("%b %Y") : "Present" %>
+          </p>
+          <% if edu.gpa.present? %>
+            <p class="text-sm text-gray-500">GPA: <%= edu.gpa %></p>
+          <% end %>
+          <% if edu.additional_info.present? %>
+            <p class="mt-2 text-gray-700"><%= simple_format(edu.additional_info) %></p>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500 italic">No education entries added yet.</p>
+  <% end %>
+
+<% end %>
