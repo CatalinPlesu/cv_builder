@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_152813) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_152941) do
   create_table "cv_heading_items", force: :cascade do |t|
     t.integer "cv_heading_id", null: false
     t.string "icon"
@@ -70,6 +70,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_152813) do
     t.index ["user_id"], name: "index_experiences_on_user_id"
   end
 
+  create_table "project_bullets", force: :cascade do |t|
+    t.text "content"
+    t.integer "position"
+    t.integer "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_bullets_on_project_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.string "link"
+    t.string "date"
+    t.integer "position"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.string "color"
@@ -112,6 +132,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_152813) do
   add_foreign_key "educations", "users"
   add_foreign_key "experience_bullets", "experiences"
   add_foreign_key "experiences", "users"
+  add_foreign_key "project_bullets", "projects"
+  add_foreign_key "projects", "users"
   add_foreign_key "tags", "users"
   add_foreign_key "templates", "users"
 end
