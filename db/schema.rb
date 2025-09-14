@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_181719) do
   create_table "achievements", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -188,6 +188,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_154725) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "link_title"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 

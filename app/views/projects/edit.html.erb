@@ -1,0 +1,395 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-4">
+        <h1 class="text-2xl font-bold text-white">Edit Projects</h1>
+        <p class="text-purple-100 mt-1">Manage your projects and accomplishments</p>
+      </div>
+
+      <%= form_with url: upsert_projects_path, method: :put, local: true, html: { id: "projects-edit-form", class: "p-6 space-y-6" } do |form| %>
+
+        <!-- Info Box -->
+        <div class="bg-purple-50 border-l-4 border-purple-400 p-4 rounded-r-lg">
+          <div class="flex items-start">
+            <div class="flex-shrink-0">
+              <i class="fas fa-info-circle text-purple-600 mt-0.5"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-purple-800 font-medium">Project Entries</p>
+              <p class="text-xs text-purple-600 mt-1">Add, remove, and reorder your projects</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projects Items Section -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-800">Projects</h3>
+            <button type="button"
+                    id="add-project-button"
+                    class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
+              <i class="fas fa-plus mr-2"></i>
+              Add Project
+            </button>
+          </div>
+
+          <!-- Items Container -->
+          <div id="projects-container" class="space-y-3">
+            <% @projects.each_with_index do |project, index| %>
+              <div class="project-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
+                <div class="flex items-center space-x-4 mb-3">
+                  <!-- Drag Handle -->
+                  <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-grip-vertical text-lg"></i>
+                  </div>
+
+                  <!-- Position (hidden input) -->
+                  <input type="hidden" name="projects[][position]" value="<%= index + 1 %>" class="position-input">
+                  <input type="hidden" name="projects[][id]" value="<%= project.id %>" class="id-input">
+
+                  <!-- Project Name -->
+                  <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Project Name</label>
+                    <input type="text"
+                           name="projects[][name]"
+                           value="<%= project.name %>"
+                           placeholder="E-commerce Platform"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                  </div>
+
+                  <!-- Link -->
+                  <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Link</label>
+                    <input type="text"
+                           name="projects[][link]"
+                           value="<%= project.link %>"
+                           placeholder="https://github.com/username/project"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                  <!-- Date -->
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Date</label>
+                    <input type="text"
+                           name="projects[][date]"
+                           value="<%= project.date %>"
+                           placeholder="Jan 2023 - Present"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                  </div>
+
+                  <!-- Link Title -->
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Link Title</label>
+                    <input type="text"
+                           name="projects[][link_title]"
+                           value="<%= project.link_title %>"
+                           placeholder="GitHub Repository"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                  </div>
+
+                  <!-- Remove Button -->
+                  <div class="flex items-end">
+                    <button type="button"
+                            class="remove-project-button w-full py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+                      <i class="fas fa-trash mr-2"></i> Remove
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Bullets Section -->
+                <div class="mb-3">
+                  <label class="block text-xs font-medium text-gray-700 mb-2">Project Details/Bullets</label>
+                  <div class="space-y-2 bullets-container">
+                    <% project.project_bullets.each_with_index do |bullet, bullet_index| %>
+                      <div class="bullet-row flex items-center space-x-2">
+                        <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+                          <i class="fas fa-grip-horizontal text-sm"></i>
+                        </div>
+                        <input type="hidden" name="projects[][bullets][<%= bullet_index %>][position]" value="<%= bullet_index + 1 %>" class="bullet-position-input">
+                        <input type="hidden" name="projects[][bullets][<%= bullet_index %>][id]" value="<%= bullet.id %>" class="bullet-id-input">
+                        <input type="text"
+                               name="projects[][bullets][<%= bullet_index %>][content]"
+                               value="<%= bullet.content %>"
+                               placeholder="Built responsive UI with React..."
+                               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                        <button type="button" class="remove-bullet-button text-red-500 hover:text-red-700 p-2">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    <% end %>
+                    <!-- Add Bullet Button -->
+                    <button type="button" class="add-bullet-button text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center mt-2">
+                      <i class="fas fa-plus mr-1"></i> Add Bullet Point
+                    </button>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
+          <%= link_to "Cancel", master_cv_index_path,
+                      class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
+          <%= submit_tag "Save Projects",
+                         class: "flex-1 sm:flex-initial px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200 cursor-pointer" %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const container = document.getElementById('projects-container');
+  const addButton = document.getElementById('add-project-button');
+
+  if (!container || !addButton) return;
+
+  const ProjectsEdit = {
+    addItem() {
+      const currentItems = container.children.length;
+      const newPosition = currentItems + 1;
+
+      const newRow = document.createElement('div');
+      newRow.className = 'project-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200';
+      newRow.dataset.position = newPosition;
+      newRow.innerHTML = `
+        <div class="flex items-center space-x-4 mb-3">
+          <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+            <i class="fas fa-grip-vertical text-lg"></i>
+          </div>
+          <input type="hidden" name="projects[][position]" value="${newPosition}" class="position-input">
+          <input type="hidden" name="projects[][id]" value="" class="id-input">
+          <div class="flex-1">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Project Name</label>
+            <input type="text" name="projects[][name]" value="" placeholder="E-commerce Platform"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div class="flex-1">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Link</label>
+            <input type="text" name="projects[][link]" value="" placeholder="https://github.com/username/project"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">Date</label>
+            <input type="text" name="projects[][date]" value="" placeholder="Jan 2023 - Present"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">Link Title</label>
+            <input type="text" name="projects[][link_title]" value="" placeholder="GitHub Repository"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div class="flex items-end">
+            <button type="button" class="remove-project-button w-full py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+              <i class="fas fa-trash mr-2"></i> Remove
+            </button>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="block text-xs font-medium text-gray-700 mb-2">Project Details/Bullets</label>
+          <div class="space-y-2 bullets-container">
+            <button type="button" class="add-bullet-button text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center">
+              <i class="fas fa-plus mr-1"></i> Add Bullet Point
+            </button>
+          </div>
+        </div>
+      `;
+
+      newRow.style.opacity = '0';
+      newRow.style.transform = 'translateY(-10px)';
+      container.appendChild(newRow);
+
+      requestAnimationFrame(() => {
+        newRow.style.transition = 'all 0.3s ease-out';
+        newRow.style.opacity = '1';
+        newRow.style.transform = 'translateY(0)';
+      });
+
+      this.updatePositions();
+    },
+
+    removeItem(event) {
+      const button = event.target.closest('.remove-project-button');
+      const row = button.closest('.project-row');
+
+      if (row && container.children.length > 1) {
+        row.style.transition = 'all 0.3s ease-out';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(-20px)';
+
+        setTimeout(() => {
+          row.remove();
+          this.updatePositions();
+        }, 300);
+      } else if (container.children.length <= 1) {
+        alert("Cannot remove the last project entry.");
+      }
+    },
+
+    addBullet(event) {
+      const button = event.target.closest('.add-bullet-button');
+      const bulletsContainer = button.closest('.bullets-container');
+      const bulletRows = bulletsContainer.querySelectorAll('.bullet-row');
+      const newIndex = bulletRows.length;
+
+      const newBullet = document.createElement('div');
+      newBullet.className = 'bullet-row flex items-center space-x-2';
+      newBullet.innerHTML = `
+        <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+          <i class="fas fa-grip-horizontal text-sm"></i>
+        </div>
+        <input type="hidden" name="projects[][bullets][${newIndex}][position]" value="${newIndex + 1}" class="bullet-position-input">
+        <input type="hidden" name="projects[][bullets][${newIndex}][id]" value="" class="bullet-id-input">
+        <input type="text" name="projects[][bullets][${newIndex}][content]" value="" placeholder="Built responsive UI with React..."
+               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+        <button type="button" class="remove-bullet-button text-red-500 hover:text-red-700 p-2">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+
+      // Insert before the add button
+      bulletsContainer.insertBefore(newBullet, button);
+      this.updateBulletPositions(bulletsContainer);
+    },
+
+    removeBullet(event) {
+      const button = event.target.closest('.remove-bullet-button');
+      const bulletRow = button.closest('.bullet-row');
+      const bulletsContainer = bulletRow.closest('.bullets-container');
+      
+      bulletRow.remove();
+      this.updateBulletPositions(bulletsContainer);
+    },
+
+    updateBulletPositions(bulletsContainer) {
+      const bullets = bulletsContainer.querySelectorAll('.bullet-row');
+      bullets.forEach((bullet, index) => {
+        const position = index + 1;
+        const positionInput = bullet.querySelector('.bullet-position-input');
+        if (positionInput) {
+          positionInput.value = position;
+        }
+      });
+    },
+
+    updatePositions() {
+      const rows = container.querySelectorAll('.project-row');
+      rows.forEach((row, index) => {
+        const position = index + 1;
+        row.dataset.position = position;
+        const positionInput = row.querySelector('.position-input');
+        if (positionInput) {
+          positionInput.value = position;
+        }
+      });
+    },
+
+    initDragAndDrop() {
+      let draggedElement = null;
+      let placeholder = null;
+
+      const createPlaceholder = () => {
+        const div = document.createElement('div');
+        div.className = 'placeholder bg-purple-100 border-2 border-dashed border-purple-300 rounded-lg p-4 opacity-50';
+        div.innerHTML = '<div class="text-center text-purple-500 font-medium">Drop here</div>';
+        return div;
+      };
+
+      container.addEventListener('mousedown', (e) => {
+        const handle = e.target.closest('.drag-handle');
+        if (!handle) return;
+
+        draggedElement = handle.closest('.project-row');
+        placeholder = createPlaceholder();
+
+        draggedElement.classList.add('opacity-50', 'transform', 'rotate-2', 'scale-105', 'z-10');
+        draggedElement.style.pointerEvents = 'none';
+        document.body.style.cursor = 'grabbing';
+
+        e.preventDefault();
+      });
+
+      container.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+
+      container.addEventListener('mouseenter', (e) => {
+        if (!draggedElement) return;
+
+        const targetRow = e.target.closest('.project-row');
+        if (!targetRow || targetRow === draggedElement) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (e.clientY < midY) {
+          targetRow.parentNode.insertBefore(placeholder, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
+        }
+      }, true);
+
+      document.addEventListener('mouseup', () => {
+        if (!draggedElement) return;
+
+        if (placeholder && placeholder.parentNode) {
+          placeholder.parentNode.insertBefore(draggedElement, placeholder);
+          placeholder.remove();
+        }
+
+        draggedElement.classList.remove('opacity-50', 'transform', 'rotate-2', 'scale-105', 'z-10');
+        draggedElement.style.pointerEvents = '';
+        document.body.style.cursor = '';
+
+        this.updatePositions();
+
+        draggedElement = null;
+        placeholder = null;
+      });
+
+      container.addEventListener('mousemove', (e) => {
+        if (!draggedElement) return;
+
+        const targetRow = e.target.closest('.project-row');
+        if (!targetRow || targetRow === draggedElement) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (placeholder && placeholder.parentNode) {
+          placeholder.remove();
+        }
+
+        if (e.clientY < midY) {
+          targetRow.parentNode.insertBefore(placeholder, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
+        }
+      });
+    }
+  };
+
+  addButton.addEventListener('click', () => ProjectsEdit.addItem());
+
+  container.addEventListener('click', function(event) {
+    if (event.target.closest('.remove-project-button')) {
+      ProjectsEdit.removeItem(event);
+    } else if (event.target.closest('.add-bullet-button')) {
+      ProjectsEdit.addBullet(event);
+    } else if (event.target.closest('.remove-bullet-button')) {
+      ProjectsEdit.removeBullet(event);
+    }
+  });
+
+  ProjectsEdit.initDragAndDrop();
+});
+</script>

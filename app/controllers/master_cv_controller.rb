@@ -11,6 +11,7 @@ class MasterCvController < ApplicationController
 
     @educations = current_user.educations.order(:position)
     @experiences = current_user.experiences.order(:position)
+    @projects = current_user.projects.order(:position)
   end
 
   def edit
