@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_153421) do
+  create_table "achievements_tags", id: false, force: :cascade do |t|
+    t.integer "achievement_id", null: false
+    t.integer "tag_id", null: false
+  end
+
   create_table "certificates", force: :cascade do |t|
     t.string "name"
     t.string "organization"
@@ -21,6 +26,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_certificates_on_user_id"
+  end
+
+  create_table "certificates_tags", id: false, force: :cascade do |t|
+    t.integer "certificate_id", null: false
+    t.integer "tag_id", null: false
   end
 
   create_table "cv_heading_items", force: :cascade do |t|
@@ -59,6 +69,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.index ["user_id"], name: "index_educations_on_user_id"
   end
 
+  create_table "educations_tags", id: false, force: :cascade do |t|
+    t.integer "education_id", null: false
+    t.integer "tag_id", null: false
+  end
+
   create_table "experience_bullets", force: :cascade do |t|
     t.text "content"
     t.integer "position"
@@ -66,6 +81,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["experience_id"], name: "index_experience_bullets_on_experience_id"
+  end
+
+  create_table "experience_bullets_tags", id: false, force: :cascade do |t|
+    t.integer "experience_bullet_id", null: false
+    t.integer "tag_id", null: false
   end
 
   create_table "experiences", force: :cascade do |t|
@@ -82,6 +102,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.index ["user_id"], name: "index_experiences_on_user_id"
   end
 
+  create_table "experiences_tags", id: false, force: :cascade do |t|
+    t.integer "experience_id", null: false
+    t.integer "tag_id", null: false
+  end
+
   create_table "languages", force: :cascade do |t|
     t.string "name"
     t.string "proficiency"
@@ -90,6 +115,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_languages_on_user_id"
+  end
+
+  create_table "languages_tags", id: false, force: :cascade do |t|
+    t.integer "language_id", null: false
+    t.integer "tag_id", null: false
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -104,6 +134,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.index ["user_id"], name: "index_organizations_on_user_id"
   end
 
+  create_table "organizations_tags", id: false, force: :cascade do |t|
+    t.integer "organization_id", null: false
+    t.integer "tag_id", null: false
+  end
+
   create_table "project_bullets", force: :cascade do |t|
     t.text "content"
     t.integer "position"
@@ -111,6 +146,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_project_bullets_on_project_id"
+  end
+
+  create_table "project_bullets_tags", id: false, force: :cascade do |t|
+    t.integer "project_bullet_id", null: false
+    t.integer "tag_id", null: false
   end
 
   create_table "projects", force: :cascade do |t|
@@ -124,6 +164,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "projects_tags", id: false, force: :cascade do |t|
+    t.integer "project_id", null: false
+    t.integer "tag_id", null: false
+  end
+
   create_table "references", force: :cascade do |t|
     t.string "name"
     t.string "contact"
@@ -135,6 +180,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.index ["user_id"], name: "index_references_on_user_id"
   end
 
+  create_table "references_tags", id: false, force: :cascade do |t|
+    t.integer "reference_id", null: false
+    t.integer "tag_id", null: false
+  end
+
   create_table "skill_categories", force: :cascade do |t|
     t.string "name"
     t.integer "position"
@@ -144,6 +194,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.index ["user_id"], name: "index_skill_categories_on_user_id"
   end
 
+  create_table "skill_categories_tags", id: false, force: :cascade do |t|
+    t.integer "skill_category_id", null: false
+    t.integer "tag_id", null: false
+  end
+
   create_table "skills", force: :cascade do |t|
     t.string "name"
     t.integer "position"
@@ -151,6 +206,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["skill_category_id"], name: "index_skills_on_skill_category_id"
+  end
+
+  create_table "skills_tags", id: false, force: :cascade do |t|
+    t.integer "skill_id", null: false
+    t.integer "tag_id", null: false
   end
 
   create_table "tags", force: :cascade do |t|
