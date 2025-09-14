@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_120634) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_152642) do
   create_table "cv_heading_items", force: :cascade do |t|
     t.integer "cv_heading_id", null: false
     t.string "icon"
@@ -30,6 +30,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_120634) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_cv_headings_on_user_id"
+  end
+
+  create_table "educations", force: :cascade do |t|
+    t.string "institution"
+    t.string "location"
+    t.string "degree"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "gpa"
+    t.text "additional_info"
+    t.integer "position"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_educations_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -71,6 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_120634) do
 
   add_foreign_key "cv_heading_items", "cv_headings"
   add_foreign_key "cv_headings", "users"
+  add_foreign_key "educations", "users"
   add_foreign_key "tags", "users"
   add_foreign_key "templates", "users"
 end
