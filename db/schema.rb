@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_153235) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_153310) do
   create_table "certificates", force: :cascade do |t|
     t.string "name"
     t.string "organization"
@@ -124,6 +124,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153235) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "references", force: :cascade do |t|
+    t.string "name"
+    t.string "contact"
+    t.string "position_title"
+    t.integer "position"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_references_on_user_id"
+  end
+
   create_table "skill_categories", force: :cascade do |t|
     t.string "name"
     t.integer "position"
@@ -189,6 +200,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153235) do
   add_foreign_key "organizations", "users"
   add_foreign_key "project_bullets", "projects"
   add_foreign_key "projects", "users"
+  add_foreign_key "references", "users"
   add_foreign_key "skill_categories", "users"
   add_foreign_key "skills", "skill_categories"
   add_foreign_key "tags", "users"
