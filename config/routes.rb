@@ -1,15 +1,18 @@
 Rails.application.routes.draw do
-  resources :cv_headings, except: [ :index, :show ] do
-    resources :cv_heading_items, except: [ :index, :show ] do
+  resources :cv_headings, only: [] do
+    collection do
+      get :edit
+      patch :update
+    end
+
+    resources :cv_heading_items, only: [] do
       collection do
         patch :reorder
       end
     end
   end
 
-  get "master_cv/index"
-  get "master_cv/edit"
-  get "master_cv", to: "master_cv#index"
+  resources :master_cv, only: [ :index ]
 
   get "dashboard", to: "dashboard#index", as: :dashboard
   devise_for :users
