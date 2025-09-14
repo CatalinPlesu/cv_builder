@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_113933) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_120634) do
   create_table "cv_heading_items", force: :cascade do |t|
     t.integer "cv_heading_id", null: false
     t.string "icon"
@@ -37,6 +37,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_113933) do
     t.string "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id", "name"], name: "index_tags_on_user_id_and_name", unique: true
+    t.index ["user_id"], name: "index_tags_on_user_id"
+  end
+
+  create_table "tags_templates", id: false, force: :cascade do |t|
+    t.integer "tag_id", null: false
+    t.integer "template_id", null: false
+    t.index ["tag_id", "template_id"], name: "index_tags_templates_on_tag_id_and_template_id"
+    t.index ["template_id", "tag_id"], name: "index_tags_templates_on_template_id_and_tag_id"
+  end
+
+  create_table "templates", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_templates_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -53,4 +71,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_113933) do
 
   add_foreign_key "cv_heading_items", "cv_headings"
   add_foreign_key "cv_headings", "users"
+  add_foreign_key "tags", "users"
+  add_foreign_key "templates", "users"
 end
