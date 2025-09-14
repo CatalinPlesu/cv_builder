@@ -1,0 +1,355 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+        <h1 class="text-2xl font-bold text-white">Edit Education</h1>
+        <p class="text-blue-100 mt-1">Manage your educational background</p>
+      </div>
+
+      <%= form_with url: upsert_educations_path, method: :put, local: true, html: { id: "educations-edit-form", class: "p-6 space-y-6" } do |form| %>
+
+        <!-- Info Box -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+          <div class="flex items-start">
+            <div class="flex-shrink-0">
+              <i class="fas fa-info-circle text-blue-600 mt-0.5"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-blue-800 font-medium">Education Entries</p>
+              <p class="text-xs text-blue-600 mt-1">Add, remove, and reorder your education history</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education Items Section -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-800">Education History</h3>
+            <button type="button"
+                    id="add-education-button"
+                    class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+              <i class="fas fa-plus mr-2"></i>
+              Add Education
+            </button>
+          </div>
+
+          <!-- Items Container -->
+          <div id="educations-container" class="space-y-3">
+            <% @educations.each_with_index do |education, index| %>
+              <div class="education-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
+                <div class="flex items-center space-x-4 mb-3">
+                  <!-- Drag Handle -->
+                  <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-grip-vertical text-lg"></i>
+                  </div>
+
+                  <!-- Position (hidden input) -->
+                  <input type="hidden" name="educations[][position]" value="<%= index + 1 %>" class="position-input">
+                  <input type="hidden" name="educations[][id]" value="<%= education.id %>" class="id-input">
+
+                  <!-- Institution -->
+                  <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Institution</label>
+                    <input type="text"
+                           name="educations[][institution]"
+                           value="<%= education.institution %>"
+                           placeholder="Stanford University"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                  </div>
+
+                  <!-- Location -->
+                  <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Location</label>
+                    <input type="text"
+                           name="educations[][location]"
+                           value="<%= education.location %>"
+                           placeholder="California, USA"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                  <!-- Degree -->
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Degree</label>
+                    <input type="text"
+                           name="educations[][degree]"
+                           value="<%= education.degree %>"
+                           placeholder="B.S. Computer Science"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                  </div>
+
+                  <!-- GPA -->
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">GPA</label>
+                    <input type="text"
+                           name="educations[][gpa]"
+                           value="<%= education.gpa %>"
+                           placeholder="3.8"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                  <!-- Start Date -->
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
+                    <input type="date"
+                           name="educations[][start_date]"
+                           value="<%= education.start_date ? education.start_date.to_date : '' %>"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                  </div>
+
+                  <!-- End Date -->
+                  <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">End Date</label>
+                    <input type="date"
+                           name="educations[][end_date]"
+                           value="<%= education.end_date ? education.end_date.to_date : '' %>"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                  </div>
+
+                  <!-- Remove Button -->
+                  <div class="flex items-end">
+                    <button type="button"
+                            class="remove-education-button w-full py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+                      <i class="fas fa-trash mr-2"></i> Remove
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Additional Info -->
+                <div>
+                  <label class="block text-xs font-medium text-gray-700 mb-1">Additional Info</label>
+                  <textarea name="educations[][additional_info]"
+                            rows="2"
+                            placeholder="Relevant coursework, honors, etc."
+                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"><%= education.additional_info %></textarea>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
+          <%= link_to "Cancel", master_cv_index_path,
+                      class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
+          <%= submit_tag "Save Education",
+                         class: "flex-1 sm:flex-initial px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 cursor-pointer" %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const container = document.getElementById('educations-container');
+  const addButton = document.getElementById('add-education-button');
+
+  if (!container || !addButton) return;
+
+  const EducationsEdit = {
+    addItem() {
+      const currentItems = container.children.length;
+      const newPosition = currentItems + 1;
+
+      const newRow = document.createElement('div');
+      newRow.className = 'education-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200';
+      newRow.dataset.position = newPosition;
+      newRow.innerHTML = `
+        <div class="flex items-center space-x-4 mb-3">
+          <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+            <i class="fas fa-grip-vertical text-lg"></i>
+          </div>
+          <input type="hidden" name="educations[][position]" value="${newPosition}" class="position-input">
+          <input type="hidden" name="educations[][id]" value="" class="id-input">
+          <div class="flex-1">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Institution</label>
+            <input type="text" name="educations[][institution]" value="" placeholder="Stanford University"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+          </div>
+          <div class="flex-1">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Location</label>
+            <input type="text" name="educations[][location]" value="" placeholder="California, USA"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">Degree</label>
+            <input type="text" name="educations[][degree]" value="" placeholder="B.S. Computer Science"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">GPA</label>
+            <input type="text" name="educations[][gpa]" value="" placeholder="3.8"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
+            <input type="date" name="educations[][start_date]" value=""
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">End Date</label>
+            <input type="date" name="educations[][end_date]" value=""
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+          </div>
+          <div class="flex items-end">
+            <button type="button" class="remove-education-button w-full py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+              <i class="fas fa-trash mr-2"></i> Remove
+            </button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">Additional Info</label>
+          <textarea name="educations[][additional_info]" rows="2" placeholder="Relevant coursework, honors, etc."
+                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"></textarea>
+        </div>
+      `;
+
+      newRow.style.opacity = '0';
+      newRow.style.transform = 'translateY(-10px)';
+      container.appendChild(newRow);
+
+      requestAnimationFrame(() => {
+        newRow.style.transition = 'all 0.3s ease-out';
+        newRow.style.opacity = '1';
+        newRow.style.transform = 'translateY(0)';
+      });
+
+      this.updatePositions();
+    },
+
+    removeItem(event) {
+      const button = event.target.closest('.remove-education-button');
+      const row = button.closest('.education-row');
+
+      if (row && container.children.length > 1) {
+        row.style.transition = 'all 0.3s ease-out';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(-20px)';
+
+        setTimeout(() => {
+          row.remove();
+          this.updatePositions();
+        }, 300);
+      } else if (container.children.length <= 1) {
+        alert("Cannot remove the last education entry.");
+      }
+    },
+
+    updatePositions() {
+      const rows = container.querySelectorAll('.education-row');
+      rows.forEach((row, index) => {
+        const position = index + 1;
+        row.dataset.position = position;
+        const positionInput = row.querySelector('.position-input');
+        if (positionInput) {
+          positionInput.value = position;
+        }
+      });
+    },
+
+    initDragAndDrop() {
+      let draggedElement = null;
+      let placeholder = null;
+
+      const createPlaceholder = () => {
+        const div = document.createElement('div');
+        div.className = 'placeholder bg-blue-100 border-2 border-dashed border-blue-300 rounded-lg p-4 opacity-50';
+        div.innerHTML = '<div class="text-center text-blue-500 font-medium">Drop here</div>';
+        return div;
+      };
+
+      container.addEventListener('mousedown', (e) => {
+        const handle = e.target.closest('.drag-handle');
+        if (!handle) return;
+
+        draggedElement = handle.closest('.education-row');
+        placeholder = createPlaceholder();
+
+        draggedElement.classList.add('opacity-50', 'transform', 'rotate-2', 'scale-105', 'z-10');
+        draggedElement.style.pointerEvents = 'none';
+        document.body.style.cursor = 'grabbing';
+
+        e.preventDefault();
+      });
+
+      container.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+
+      container.addEventListener('mouseenter', (e) => {
+        if (!draggedElement) return;
+
+        const targetRow = e.target.closest('.education-row');
+        if (!targetRow || targetRow === draggedElement) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (e.clientY < midY) {
+          targetRow.parentNode.insertBefore(placeholder, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
+        }
+      }, true);
+
+      document.addEventListener('mouseup', () => {
+        if (!draggedElement) return;
+
+        if (placeholder && placeholder.parentNode) {
+          placeholder.parentNode.insertBefore(draggedElement, placeholder);
+          placeholder.remove();
+        }
+
+        draggedElement.classList.remove('opacity-50', 'transform', 'rotate-2', 'scale-105', 'z-10');
+        draggedElement.style.pointerEvents = '';
+        document.body.style.cursor = '';
+
+        this.updatePositions();
+
+        draggedElement = null;
+        placeholder = null;
+      });
+
+      container.addEventListener('mousemove', (e) => {
+        if (!draggedElement) return;
+
+        const targetRow = e.target.closest('.education-row');
+        if (!targetRow || targetRow === draggedElement) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (placeholder && placeholder.parentNode) {
+          placeholder.remove();
+        }
+
+        if (e.clientY < midY) {
+          targetRow.parentNode.insertBefore(placeholder, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
+        }
+      });
+    }
+  };
+
+  addButton.addEventListener('click', () => EducationsEdit.addItem());
+
+  container.addEventListener('click', function(event) {
+    if (event.target.closest('.remove-education-button')) {
+      EducationsEdit.removeItem(event);
+    }
+  });
+
+  EducationsEdit.initDragAndDrop();
+});
+</script>
