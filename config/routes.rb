@@ -6,7 +6,11 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :master_cv, only: [ :index, :new, :create, :edit, :update, :destroy ]
+
+  get "master_cv/index"
+  get "master_cv/edit"
+  get "master_cv", to: "master_cv#index"
+
   get "dashboard", to: "dashboard#index", as: :dashboard
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
