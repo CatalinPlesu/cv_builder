@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_153119) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_153206) do
+  create_table "certificates", force: :cascade do |t|
+    t.string "name"
+    t.string "organization"
+    t.string "date"
+    t.text "description"
+    t.integer "position"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_certificates_on_user_id"
+  end
+
   create_table "cv_heading_items", force: :cascade do |t|
     t.integer "cv_heading_id", null: false
     t.string "icon"
@@ -155,6 +167,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_153119) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "certificates", "users"
   add_foreign_key "cv_heading_items", "cv_headings"
   add_foreign_key "cv_headings", "users"
   add_foreign_key "educations", "users"
