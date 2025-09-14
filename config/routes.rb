@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :cv_headings, only: [] do
     collection do
       get :edit
-      patch :update
+      put :upsert
     end
 
     resources :cv_heading_items, only: [] do

@@ -7,13 +7,12 @@
         <p class="text-blue-100 mt-1">Update your contact details and social links</p>
       </div>
 
-      <%= form_with url: cv_headings_path, method: :patch, local: true, id: "cv-edit-form", class: "p-6 space-y-6" do |form| %>
-
+      <%= form_with(model: @cv_heading, url: upsert_cv_headings_path, method: :put, local: true, html: { id: "cv-edit-form", class: "p-6 space-y-6" }) do |form| %>
         <!-- Full Name Field -->
         <div class="bg-gray-50 rounded-lg p-4">
-          <%= form.label :full_name, "Full Name", class: "block text-sm font-semibold text-gray-800 mb-2" %>
-          <%= form.text_field :full_name, value: @full_name, 
-              class: "w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" %>
+          <label for="full_name" class="block text-sm font-semibold text-gray-800 mb-2">Full Name</label>
+          <%= form.text_field :full_name, 
+                              class: "w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" %>
         </div>
 
         <!-- Info Box -->
@@ -44,29 +43,35 @@
           <!-- Items Container -->
           <div id="heading-items-container" class="space-y-3">
             <% @heading_items.each_with_index do |item, index| %>
-              <div class="item-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-index="<%= index %>">
+              <div class="item-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
                 <div class="flex items-center space-x-4">
                   <!-- Drag Handle -->
-                  <div class="drag-handle cursor-move text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                  <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
                     <i class="fas fa-grip-vertical text-lg"></i>
                   </div>
+
+                  <!-- Position (hidden input) -->
+                  <input type="hidden" name="heading_items[][position]" value="<%= index + 1 %>" class="position-input">
 
                   <!-- Icon Input -->
                   <div class="flex-shrink-0 w-32">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Icon</label>
-                    <%= form.text_field "heading_items[][icon]",
-                                        value: item[:icon],
-                                        placeholder: "envelope",
-                                        class: "icon-input w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent" %>
+                    <input type="text" 
+                           name="heading_items[][icon]" 
+                           value="<%= item[:icon] %>" 
+                           placeholder="envelope"
+                           class="icon-input w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
                   </div>
 
                   <!-- Icon Preview -->
                   <div class="flex-shrink-0 w-16">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Preview</label>
                     <div class="icon-preview-cell flex items-center justify-center h-10 bg-gray-50 rounded-md border">
-                      <% icon_name = item[:icon].to_s.underscore.dasherize %>
-                      <span class="icon-preview text-lg text-gray-600">
+                      <% icon_name = item[:icon].to_s.tr('_', '-') %>
+                      <span class="icon-preview-fas text-lg text-gray-600 mr-1">
                         <i class="fas fa-<%= icon_name %>"></i>
+                      </span>
+                      <span class="icon-preview-fab text-lg text-gray-600">
                         <i class="fab fa-<%= icon_name %>"></i>
                       </span>
                     </div>
@@ -75,19 +80,21 @@
                   <!-- Text Input -->
                   <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Display Text</label>
-                    <%= form.text_field "heading_items[][text]",
-                                        value: item[:text],
-                                        placeholder: "john@example.com",
-                                        class: "w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent" %>
+                    <input type="text" 
+                           name="heading_items[][text]" 
+                           value="<%= item[:text] %>" 
+                           placeholder="john@example.com"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
                   </div>
 
                   <!-- URL Input -->
                   <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Link (Optional)</label>
-                    <%= form.url_field "heading_items[][url]",
-                                       value: item[:url].presence || '',
-                                       placeholder: "https://...",
-                                       class: "w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent" %>
+                    <input type="url" 
+                           name="heading_items[][url]" 
+                           value="<%= item[:url].to_s %>" 
+                           placeholder="https://..."
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
                   </div>
 
                   <!-- Remove Button -->
@@ -106,12 +113,11 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
-          <%= form.submit "Update CV",
-                          class: "flex-1 sm:flex-initial px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 cursor-pointer" %>
-          <%= link_to "Cancel",
-                      root_path,
-                      class: "flex-1 sm:flex-initial px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 text-center" %>
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
+          <%= link_to "Cancel", root_path,
+                      class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
+          <%= submit_tag "Save Changes",
+                         class: "flex-1 sm:flex-initial px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 cursor-pointer" %>
         </div>
 
       <% end %>
@@ -119,37 +125,28 @@
   </div>
 </div>
 
-<%= javascript_tag do %>
-document.addEventListener("turbo:load", function() {
+<script>
+document.addEventListener("DOMContentLoaded", function() {
   const container = document.getElementById('heading-items-container');
   const addButton = document.getElementById('add-item-button');
 
   if (!container || !addButton) return;
 
-  // Helper functions for string manipulation
-  if (typeof String.prototype.underscore !== 'function') {
-    String.prototype.underscore = function() {
-      return this.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
-    };
-  }
-  if (typeof String.prototype.dasherize !== 'function') {
-    String.prototype.dasherize = function() {
-      return this.replace(/_/g, '-');
-    };
-  }
-
   const CvEdit = {
     // Add new item
     addItem() {
-      const currentIndex = container.children.length;
+      const currentItems = container.children.length;
+      const newPosition = currentItems + 1;
+      
       const newRow = document.createElement('div');
       newRow.className = 'item-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200';
-      newRow.dataset.index = currentIndex;
+      newRow.dataset.position = newPosition;
       newRow.innerHTML = `
         <div class="flex items-center space-x-4">
-          <div class="drag-handle cursor-move text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+          <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
             <i class="fas fa-grip-vertical text-lg"></i>
           </div>
+          <input type="hidden" name="heading_items[][position]" value="${newPosition}" class="position-input">
           <div class="flex-shrink-0 w-32">
             <label class="block text-xs font-medium text-gray-700 mb-1">Icon</label>
             <input type="text" name="heading_items[][icon]" value="" placeholder="envelope" 
@@ -158,7 +155,8 @@ document.addEventListener("turbo:load", function() {
           <div class="flex-shrink-0 w-16">
             <label class="block text-xs font-medium text-gray-700 mb-1">Preview</label>
             <div class="icon-preview-cell flex items-center justify-center h-10 bg-gray-50 rounded-md border">
-              <span class="icon-preview text-lg text-gray-600"></span>
+              <span class="icon-preview-fas text-lg text-gray-600 mr-1"></span>
+              <span class="icon-preview-fab text-lg text-gray-600"></span>
             </div>
           </div>
           <div class="flex-1">
@@ -192,7 +190,7 @@ document.addEventListener("turbo:load", function() {
         newRow.style.transform = 'translateY(0)';
       });
       
-      this.updateRowIndexes();
+      this.updatePositions();
     },
 
     // Remove item
@@ -208,7 +206,7 @@ document.addEventListener("turbo:load", function() {
         
         setTimeout(() => {
           row.remove();
-          this.updateRowIndexes();
+          this.updatePositions();
         }, 300);
       } else if (container.children.length <= 1) {
         this.showMessage("Cannot remove the last item.", 'warning');
@@ -219,65 +217,122 @@ document.addEventListener("turbo:load", function() {
     updatePreview(event) {
       const input = event.target;
       const row = input.closest('.item-row');
-      const previewSpan = row.querySelector('.icon-preview');
+      const previewFas = row.querySelector('.icon-preview-fas');
+      const previewFab = row.querySelector('.icon-preview-fab');
       
-      if (previewSpan) {
-        const iconName = input.value.trim().underscore().dasherize();
+      if (previewFas && previewFab) {
+        const iconName = input.value.trim().replace(/_/g, '-');
         if (iconName) {
-          previewSpan.innerHTML = `<i class="fas fa-${iconName}"></i><i class="fab fa-${iconName}"></i>`;
+          previewFas.innerHTML = `<i class="fas fa-${iconName}"></i>`;
+          previewFab.innerHTML = `<i class="fab fa-${iconName}"></i>`;
         } else {
-          previewSpan.innerHTML = '';
+          previewFas.innerHTML = '';
+          previewFab.innerHTML = '';
         }
       }
     },
 
-    // Update row indexes
-    updateRowIndexes() {
+    // Update position values based on current order
+    updatePositions() {
       const rows = container.querySelectorAll('.item-row');
       rows.forEach((row, index) => {
-        row.dataset.index = index;
+        const position = index + 1;
+        row.dataset.position = position;
+        const positionInput = row.querySelector('.position-input');
+        if (positionInput) {
+          positionInput.value = position;
+        }
       });
     },
 
-    // Simple drag and drop implementation
+    // Drag and drop implementation
     initDragAndDrop() {
       let draggedElement = null;
-      let draggedIndex = null;
+      let placeholder = null;
+
+      const createPlaceholder = () => {
+        const div = document.createElement('div');
+        div.className = 'placeholder bg-blue-100 border-2 border-dashed border-blue-300 rounded-lg p-4 opacity-50';
+        div.innerHTML = '<div class="text-center text-blue-500 font-medium">Drop here</div>';
+        return div;
+      };
 
       container.addEventListener('mousedown', (e) => {
-        if (e.target.closest('.drag-handle')) {
-          draggedElement = e.target.closest('.item-row');
-          draggedIndex = Array.from(container.children).indexOf(draggedElement);
-          draggedElement.style.opacity = '0.5';
-          draggedElement.style.transform = 'rotate(2deg)';
-          document.body.style.cursor = 'grabbing';
-        }
+        const handle = e.target.closest('.drag-handle');
+        if (!handle) return;
+
+        draggedElement = handle.closest('.item-row');
+        placeholder = createPlaceholder();
+        
+        // Visual feedback
+        draggedElement.classList.add('opacity-50', 'transform', 'rotate-2', 'scale-105', 'z-10');
+        draggedElement.style.pointerEvents = 'none';
+        document.body.style.cursor = 'grabbing';
+        
+        e.preventDefault();
       });
 
-      container.addEventListener('mouseover', (e) => {
-        if (draggedElement && e.target.closest('.item-row') && e.target.closest('.item-row') !== draggedElement) {
-          const targetElement = e.target.closest('.item-row');
-          const targetIndex = Array.from(container.children).indexOf(targetElement);
-          
-          if (targetIndex !== draggedIndex) {
-            if (targetIndex < draggedIndex) {
-              container.insertBefore(draggedElement, targetElement);
-            } else {
-              container.insertBefore(draggedElement, targetElement.nextSibling);
-            }
-            draggedIndex = Array.from(container.children).indexOf(draggedElement);
-          }
-        }
+      container.addEventListener('dragover', (e) => {
+        e.preventDefault();
       });
+
+      container.addEventListener('mouseenter', (e) => {
+        if (!draggedElement) return;
+        
+        const targetRow = e.target.closest('.item-row');
+        if (!targetRow || targetRow === draggedElement) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        
+        if (e.clientY < midY) {
+          targetRow.parentNode.insertBefore(placeholder, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
+        }
+      }, true);
 
       document.addEventListener('mouseup', () => {
-        if (draggedElement) {
-          draggedElement.style.opacity = '';
-          draggedElement.style.transform = '';
-          document.body.style.cursor = '';
-          draggedElement = null;
-          draggedIndex = null;
-          this.updateRowIndexes();
+        if (!draggedElement) return;
+
+        // Move dragged element to placeholder position
+        if (placeholder && placeholder.parentNode) {
+          placeholder.parentNode.insertBefore(draggedElement, placeholder);
+          placeholder.remove();
+        }
+
+        // Reset styles
+        draggedElement.classList.remove('opacity-50', 'transform', 'rotate-2', 'scale-105', 'z-10');
+        draggedElement.style.pointerEvents = '';
+        document.body.style.cursor = '';
+
+        // Update positions
+        this.updatePositions();
+        
+        draggedElement = null;
+        placeholder = null;
+      });
+
+      // Handle mouse move for continuous drag effect
+      container.addEventListener('mousemove', (e) => {
+        if (!draggedElement) return;
+        
+        const targetRow = e.target.closest('.item-row');
+        if (!targetRow || targetRow === draggedElement) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        
+        // Remove existing placeholder
+        if (placeholder && placeholder.parentNode) {
+          placeholder.remove();
+        }
+        
+        // Add placeholder in new position
+        if (e.clientY < midY) {
+          targetRow.parentNode.insertBefore(placeholder, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
         }
       });
     },
@@ -302,7 +357,7 @@ document.addEventListener("turbo:load", function() {
   // Event listeners
   addButton.addEventListener('click', () => CvEdit.addItem());
 
-  // Event delegation
+  // Event delegation for dynamic elements
   container.addEventListener('click', function(event) {
     if (event.target.closest('.remove-item-button')) {
       CvEdit.removeItem(event);
@@ -317,5 +372,10 @@ document.addEventListener("turbo:load", function() {
 
   // Initialize drag and drop
   CvEdit.initDragAndDrop();
+
+  // Initialize existing icon previews
+  container.querySelectorAll('.icon-input').forEach(input => {
+    CvEdit.updatePreview({ target: input });
+  });
 });
-<% end %>
+</script>
