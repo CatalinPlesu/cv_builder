@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_053637) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_060146) do
   create_table "cv_heading_items", force: :cascade do |t|
     t.integer "cv_heading_id", null: false
     t.string "icon"
@@ -18,6 +18,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_053637) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
+    t.index ["cv_heading_id", "position"], name: "index_cv_heading_items_on_cv_heading_id_and_position"
     t.index ["cv_heading_id"], name: "index_cv_heading_items_on_cv_heading_id"
     t.index ["url"], name: "index_cv_heading_items_on_url"
   end

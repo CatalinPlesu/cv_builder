@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :cv_headings, except: [ :index, :show ] do
-    resources :cv_heading_items, except: [ :index, :show ]
+    resources :cv_heading_items, except: [ :index, :show ] do
+      collection do
+        patch :reorder
+      end
+    end
   end
   resources :master_cv, only: [ :index, :new, :create, :edit, :update, :destroy ]
   get "dashboard", to: "dashboard#index", as: :dashboard
