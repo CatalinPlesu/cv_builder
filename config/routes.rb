@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :templates
   resources :cv_headings, only: [] do
     collection do
       get :edit
