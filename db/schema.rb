@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_152941) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_14_153046) do
   create_table "cv_heading_items", force: :cascade do |t|
     t.integer "cv_heading_id", null: false
     t.string "icon"
@@ -90,6 +90,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_152941) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "skill_categories", force: :cascade do |t|
+    t.string "name"
+    t.integer "position"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_skill_categories_on_user_id"
+  end
+
+  create_table "skills", force: :cascade do |t|
+    t.string "name"
+    t.integer "position"
+    t.integer "skill_category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["skill_category_id"], name: "index_skills_on_skill_category_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.string "color"
@@ -134,6 +152,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_152941) do
   add_foreign_key "experiences", "users"
   add_foreign_key "project_bullets", "projects"
   add_foreign_key "projects", "users"
+  add_foreign_key "skill_categories", "users"
+  add_foreign_key "skills", "skill_categories"
   add_foreign_key "tags", "users"
   add_foreign_key "templates", "users"
 end
