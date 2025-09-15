@@ -12,21 +12,24 @@
           </div>
         </div>
         <div class="space-y-3">
-          <div class="flex justify-between">
-            <span class="text-gray-600">Total Educations</span>
-            <span class="font-bold text-blue-700">3</span>
+          <div class="flex justify-between"> <span class="text-gray-600">Total Educations</span>
+            <span class="font-bold text-blue-700"><%= current_user.educations.count %></span>
           </div>
           <div class="flex justify-between">
             <span class="text-gray-600">Total Projects</span>
-            <span class="font-bold text-blue-700">7</span>
+            <span class="font-bold text-blue-700"><%= current_user.projects.count %></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Total Experiences</span>
+            <span class="font-bold text-blue-700"><%= current_user.experiences.count %></span>
           </div>
           <div class="flex justify-between">
             <span class="text-gray-600">Skill Categories</span>
-            <span class="font-bold text-blue-700">5</span>
+            <span class="font-bold text-blue-700"><%= current_user.skill_categories.count %></span>
           </div>
           <div class="flex justify-between">
             <span class="text-gray-600">Total Skills</span>
-            <span class="font-bold text-blue-700">24</span>
+            <span class="font-bold text-blue-700"><%= current_user.skill_categories.joins(:skills).count %></span>
           </div>
         </div>
       </div>
