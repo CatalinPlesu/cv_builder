@@ -23,8 +23,9 @@ class ProjectsController < ApplicationController
 
       # Update or create each project
       project_params.each do |proj_param|
+        # Permit the new date parameters
         project_permitted = proj_param.permit(
-          :id, :name, :link, :date, :link_title, :position
+          :id, :name, :link, :start_date, :end_date, :link_title, :position
         )
 
         project = current_user.projects.find_or_initialize_by(id: project_permitted[:id])

@@ -96,7 +96,7 @@
                   <%= link_to project.link_title.presence || project.link, project.link, target: "_blank", rel: "noopener", class: "project-link-inline" %>
                 <% end %>
               </div>
-              <span class="date"><%= project.date %></span>
+              <span class="date"><%= format_date_range(project.start_date, project.end_date) %></span>
             </div>
             <% if project.project_bullets.any? %>
               <ul class="description">

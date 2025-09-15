@@ -220,7 +220,7 @@
     <% projects.each do |prj| %>
 
       \resumeProjectHeading
-        {\textbf{<%= prj.name %>} <%= '$|$  \emph{\href{'+prj.link+'}{\color{blue}'+(prj.link_title ? prj.link_title : prj.link) +'}}' if prj.link %>}{<%= prj.date %>}
+        {\textbf{<%= prj.name %>} <%= '$|$  \emph{\href{'+prj.link+'}{\color{blue}'+(prj.link_title ? prj.link_title : prj.link) +'}}' if prj.link %>}{<%= format_date_range(prj.start_date, prj.end_date) %>}
         <% if !prj.project_bullets.nil? && !prj.project_bullets.empty? %>
         \resumeItemListStart
             <% prj.project_bullets.each do |b| %>
