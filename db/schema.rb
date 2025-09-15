@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_15_175455) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_15_181138) do
   create_table "achievements", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -85,7 +85,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_15_175455) do
     t.date "start_date"
     t.date "end_date"
     t.string "gpa"
-    t.text "additional_info"
     t.integer "position"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
