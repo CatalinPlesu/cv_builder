@@ -5,6 +5,18 @@ class TemplatesController < ApplicationController
     @user = current_user
     @template = @user.templates.find(params[:id])
 
+    # --- Define instance variables for HTML view ---
+    # Initialize them as empty arrays by default
+    @experiences = []
+    @educations = []
+    @projects = []
+    @skills = []
+    @awards = []
+    @certificates = []
+    @organizations = []
+    @coursework = []
+    @hobbies = []
+
     begin
       # Get sections from template
       section_names = @template.sections.pluck(:name)
@@ -12,48 +24,62 @@ class TemplatesController < ApplicationController
       # Get tag IDs from template
       tag_ids = @template.tag_ids
 
-      # Build locals hash based on sections & tags
+      # --- Build locals hash for .tex rendering (as before) ---
       locals = {
         user: @user,
         experiences: [],
         educations: [],
         projects: [],
         skills: []
+        # Add others needed for .tex if applicable
       }
 
+      # --- Assign data to instance variables for HTML view ---
       if section_names.include?("experience")
-        locals[:experiences] = @user.experiences
-                                    .joins(:tags)
-                                    .where(tags: { id: tag_ids })
-                                    .distinct
-                                    .includes(:experience_bullets)
+        @experiences = @user.experiences
+                            .joins(:tags)
+                            .where(tags: { id: tag_ids })
+                            .distinct
+                            .includes(:experience_bullets)
+        locals[:experiences] = @experiences
       end
 
       if section_names.include?("education")
-        locals[:educations] = @user.educations
-                                   .joins(:tags)
-                                   .where(tags: { id: tag_ids })
-                                   .distinct
+        @educations = @user.educations
+                           .joins(:tags)
+                           .where(tags: { id: tag_ids })
+                           .distinct
+        locals[:educations] = @educations
       end
 
       if section_names.include?("project")
-        locals[:projects] = @user.projects
-                                 .joins(:tags)
-                                 .where(tags: { id: tag_ids })
-                                 .distinct
-                                 .includes(:project_bullets)
+        @projects = @user.projects
+                         .joins(:tags)
+                         .where(tags: { id: tag_ids })
+                         .distinct
+                         .includes(:project_bullets)
+        locals[:projects] = @projects
       end
 
       if section_names.include?("skill")
-        locals[:skills] = @user.skill_categories
-                                .joins(:tags)
-                                .where(tags: { id: tag_ids })
-                                .distinct
-                                .includes(:skills)
-                                .flat_map(&:skills)
+        skill_categories_with_skills = @user.skill_categories
+                                       .joins(:tags)
+                                       .where(tags: { id: tag_ids })
+                                       .distinct
+                                       .includes(:skills)
+        @skills = skill_categories_with_skills.flat_map(&:skills)
+        locals[:skills] = @skills
+        locals[:skill_categories] = skill_categories_with_skills
       end
 
-      # Render the ERB template file directly
+      # Add similar blocks for awards, certificates, etc. if used in HTML view
+      # Example for awards (adjust model/association names as needed):
+      # if section_names.include?("award")
+      #   @awards = @user.awards.joins(:tags).where(tags: { id: tag_ids }).distinct
+      # end
+
+
+      # Render the ERB template file directly for .tex format
       @rendered_content = render_to_string(
         template: "templates/show",
         formats: [ :tex ],
@@ -66,7 +92,7 @@ class TemplatesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # renders show.html.erb
+      format.html # Now renders show.html.erb with access to @educations, @experiences, etc.
 
       format.tex {
         send_data @rendered_content,
