@@ -17,9 +17,10 @@
               </a>
             <% end %>
           </div>
-          <% if project.date.present? %>
-            <p class="text-sm text-gray-500 mt-1"><%= project.date %></p>
-          <% end %>
+          <p class="text-sm text-gray-500">
+            <%= project.start_date.strftime("%b %Y") if project.start_date %> –
+            <%= project.end_date ? project.end_date.strftime("%b %Y") : "Present" %>
+          </p>
           <% if project.project_bullets.any? %>
             <ul class="list-disc ml-5 mt-2 text-gray-700">
               <% project.project_bullets.each do |bullet| %>
