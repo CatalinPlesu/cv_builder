@@ -90,10 +90,12 @@
         <% @projects.each do |project| %>
           <div class="entry">
             <div class="entry-header">
-              <span class="project-name"><strong><%= project.name %></strong></span>
-              <% if project.link.present? %>
-                <%= link_to project.link_title.presence || project.link, project.link, target: "_blank", rel: "noopener", class: "project-link-inline" %>
-              <% end %>
+              <div class="project-title-group">
+                <span class="project-name"><strong><%= project.name %></strong></span>
+                <% if project.link.present? %>
+                  <%= link_to project.link_title.presence || project.link, project.link, target: "_blank", rel: "noopener", class: "project-link-inline" %>
+                <% end %>
+              </div>
               <span class="date"><%= project.date %></span>
             </div>
             <% if project.project_bullets.any? %>
