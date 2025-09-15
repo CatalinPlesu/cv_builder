@@ -1,0 +1,186 @@
+<div class="resume-container">
+
+  <!-- HEADING -->
+  <header class="resume-header">
+    <h1 class="full-name"><%= @user.cv_heading.full_name %></h1>
+    <div class="contact-info">
+      <% @user.cv_heading.cv_heading_items.each_with_index do |item, index| %>
+        <% item_text = item.text.to_s %>
+        <% item_url = item.url.presence %>
+
+        <span class="contact-item">
+          <% if item_url %>
+            <%= link_to item_text, item_url, target: "_blank", rel: "noopener" %>
+          <% else %>
+            <%= item_text %>
+          <% end %>
+        </span>
+
+        <% unless index == @user.cv_heading.cv_heading_items.length - 1 %>
+          <span class="separator"> | </span>
+        <% end %>
+      <% end %>
+    </div>
+  </header>
+
+  <!-- EDUCATION -->
+  <% if @educations.any? %>
+    <section class="education-section">
+      <h2>Education</h2>
+      <div class="entries">
+        <% @educations.each do |edu| %>
+          <div class="entry">
+            <div class="entry-header">
+              <span class="institution"><strong><%= edu.institution %></strong></span>
+              <span class="location"><%= edu.location %></span>
+            </div>
+            <div class="entry-subheader">
+              <span class="degree">
+                <%= edu.degree %>
+                <% if edu.gpa.present? %>
+                  <strong>GPA: <%= edu.gpa %></strong>
+                <% end %>
+              </span>
+              <span class="dates"><%= format_date_range(edu.start_date, edu.end_date) %></span>
+            </div>
+            <% if edu.additional_info.present? %>
+              <ul class="additional-info">
+                <li><%= edu.additional_info %></li>
+              </ul>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- EXPERIENCE -->
+  <% if @experiences.any? %>
+    <section class="experience-section">
+      <h2>Experience</h2>
+      <div class="entries">
+        <% @experiences.each do |exp| %>
+          <div class="entry">
+            <div class="entry-header">
+              <span class="company"><strong><%= exp.company %></strong></span>
+              <span class="location"><%= exp.location %></span>
+            </div>
+            <div class="entry-subheader">
+              <span class="position"><%= exp.position_title %></span>
+              <span class="dates"><%= format_date_range(exp.start_date, exp.end_date) %></span>
+            </div>
+            <% if exp.experience_bullets.any? %>
+              <ul class="description">
+                <% exp.experience_bullets.each do |bullet| %>
+                  <li><%= bullet.content %></li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- PROJECTS -->
+  <% if @projects.any? %>
+    <section class="projects-section">
+      <h2>Projects</h2>
+      <div class="entries">
+        <% @projects.each do |project| %>
+          <div class="entry">
+            <div class="entry-header">
+              <span class="project-name"><strong><%= project.name %></strong></span>
+              <span class="date"><%= project.date %></span>
+            </div>
+            <% if project.link.present? %>
+              <div class="project-link">
+                <%= link_to project.link_title.presence || project.link, project.link, target: "_blank", rel: "noopener" %>
+              </div>
+            <% end %>
+            <% if project.project_bullets.any? %>
+              <ul class="description">
+                <% project.project_bullets.each do |bullet| %>
+                  <li><%= bullet.content %></li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- SKILLS -->
+  <% if @skill_categories.any? %>
+    <section class="skills-section">
+      <h2>Skills</h2>
+      <div class="skills-content">
+        <% @skill_categories.each do |category| %>
+          <p>
+            <strong><%= category.name %>:</strong>
+            <%= category.skills.map(&:name).join(', ') %>
+          </p>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+</div>
+
+<style>
+  .resume-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+  }
+  .resume-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+  }
+  .full-name {
+    margin: 0 0 10px 0;
+    font-size: 2em;
+  }
+  .contact-info .separator {
+    margin: 0 5px;
+  }
+  section {
+    margin-bottom: 25px;
+  }
+  h2 {
+    border-bottom: 1px solid #000;
+    padding-bottom: 2px;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+  }
+  .entries .entry {
+    margin-bottom: 15px;
+  }
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+  }
+  .entry-subheader {
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
+    font-size: 0.95em;
+    margin-bottom: 5px;
+  }
+  .description, .additional-info, .skills-content, .awards-content, .coursework-content {
+    margin-left: 10px;
+  }
+  .description ul, .additional-info {
+    margin: 5px 0 0 20px;
+    padding: 0;
+  }
+  .hobbies-section p, .references-section p {
+    margin: 0;
+  }
+</style>

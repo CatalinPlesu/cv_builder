@@ -10,7 +10,7 @@ class TemplatesController < ApplicationController
     @experiences = []
     @educations = []
     @projects = []
-    @skills = []
+    @skill_categories = []
     @awards = []
     @certificates = []
     @organizations = []
@@ -62,14 +62,12 @@ class TemplatesController < ApplicationController
       end
 
       if section_names.include?("skill")
-        skill_categories_with_skills = @user.skill_categories
+        @skill_categories = @user.skill_categories
                                        .joins(:tags)
                                        .where(tags: { id: tag_ids })
                                        .distinct
                                        .includes(:skills)
-        @skills = skill_categories_with_skills.flat_map(&:skills)
-        locals[:skills] = @skills
-        locals[:skill_categories] = skill_categories_with_skills
+        locals[:skill_categories] = @skill_categories
       end
 
       # Add similar blocks for awards, certificates, etc. if used in HTML view
@@ -92,7 +90,9 @@ class TemplatesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # Now renders show.html.erb with access to @educations, @experiences, etc.
+      format.html {
+        render layout: false
+      }
 
       format.tex {
         send_data @rendered_content,
