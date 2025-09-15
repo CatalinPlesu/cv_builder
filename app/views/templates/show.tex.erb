@@ -233,30 +233,25 @@
     \resumeSubHeadingListEnd
 <% end %>
 
-<%#
+<% if skill_categories.any? %>
 %----------- SKILLS -----------
-
 \section{Skills}
   \vspace{2pt}
   \resumeSubHeadingListStart
     \small{\item{
+        <% skill_categories.each do |sc| %>
+            <% category = escape_latex(sc.name) %>
+            <% skills = escape_latex(sc.skills.map(&:name).join(', ')) %>
 
-        \textbf{Languages:}{ C/C++, C\#, Java, Python, Go, JavaScript, TypeScript, SQL, Swift, Scala, MATLAB, R} \\ \vspace{3pt}
-
-        \textbf{Technologies:}{ Qt, Flask, Django, Node.js, React.js, MySQL, MongoDB, Git, SVN, Docker, AWS, Kubernetes, GCP, Kafka, RabbitMQ, OpenCV, PyTorch, TensorFlow} \\ \vspace{3pt}
-
-        \textbf{Methodologies:}{ Agile, Scrum, OOP, Functional Programming, DevOps, CI/CD, TDD} \\ \vspace{3pt}
+            \textbf{<%= category %>:}{ <%= skills %> } \\ \vspace{3pt}
+        <% end %>
 
     }}
   \resumeSubHeadingListEnd
+<% end %>
 
-
-
-
-
-
+<%#
 %----------- AWARDS & ACHIEVEMENTS -----------
-
 \section{Awards \& Achievements}
   \vspace{2pt}
   \resumeSubHeadingListStart
