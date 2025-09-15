@@ -12,6 +12,12 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resources :item_taggings, only: [ :index ] do collection do
+      patch :update
+    end
+  end
+
   resources :tags, only: [] do
     collection do
       get :edit
