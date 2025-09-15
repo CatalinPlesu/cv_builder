@@ -160,8 +160,6 @@
 \end{center}
 
 
-
-
 <% if educations.any? %>
 %----------- EDUCATION -----------
 \section{Education}
@@ -169,16 +167,18 @@
   \resumeSubHeadingListStart
   <% educations.each do |edu| %>
 
-    <% if !edu.additional_info.nil? && edu.additional_info != "" %>
+    <% if edu.education_bullets.any? %>
     \resumeSubheading
     <% else %>
     \resumeEducationHeading
     <% end %>
       {<%= edu.institution %>}{<%= edu.location %>}
-      {<%= edu.degree %> <%= "\\textbf{GPA: " + edu.gpa + "}" if edu.gpa != "" %>}{<%= format_date_range(edu.start_date, edu.end_date) %>}
-    <% if !edu.additional_info.nil? && edu.additional_info != "" %>
+      {<%= edu.degree %> <%= "\\textbf{GPA: " + edu.gpa + "}" if edu.gpa.present? %>}{<%= format_date_range(edu.start_date, edu.end_date) %>}
+    <% if edu.education_bullets.any? %>
         \resumeItemListStart
-          \resumeItem{<%= edu.additional_info %>}
+            <% edu.education_bullets.order(:position).each do |bullet| %>
+              \resumeItem{<%= bullet.content %>}
+            <% end %>
         \resumeItemListEnd
     <% else %>
       {}{} 

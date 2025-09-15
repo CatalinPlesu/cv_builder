@@ -2,34 +2,73 @@ class EducationsController < ApplicationController
   before_action :authenticate_user!
 
   def edit
-    @educations = current_user.educations.order(:position)
+    @educations = current_user.educations.includes(:education_bullets).order(:position)
     if @educations.empty?
-      @educations = [ current_user.educations.build ]
+      education = current_user.educations.build
+      @educations = [ education ]
     end
   end
 
   def upsert
-    Education.transaction do # Assuming 'Educations' is a valid model or constant for scoping transaction. Consider using 'ActiveRecord::Base.transaction' or scoping to the user's educations association if needed.
-      education_params = params[:educations] || []
-      education_ids_from_params = education_params.map { |edu_params| edu_params[:id].presence && edu_params[:id].to_i }.compact
+    Education.transaction do
+      education_params = params[:educations] || {}
+
+      # Get the keys to iterate over
+      education_keys = education_params.keys
+
+      # Get IDs from the parameters
+      education_ids_from_params = education_keys.map do |key|
+        edu_param = education_params[key]
+        edu_param[:id].presence && edu_param[:id].to_i
+      end.compact
 
       # Delete educations not in the new list
       current_user.educations.where.not(id: education_ids_from_params).destroy_all
 
       # Update or create each education item
-      # Use .each instead of .each_with_index because position comes from params
-      education_params.each do |edu_param|
-        # Permit ALL attributes coming from the form, including :position
-        permitted_params = edu_param.permit(:id, :institution, :location, :degree, :start_date, :end_date, :gpa, :additional_info, :position)
+      education_keys.each do |key|
+        edu_param = education_params[key]
 
-        # Find or initialize the record
-        education = current_user.educations.find_or_initialize_by(id: permitted_params[:id])
+        # Permit education attributes
+        education_permitted = edu_param.permit(
+          :id, :institution, :location, :degree, :start_date, :end_date, :gpa, :additional_info, :position
+        )
 
-        # Assign all permitted attributes, including the position from the form
-        education.assign_attributes(permitted_params)
-
-        # Save the record (will raise if invalid)
+        # Find or initialize the education
+        education = current_user.educations.find_or_initialize_by(id: education_permitted[:id])
+        education.assign_attributes(education_permitted)
         education.save!
+
+        # Handle bullets - process bullets parameter whether it exists or not
+        # If bullets parameter doesn't exist, we delete all bullets
+        if edu_param.key?(:bullets)
+          bullet_params = edu_param[:bullets] || {}
+
+          # Get bullet keys
+          bullet_keys = bullet_params.keys
+
+          bullet_ids_from_params = bullet_keys.map do |bullet_key|
+            bullet_param = bullet_params[bullet_key]
+            bullet_param[:id].presence && bullet_param[:id].to_i
+          end.compact
+
+          # Delete bullets not in the new list for this education
+          education.education_bullets.where.not(id: bullet_ids_from_params).destroy_all
+
+          # Update or create each bullet
+          bullet_keys.each do |bullet_key|
+            bullet_param = bullet_params[bullet_key]
+            bullet_permitted = bullet_param.permit(:id, :content, :position)
+            # Skip empty bullets
+            next if bullet_permitted[:content].blank?
+            bullet = education.education_bullets.find_or_initialize_by(id: bullet_permitted[:id])
+            bullet.assign_attributes(bullet_permitted)
+            bullet.save!
+          end
+        else
+          # If no bullets parameter at all, delete all bullets for this education
+          education.education_bullets.destroy_all
+        end
       end
     end
 

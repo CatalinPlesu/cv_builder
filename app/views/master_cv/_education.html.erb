@@ -6,7 +6,7 @@
            edit_path: edit_educations_path do %>
 
   <% if @educations.any? %>
-    <ul class="space-y-4">
+    <ul class="space-y-6">
       <% @educations.each do |edu| %>
         <li class="border-l-4 border-blue-500 pl-4 py-2">
           <h3 class="font-semibold text-lg"><%= edu.institution %></h3>
@@ -19,6 +19,19 @@
           <% if edu.gpa.present? %>
             <p class="text-sm text-gray-500">GPA: <%= edu.gpa %></p>
           <% end %>
+          
+          <!-- Education Bullets -->
+          <% if edu.education_bullets.any? %>
+            <ul class="mt-2 space-y-1">
+              <% edu.education_bullets.order(:position).each do |bullet| %>
+                <li class="flex items-start">
+                  <span class="text-gray-500 mr-2">•</span>
+                  <span class="text-gray-700"><%= bullet.content %></span>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+          
           <% if edu.additional_info.present? %>
             <p class="mt-2 text-gray-700"><%= simple_format(edu.additional_info) %></p>
           <% end %>

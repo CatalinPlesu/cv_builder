@@ -43,9 +43,11 @@
               </span>
               <span class="dates"><%= format_date_range(edu.start_date, edu.end_date) %></span>
             </div>
-            <% if edu.additional_info.present? %>
-              <ul class="additional-info">
-                <li><%= edu.additional_info %></li>
+            <% if edu.education_bullets.any? %>
+              <ul class="description">
+                <% edu.education_bullets.order(:position).each do |bullet| %>
+                  <li><%= bullet.content %></li>
+                <% end %>
               </ul>
             <% end %>
           </div>

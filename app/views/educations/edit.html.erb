@@ -45,14 +45,14 @@
                   </div>
 
                   <!-- Position (hidden input) -->
-                  <input type="hidden" name="educations[][position]" value="<%= index + 1 %>" class="position-input">
-                  <input type="hidden" name="educations[][id]" value="<%= education.id %>" class="id-input">
+                  <input type="hidden" name="educations[<%= index %>][position]" value="<%= index + 1 %>" class="position-input">
+                  <input type="hidden" name="educations[<%= index %>][id]" value="<%= education.id %>" class="id-input">
 
                   <!-- Institution -->
                   <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Institution</label>
                     <input type="text"
-                           name="educations[][institution]"
+                           name="educations[<%= index %>][institution]"
                            value="<%= education.institution %>"
                            placeholder="Stanford University"
                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
@@ -62,7 +62,7 @@
                   <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Location</label>
                     <input type="text"
-                           name="educations[][location]"
+                           name="educations[<%= index %>][location]"
                            value="<%= education.location %>"
                            placeholder="California, USA"
                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
@@ -74,7 +74,7 @@
                   <div>
                     <label class="block text-xs font-medium text-gray-700 mb-1">Degree</label>
                     <input type="text"
-                           name="educations[][degree]"
+                           name="educations[<%= index %>][degree]"
                            value="<%= education.degree %>"
                            placeholder="B.S. Computer Science"
                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
@@ -84,7 +84,7 @@
                   <div>
                     <label class="block text-xs font-medium text-gray-700 mb-1">GPA</label>
                     <input type="text"
-                           name="educations[][gpa]"
+                           name="educations[<%= index %>][gpa]"
                            value="<%= education.gpa %>"
                            placeholder="3.8"
                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
@@ -96,7 +96,7 @@
                   <div>
                     <label class="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
                     <input type="date"
-                           name="educations[][start_date]"
+                           name="educations[<%= index %>][start_date]"
                            value="<%= education.start_date ? education.start_date.to_date : '' %>"
                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
                   </div>
@@ -105,7 +105,7 @@
                   <div>
                     <label class="block text-xs font-medium text-gray-700 mb-1">End Date</label>
                     <input type="date"
-                           name="educations[][end_date]"
+                           name="educations[<%= index %>][end_date]"
                            value="<%= education.end_date ? education.end_date.to_date : '' %>"
                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
                   </div>
@@ -119,13 +119,31 @@
                   </div>
                 </div>
 
-                <!-- Additional Info -->
-                <div>
-                  <label class="block text-xs font-medium text-gray-700 mb-1">Additional Info</label>
-                  <textarea name="educations[][additional_info]"
-                            rows="2"
-                            placeholder="Relevant coursework, honors, etc."
-                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"><%= education.additional_info %></textarea>
+                <!-- Education Bullets -->
+                <div class="mt-4">
+                  <label class="block text-xs font-medium text-gray-700 mb-1">Bullet Points</label>
+                  <div class="space-y-2 bullets-container" data-education-index="<%= index %>">
+                    <% education.education_bullets.each_with_index do |bullet, bullet_index| %>
+                      <div class="flex items-center space-x-2 bullet-row" data-bullet-position="<%= bullet_index + 1 %>">
+                        <div class="bullet-drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+                          <i class="fas fa-grip-horizontal text-sm"></i>
+                        </div>
+                        <input type="text"
+                               name="educations[<%= index %>][bullets][<%= bullet_index %>][content]"
+                               value="<%= bullet.content %>"
+                               placeholder="Describe relevant coursework, projects, or achievements"
+                               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                        <input type="hidden" name="educations[<%= index %>][bullets][<%= bullet_index %>][id]" value="<%= bullet.id %>">
+                        <input type="hidden" name="educations[<%= index %>][bullets][<%= bullet_index %>][position]" value="<%= bullet_index + 1 %>" class="bullet-position-input">
+                        <button type="button" class="remove-bullet-button text-red-500 hover:text-red-700">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    <% end %>
+                  </div>
+                  <button type="button" class="add-bullet-button mt-2 text-blue-600 hover:text-blue-800 text-sm">
+                    + Add Bullet Point
+                  </button>
                 </div>
               </div>
             <% end %>
@@ -165,40 +183,40 @@ document.addEventListener("DOMContentLoaded", function() {
           <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
             <i class="fas fa-grip-vertical text-lg"></i>
           </div>
-          <input type="hidden" name="educations[][position]" value="${newPosition}" class="position-input">
-          <input type="hidden" name="educations[][id]" value="" class="id-input">
+          <input type="hidden" name="educations[${currentItems}][position]" value="${newPosition}" class="position-input">
+          <input type="hidden" name="educations[${currentItems}][id]" value="" class="id-input">
           <div class="flex-1">
             <label class="block text-xs font-medium text-gray-700 mb-1">Institution</label>
-            <input type="text" name="educations[][institution]" value="" placeholder="Stanford University"
+            <input type="text" name="educations[${currentItems}][institution]" value="" placeholder="Stanford University"
                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
           </div>
           <div class="flex-1">
             <label class="block text-xs font-medium text-gray-700 mb-1">Location</label>
-            <input type="text" name="educations[][location]" value="" placeholder="California, USA"
+            <input type="text" name="educations[${currentItems}][location]" value="" placeholder="California, USA"
                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
           <div>
             <label class="block text-xs font-medium text-gray-700 mb-1">Degree</label>
-            <input type="text" name="educations[][degree]" value="" placeholder="B.S. Computer Science"
+            <input type="text" name="educations[${currentItems}][degree]" value="" placeholder="B.S. Computer Science"
                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
           </div>
           <div>
             <label class="block text-xs font-medium text-gray-700 mb-1">GPA</label>
-            <input type="text" name="educations[][gpa]" value="" placeholder="3.8"
+            <input type="text" name="educations[${currentItems}][gpa]" value="" placeholder="3.8"
                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
           <div>
             <label class="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
-            <input type="date" name="educations[][start_date]" value=""
+            <input type="date" name="educations[${currentItems}][start_date]" value=""
                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
           </div>
           <div>
             <label class="block text-xs font-medium text-gray-700 mb-1">End Date</label>
-            <input type="date" name="educations[][end_date]" value=""
+            <input type="date" name="educations[${currentItems}][end_date]" value=""
                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
           </div>
           <div class="flex items-end">
@@ -207,10 +225,15 @@ document.addEventListener("DOMContentLoaded", function() {
             </button>
           </div>
         </div>
-        <div>
-          <label class="block text-xs font-medium text-gray-700 mb-1">Additional Info</label>
-          <textarea name="educations[][additional_info]" rows="2" placeholder="Relevant coursework, honors, etc."
-                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"></textarea>
+        <!-- Bullets -->
+        <div class="mt-4">
+          <label class="block text-xs font-medium text-gray-700 mb-1">Bullet Points</label>
+          <div class="space-y-2 bullets-container" data-education-index="${currentItems}">
+            <!-- Empty bullets container - will be populated by user -->
+          </div>
+          <button type="button" class="add-bullet-button mt-2 text-blue-600 hover:text-blue-800 text-sm">
+            + Add Bullet Point
+          </button>
         </div>
       `;
 
@@ -225,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
 
       this.updatePositions();
+      this.initBulletDragAndDrop(newRow);
     },
 
     removeItem(event) {
@@ -245,16 +269,112 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     },
 
+    addBullet(event) {
+      // Prevent event bubbling
+      event.stopPropagation();
+      
+      const button = event.target.closest('.add-bullet-button');
+      const container = button.closest('.education-row');
+      const bulletsContainer = container.querySelector('.bullets-container');
+      const educationIndex = Array.from(container.parentNode.children).indexOf(container);
+      const bulletCount = bulletsContainer.children.length;
+
+      const newBullet = document.createElement('div');
+      newBullet.className = 'flex items-center space-x-2 bullet-row';
+      newBullet.dataset.bulletPosition = bulletCount + 1;
+      newBullet.innerHTML = `
+        <div class="bullet-drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+          <i class="fas fa-grip-horizontal text-sm"></i>
+        </div>
+        <input type="text" 
+               name="educations[${educationIndex}][bullets][${bulletCount}][content]" 
+               placeholder="Describe relevant coursework, projects, or achievements"
+               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+        <input type="hidden" name="educations[${educationIndex}][bullets][${bulletCount}][id]" value="">
+        <input type="hidden" name="educations[${educationIndex}][bullets][${bulletCount}][position]" value="${bulletCount + 1}" class="bullet-position-input">
+        <button type="button" class="remove-bullet-button text-red-500 hover:text-red-700">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+
+      bulletsContainer.appendChild(newBullet);
+      this.updateBulletPositions(bulletsContainer);
+    },
+
+    removeBullet(event) {
+      // Prevent event bubbling
+      event.stopPropagation();
+      
+      const button = event.target.closest('.remove-bullet-button');
+      const bulletRow = button.closest('.bullet-row');
+      const bulletsContainer = bulletRow.closest('.bullets-container');
+      
+      bulletRow.remove();
+      this.updateBulletPositions(bulletsContainer);
+    },
+
     updatePositions() {
       const rows = container.querySelectorAll('.education-row');
       rows.forEach((row, index) => {
         const position = index + 1;
         row.dataset.position = position;
+        
+        // Update education position input
         const positionInput = row.querySelector('.position-input');
         if (positionInput) {
+          positionInput.name = `educations[${index}][position]`;
           positionInput.value = position;
         }
+        
+        // Update education ID input
+        const idInput = row.querySelector('.id-input');
+        if (idInput) {
+          idInput.name = `educations[${index}][id]`;
+        }
+        
+        // Update all other inputs in this row
+        const inputs = row.querySelectorAll('input[name*="educations["]');
+        inputs.forEach(input => {
+          const name = input.name;
+          const match = name.match(/educations\[(\d+)\]/);
+          if (match) {
+            input.name = name.replace(/educations\[\d+\]/, `educations[${index}]`);
+          }
+        });
+        
+        // Update bullet positions
+        const bulletsContainer = row.querySelector('.bullets-container');
+        if (bulletsContainer) {
+          this.updateBulletPositions(bulletsContainer);
+        }
       });
+    },
+
+    updateBulletPositions(bulletsContainer) {
+      const bulletRows = bulletsContainer.querySelectorAll('.bullet-row');
+      const educationIndex = bulletsContainer.closest('.education-row').dataset.position - 1;
+      
+      bulletRows.forEach((bulletRow, bulletIndex) => {
+        bulletRow.dataset.bulletPosition = bulletIndex + 1;
+        
+        const bulletInputs = bulletRow.querySelectorAll('input[name*="bullets["]');
+        bulletInputs.forEach(input => {
+          const name = input.name;
+          const match = name.match(/bullets\[(\d+)\]/);
+          if (match) {
+            input.name = name.replace(/bullets\[\d+\]/, `bullets[${bulletIndex}]`);
+          }
+        });
+        
+        // Update bullet position input
+        const bulletPositionInput = bulletRow.querySelector('.bullet-position-input');
+        if (bulletPositionInput) {
+          bulletPositionInput.value = bulletIndex + 1;
+        }
+      });
+      
+      // Update education index for bullets container
+      bulletsContainer.dataset.educationIndex = educationIndex;
     },
 
     initDragAndDrop() {
@@ -339,6 +459,70 @@ document.addEventListener("DOMContentLoaded", function() {
           targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
         }
       });
+    },
+
+    initBulletDragAndDrop(educationRow) {
+      const bulletsContainer = educationRow.querySelector('.bullets-container');
+      if (!bulletsContainer) return;
+
+      let draggedBullet = null;
+      let bulletPlaceholder = null;
+
+      const createBulletPlaceholder = () => {
+        const div = document.createElement('div');
+        div.className = 'bullet-placeholder bg-blue-50 border border-dashed border-blue-200 rounded my-1 h-10';
+        return div;
+      };
+
+      bulletsContainer.addEventListener('mousedown', (e) => {
+        const handle = e.target.closest('.bullet-drag-handle');
+        if (!handle) return;
+
+        draggedBullet = handle.closest('.bullet-row');
+        bulletPlaceholder = createBulletPlaceholder();
+
+        draggedBullet.classList.add('opacity-50');
+        document.body.style.cursor = 'grabbing';
+
+        e.preventDefault();
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!draggedBullet) return;
+
+        if (bulletPlaceholder && bulletPlaceholder.parentNode) {
+          bulletPlaceholder.parentNode.insertBefore(draggedBullet, bulletPlaceholder);
+          bulletPlaceholder.remove();
+        }
+
+        draggedBullet.classList.remove('opacity-50');
+        document.body.style.cursor = '';
+
+        this.updateBulletPositions(bulletsContainer);
+
+        draggedBullet = null;
+        bulletPlaceholder = null;
+      });
+
+      bulletsContainer.addEventListener('mousemove', (e) => {
+        if (!draggedBullet) return;
+
+        const targetBullet = e.target.closest('.bullet-row');
+        if (!targetBullet || targetBullet === draggedBullet) return;
+
+        const rect = targetBullet.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (bulletPlaceholder && bulletPlaceholder.parentNode) {
+          bulletPlaceholder.remove();
+        }
+
+        if (e.clientY < midY) {
+          targetBullet.parentNode.insertBefore(bulletPlaceholder, targetBullet);
+        } else {
+          targetBullet.parentNode.insertBefore(bulletPlaceholder, targetBullet.nextSibling);
+        }
+      });
     }
   };
 
@@ -347,7 +531,29 @@ document.addEventListener("DOMContentLoaded", function() {
   container.addEventListener('click', function(event) {
     if (event.target.closest('.remove-education-button')) {
       EducationsEdit.removeItem(event);
+    } else if (event.target.closest('.add-bullet-button')) {
+      EducationsEdit.addBullet(event);
+    } else if (event.target.closest('.remove-bullet-button')) {
+      EducationsEdit.removeBullet(event);
     }
+  });
+
+  // Add bullet functionality to existing items
+  document.querySelectorAll('.add-bullet-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+      EducationsEdit.addBullet(event);
+    });
+  });
+
+  document.querySelectorAll('.remove-bullet-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+      EducationsEdit.removeBullet(event);
+    });
+  });
+
+  // Initialize drag and drop for existing bullet points
+  document.querySelectorAll('.education-row').forEach(row => {
+    EducationsEdit.initBulletDragAndDrop(row);
   });
 
   EducationsEdit.initDragAndDrop();
