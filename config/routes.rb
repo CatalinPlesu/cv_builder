@@ -55,7 +55,11 @@ Rails.application.routes.draw do
 
   resources :master_cv, only: [ :index ]
 
-  get "dashboard", to: "dashboard#index", as: :dashboard
+
+  get "/dashboard", to: "dashboard#index", as: :dashboard
+  post "/dashboard/templates", to: "dashboard#create_template", as: :create_template
+  patch "/dashboard/templates/:id", to: "dashboard#update_template", as: :update_template
+  delete "/dashboard/templates/:id", to: "dashboard#delete_template", as: :delete_template
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

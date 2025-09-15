@@ -30,7 +30,6 @@
           </div>
         </div>
       </div>
-
       <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-lg border border-green-100">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-lg font-semibold text-green-800">Recent Activity</h3>
@@ -41,9 +40,8 @@
           </div>
         </div>
         <p class="text-gray-600 text-sm">Last updated: <span class="font-semibold text-green-700">2 hours ago</span></p>
-        <p class="text-gray-600 text-sm">Presets created: <span class="font-semibold text-green-700">2 this week</span></p>
+        <p class="text-gray-600 text-sm">Templates: <span class="font-semibold text-green-700"><%= @templates.count %></span></p>
       </div>
-
       <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 shadow-lg border border-purple-100 lg:col-span-2">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-lg font-semibold text-purple-800">Master CV</h3>
@@ -62,143 +60,386 @@
         <% end %>
       </div>
     </div>
-
-    <!-- CV Presets Section -->
-    <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+    
+    <!-- Templates Section -->
+    <div class="bg-white shadow-xl rounded-xl overflow-hidden mb-8">
       <div class="bg-gradient-to-r from-purple-500 to-pink-500 p-6">
         <div class="flex justify-between items-center">
           <div>
-            <h2 class="text-2xl font-bold text-white mb-1">CV Presets</h2>
-            <p class="text-purple-100">Tag-based profiles for quick CV generation</p>
+            <h2 class="text-2xl font-bold text-white mb-1">CV Templates</h2>
+            <p class="text-purple-100">Tag-based templates for quick CV generation</p>
           </div>
+          <button onclick="openCreateModal()" class="px-4 py-2 bg-white text-purple-600 rounded-lg font-medium hover:bg-purple-50 transition-colors">
+            Create New Template
+          </button>
         </div>
       </div>
-      
       <div class="p-8">
-        <!-- Presets Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <% presets = [
-            { id: 1, name: "Frontend Specialist", tags: ["frontend", "javascript", "react", "css"], icon: "🎨" },
-            { id: 2, name: "Backend Developer", tags: ["backend", "python", "django", "api"], icon: "⚙️" },
-            { id: 3, name: "Full Stack Engineer", tags: ["frontend", "backend", "react", "nodejs", "database"], icon: "🌐" },
-            { id: 4, name: "DevOps Engineer", tags: ["devops", "aws", "docker", "ci-cd"], icon: "🔧" },
-            { id: 5, name: "UI/UX Designer", tags: ["design", "figma", "ux", "prototyping"], icon: "📱" },
-            { id: 6, name: "Data Scientist", tags: ["data", "python", "ml", "analytics"], icon: "📊" }
-          ] %>
-          
-          <% presets.each do |preset| %>
-            <div class="border border-gray-200 rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:border-purple-300">
-              <div class="flex justify-between items-start mb-4">
-                <div>
-                  <span class="text-3xl mr-3"><%= preset[:icon] %></span>
-                  <div>
-                    <h3 class="font-bold text-xl text-gray-900"><%= preset[:name] %></h3>
-                    <p class="text-gray-500 text-sm"><%= preset[:tags].size %> tags selected</p>
-                  </div>
-                </div>
-                <button class="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Actions">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
-                  </svg>
-                </button>
-              </div>
-              
-              <div class="mb-4">
-                <p class="text-xs text-gray-500 mb-2">TAGS:</p>
-                <div class="flex flex-wrap gap-2">
-                  <% preset[:tags].each do |tag| %>
-                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium"><%= tag %></span>
-                  <% end %>
-                </div>
-              </div>
-              
-              <div class="flex gap-2">
-                <button class="flex-1 px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors">
-                  Generate CV
-                </button>
-                <button class="flex-1 px-3 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors">
-                  Download PDF
-                </button>
-              </div>
+        <!-- Templates Grid -->
+        <div id="templates-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <% @templates.each do |template| %>
+            <%= render partial: 'template_card', locals: { template: template } %>
+          <% end %>
+          <% if @templates.empty? %>
+            <div class="col-span-full text-center py-12">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              <h3 class="mt-2 text-sm font-medium text-gray-900">No templates yet</h3>
+              <p class="mt-1 text-sm text-gray-500">Get started by creating a new template.</p>
             </div>
           <% end %>
-        </div>
-
-        <!-- Save New Preset Section -->
-        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
-          <div class="flex justify-between items-center mb-6">
-            <h3 class="text-lg font-semibold text-gray-900">Create New Preset</h3>
-            <button onclick="togglePresetForm()" class="text-gray-400 hover:text-gray-600">
-              <svg id="toggle-icon" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </button>
-          </div>
-          
-          <div id="preset-form" class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Preset Name</label>
-              <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all" placeholder="e.g., Frontend Specialist">
-            </div>
-            
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Select Tags</label>
-              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="frontend">
-                  <span class="text-sm">Frontend</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="backend">
-                  <span class="text-sm">Backend</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="devops">
-                  <span class="text-sm">DevOps</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="design">
-                  <span class="text-sm">Design</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="data">
-                  <span class="text-sm">Data</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="mobile">
-                  <span class="text-sm">Mobile</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="cloud">
-                  <span class="text-sm">Cloud</span>
-                </label>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" class="rounded text-purple-600 focus:ring-purple-500" value="security">
-                  <span class="text-sm">Security</span>
-                </label>
-              </div>
-            </div>
-            
-            <div class="flex justify-end space-x-3 pt-4">
-              <button class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                Cancel
-              </button>
-              <button class="px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                Create Preset
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </div>
-  
-  <script>
-    function togglePresetForm() {
-      const form = document.getElementById('preset-form');
-      const icon = document.getElementById('toggle-icon');
-      form.style.maxHeight = form.style.maxHeight ? null : form.scrollHeight + 'px';
-      icon.classList.toggle('rotate-180');
-    }
-  </script>
+
+  <!-- Create Template Modal -->
+  <div id="create-template-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-gray-900">Create New Template</h3>
+          <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <%= form_with url: create_template_path, method: :post, local: true, id: "create-template-form" do |form| %>
+          <div class="space-y-4">
+            <div>
+              <%= form.label :name, class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= form.text_field :name, class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all", placeholder: "e.g., Frontend Specialist", required: true %>
+            </div>
+            <div>
+              <%= form.label "Tags", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-gray-200 rounded-lg">
+                <% @tags.each do |tag| %>
+                  <label class="flex items-center space-x-2">
+                    <%= check_box_tag "template[tag_ids][]", tag.id, false, class: "rounded text-purple-600 focus:ring-purple-500" %>
+                    <span class="text-sm"><%= tag.name %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+            <div>
+              <%= form.label "Sections", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <div class="grid grid-cols-2 gap-2">
+                <% @sections.each do |section| %>
+                  <label class="flex items-center space-x-2">
+                    <%= check_box_tag "template[section_ids][]", section.id, true, class: "rounded text-purple-600 focus:ring-purple-500" %>
+                    <span class="text-sm"><%= section.label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4">
+              <button type="button" onclick="closeCreateModal()" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                Cancel
+              </button>
+              <%= form.submit "Create Template", class: "px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Template Modal -->
+  <div id="edit-template-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-gray-900">Edit Template</h3>
+          <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <form id="edit-template-form" method="post">
+          <input type="hidden" name="_method" value="patch" />
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <input type="hidden" name="id" id="edit-template-id" />
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input type="text" name="template[name]" id="edit-template-name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all" placeholder="e.g., Frontend Specialist" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-gray-200 rounded-lg">
+                <% @tags.each do |tag| %>
+                  <label class="flex items-center space-x-2">
+                    <input type="checkbox" name="template[tag_ids][]" value="<%= tag.id %>" class="rounded text-purple-600 focus:ring-purple-500 edit-tag-checkbox" id="edit-tag-<%= tag.id %>">
+                    <span class="text-sm"><%= tag.name %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Sections</label>
+              <div class="grid grid-cols-2 gap-2">
+                <% @sections.each do |section| %>
+                  <label class="flex items-center space-x-2">
+                    <input type="checkbox" name="template[section_ids][]" value="<%= section.id %>" class="rounded text-purple-600 focus:ring-purple-500 edit-section-checkbox" id="edit-section-<%= section.id %>">
+                    <span class="text-sm"><%= section.label %></span>
+                  </label>
+                <% end %>
+              </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4">
+              <button type="button" onclick="closeEditModal()" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                Cancel
+              </button>
+              <button type="submit" class="px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                Update Template
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dropdown Portal Container -->
+  <div id="dropdown-portals"></div>
 </div>
+
+<script>
+// Global variables
+let currentDropdown = null;
+let currentTemplateData = null;
+
+// Portal-based dropdown functions
+function toggleTemplateMenu(templateId, event, templateName, tagIds, sectionIds) {
+  event.stopPropagation();
+  const button = event.currentTarget;
+  const rect = button.getBoundingClientRect();
+  const portalContainer = document.getElementById('dropdown-portals');
+  
+  // Store template data for later use
+  currentTemplateData = {
+    id: templateId,
+    name: templateName,
+    tagIds: tagIds,
+    sectionIds: sectionIds
+  };
+  
+  // Close current dropdown if it's the same one
+  if (currentDropdown && currentDropdown.id === `template-menu-${templateId}`) {
+    closeAllDropdowns();
+    return;
+  }
+  
+  // Close all other dropdowns first
+  closeAllDropdowns();
+  
+  // Create new menu
+  const menu = document.createElement('div');
+  menu.id = `template-menu-${templateId}`;
+  menu.className = 'fixed bg-white rounded-md shadow-xl border border-gray-200 py-1 z-[9999] min-w-[12rem]';
+  
+  // Position the menu right below the button, aligned to the right edge
+  menu.style.top = `${rect.bottom + 2}px`;
+  menu.style.left = `${rect.right - 192}px`; // 192px = 12rem (min-width)
+  
+  menu.innerHTML = `
+    <button onclick="handleEditClick(${templateId})" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Edit</button>
+    <button onclick="handleDeleteClick(${templateId})" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition-colors">Delete</button>
+  `;
+  
+  portalContainer.appendChild(menu);
+  currentDropdown = menu;
+  
+  // Adjust position if menu goes off screen
+  const menuRect = menu.getBoundingClientRect();
+  if (menuRect.right > window.innerWidth) {
+    menu.style.left = `${rect.left}px`;
+  }
+  if (menuRect.left < 0) {
+    menu.style.left = '8px';
+  }
+}
+
+function toggleExportMenu(templateId, event) {
+  event.stopPropagation();
+  const button = event.currentTarget;
+  const rect = button.getBoundingClientRect();
+  const portalContainer = document.getElementById('dropdown-portals');
+  
+  // Close current dropdown if it's the same one
+  if (currentDropdown && currentDropdown.id === `export-menu-${templateId}`) {
+    closeAllDropdowns();
+    return;
+  }
+  
+  // Close all other dropdowns first
+  closeAllDropdowns();
+  
+  // Create new menu
+  const menu = document.createElement('div');
+  menu.id = `export-menu-${templateId}`;
+  menu.className = 'fixed bg-white rounded-md shadow-xl border border-gray-200 py-1 z-[9999] min-w-[12rem]';
+  
+  // Position the menu right below the button, aligned to the left edge
+  menu.style.top = `${rect.bottom + 2}px`;
+  menu.style.left = `${rect.left}px`;
+  
+  menu.innerHTML = `
+    <a href="/templates/${templateId}.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Preview HTML</a>
+    <a href="/templates/${templateId}.txt" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Preview TeX</a>
+    <a href="/templates/${templateId}.tex" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" download>Download TeX</a>
+    <button onclick="downloadPDF(${templateId})" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Download PDF</button>
+  `;
+  
+  portalContainer.appendChild(menu);
+  currentDropdown = menu;
+  
+  // Adjust position if menu goes off screen
+  const menuRect = menu.getBoundingClientRect();
+  if (menuRect.right > window.innerWidth) {
+    menu.style.left = `${rect.right - menuRect.width}px`;
+  }
+  if (menuRect.left < 0) {
+    menu.style.left = '8px';
+  }
+}
+
+function closeAllDropdowns() {
+  const portalContainer = document.getElementById('dropdown-portals');
+  if (portalContainer) {
+    portalContainer.innerHTML = '';
+  }
+  currentDropdown = null;
+}
+
+function handleEditClick(templateId) {
+  closeAllDropdowns();
+  
+  // Use the stored template data
+  if (currentTemplateData && currentTemplateData.id === templateId) {
+    openEditModal(
+      currentTemplateData.id,
+      currentTemplateData.name,
+      currentTemplateData.tagIds,
+      currentTemplateData.sectionIds
+    );
+  } else {
+    // Fallback: open modal with empty data
+    console.error('Template data not found');
+    openEditModal(templateId, '', [], []);
+  }
+}
+
+function handleDeleteClick(templateId) {
+  closeAllDropdowns();
+  if (confirm('Are you sure you want to delete this template?')) {
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.action = `/dashboard/templates/${templateId}`;
+    
+    const methodInput = document.createElement('input');
+    methodInput.type = 'hidden';
+    methodInput.name = '_method';
+    methodInput.value = 'delete';
+    
+    const tokenInput = document.createElement('input');
+    tokenInput.type = 'hidden';
+    tokenInput.name = 'authenticity_token';
+    tokenInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    form.appendChild(methodInput);
+    form.appendChild(tokenInput);
+    document.body.appendChild(form);
+    form.submit();
+  }
+}
+
+function downloadPDF(templateId) {
+  closeAllDropdowns();
+  alert('PDF download functionality will be implemented soon!');
+}
+
+// Modal functions
+function openCreateModal() {
+  document.getElementById('create-template-modal').classList.remove('hidden');
+}
+
+function closeCreateModal() {
+  document.getElementById('create-template-modal').classList.add('hidden');
+  document.getElementById('create-template-form').reset();
+}
+
+function openEditModal(templateId, templateName, selectedTagIds, selectedSectionIds) {
+  // Set form action and hidden id field
+  document.getElementById('edit-template-form').action = `/dashboard/templates/${templateId}`;
+  document.getElementById('edit-template-id').value = templateId;
+  
+  // Populate form fields
+  document.getElementById('edit-template-name').value = templateName;
+  
+  // Reset all checkboxes first
+  document.querySelectorAll('.edit-tag-checkbox').forEach(checkbox => {
+    checkbox.checked = false;
+  });
+  
+  document.querySelectorAll('.edit-section-checkbox').forEach(checkbox => {
+    checkbox.checked = false;
+  });
+  
+  // Check the selected tags
+  selectedTagIds.forEach(tagId => {
+    const checkbox = document.getElementById(`edit-tag-${tagId}`);
+    if (checkbox) {
+      checkbox.checked = true;
+    }
+  });
+  
+  // Check the selected sections
+  selectedSectionIds.forEach(sectionId => {
+    const checkbox = document.getElementById(`edit-section-${sectionId}`);
+    if (checkbox) {
+      checkbox.checked = true;
+    }
+  });
+  
+  // Show modal
+  document.getElementById('edit-template-modal').classList.remove('hidden');
+}
+
+function closeEditModal() {
+  document.getElementById('edit-template-modal').classList.add('hidden');
+}
+
+// Event listeners
+document.addEventListener('click', function(event) {
+  // Close dropdowns when clicking outside
+  if (currentDropdown && !currentDropdown.contains(event.target) && !event.target.closest('[onclick*="toggle"]')) {
+    closeAllDropdowns();
+  }
+  
+  // Close modals when clicking on backdrop
+  if (event.target.id === 'create-template-modal') {
+    closeCreateModal();
+  }
+  if (event.target.id === 'edit-template-modal') {
+    closeEditModal();
+  }
+});
+
+// Close dropdowns and modals with Escape key
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeAllDropdowns();
+    
+    if (!document.getElementById('create-template-modal').classList.contains('hidden')) {
+      closeCreateModal();
+    }
+    if (!document.getElementById('edit-template-modal').classList.contains('hidden')) {
+      closeEditModal();
+    }
+  }
+});
+</script>
