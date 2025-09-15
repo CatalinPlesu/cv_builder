@@ -25,8 +25,29 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+  <div id="flash-container" class="fixed top-4 right-4 z-50 space-y-2">
+    <% if notice %>
+      <div class="flash-notice bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg max-w-md animate-fade-in cursor-pointer">
+        <div class="flex items-center justify-between">
+          <p class="font-medium"><%= notice %></p>
+          <span class="ml-4 text-green-500 hover:text-green-700">
+            <i class="fas fa-times"></i>
+          </span>
+        </div>
+      </div>
+    <% end %>
+    
+    <% if alert %>
+      <div class="flash-alert bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg max-w-md animate-fade-in cursor-pointer">
+        <div class="flex items-center justify-between">
+          <p class="font-medium"><%= alert %></p>
+          <span class="ml-4 text-red-500 hover:text-red-700">
+            <i class="fas fa-times"></i>
+          </span>
+        </div>
+      </div>
+    <% end %>
+  </div>
 
     <nav class="flex justify-between items-center py-6 px-8 bg-gradient-to-r from-purple-600 via-indigo-700 to-blue-600 shadow-xl">
       <%= link_to root_path, class: "no-underline group" do %>
