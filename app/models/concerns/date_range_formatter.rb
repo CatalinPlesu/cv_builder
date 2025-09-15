@@ -16,7 +16,7 @@ module DateRangeFormatter
 
     # Only start date provided (ongoing)
     if start_date.present? && end_date.nil?
-      return "#{start_date.strftime("%b %Y")} -- Present"
+      return "#{start_date.strftime("%b %Y")} – Present"
     end
 
     # Both dates present
@@ -30,10 +30,10 @@ module DateRangeFormatter
 
     # Same year
     if start_date.year == end_date.year
-      return "#{start_date.strftime("%b")} -- #{end_date.strftime("%b %Y")}"
+      return "#{start_date.strftime("%b")} – #{end_date.strftime("%b %Y")}"
     end
 
     # Different years
-    "#{start_str} -- #{end_str}"
+    "#{start_str} – #{end_str}"
   end
 end
