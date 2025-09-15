@@ -1,43 +1,83 @@
-<div class="border border-gray-200 rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:border-purple-300">
-  <div class="flex justify-between items-start mb-4">
-    <div>
+<div class="border border-gray-200 rounded-xl p-4 transition-all duration-300 hover:shadow-lg hover:border-purple-300 flex flex-col sm:flex-row gap-4">
+  <!-- Left Content -->
+  <div class="flex-1">
+    <div class="flex justify-between items-start mb-3">
       <div>
-        <h3 class="font-bold text-xl text-gray-900"><%= template.name %></h3>
-        <p class="text-gray-500 text-sm">
+        <h3 class="font-bold text-lg text-gray-900"><%= template.name %></h3>
+        <p class="text-gray-500 text-xs mt-1">
           <%= template.tags.size %> tags, <%= template.sections.size %> sections
         </p>
       </div>
+      <div class="relative flex items-center gap-1">
+        <!-- Edit Button -->
+        <button onclick="openEditModalDirect(<%= template.id %>, '<%= j(template.name) %>', <%= template.tag_ids.to_json %>, <%= template.section_ids.to_json %>)" class="p-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Edit">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+        </button>
+
+        <!-- Actions Menu -->
+        <button onclick="toggleTemplateMenu(<%= template.id %>, event, '<%= j(template.name) %>', <%= template.tag_ids.to_json %>, <%= template.section_ids.to_json %>)" class="p-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Actions">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+          </svg>
+        </button>
+      </div>
     </div>
-    <div class="relative">
-      <button onclick="toggleTemplateMenu(<%= template.id %>, event, '<%= j(template.name) %>', <%= template.tag_ids.to_json %>, <%= template.section_ids.to_json %>)" class="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Actions">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
-        </svg>
-      </button>
+
+    <!-- Tags and Sections -->
+    <div class="mb-3">
+      <p class="text-xs text-gray-500 mb-1">TAGS:</p>
+      <div class="flex flex-wrap gap-1.5">
+        <% template.tags.each do |tag| %>
+          <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium"><%= tag.name %></span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 mb-1">SECTIONS:</p>
+      <div class="flex flex-wrap gap-1.5">
+        <% template.sections.each do |section| %>
+          <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium"><%= section.label %></span>
+        <% end %>
+      </div>
     </div>
   </div>
-  <div class="mb-4">
-    <p class="text-xs text-gray-500 mb-2">TAGS:</p>
-    <div class="flex flex-wrap gap-2">
-      <% template.tags.each do |tag| %>
-        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium"><%= tag.name %></span>
-      <% end %>
-    </div>
-  </div>
-  <div class="mb-4">
-    <p class="text-xs text-gray-500 mb-2">SECTIONS:</p>
-    <div class="flex flex-wrap gap-2">
-      <% template.sections.each do |section| %>
-        <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium"><%= section.label %></span>
-      <% end %>
-    </div>
-  </div>
-  <div class="flex gap-2">
-    <%= link_to "Generate CV", template_path(template), class: "flex-1 px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors text-center" %>
-    <div class="relative">
-      <button onclick="toggleExportMenu(<%= template.id %>, event)" class="flex-1 px-3 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors w-full">
-        Export ▼
-      </button>
-    </div>
+
+  <!-- Right - Action Buttons Stack -->
+  <div class="flex flex-col gap-2 w-full sm:w-32">
+    <%= link_to template_path(template), class: "px-3 py-2 bg-green-100 text-green-600 rounded-lg text-sm font-medium hover:bg-green-200 transition-colors flex items-center justify-center gap-2" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+      </svg>
+      Preview
+    <% end %>
+
+    <%= link_to template_path(template), class: "px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center justify-center gap-2" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      Generate CV
+    <% end %>
+
+    <%= link_to template_path(template), class: "px-3 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+      </svg>
+      Download
+    <% end %>
   </div>
 </div>
+
+<script>
+function openEditModalDirect(templateId, templateName, tagIds, sectionIds) {
+  currentTemplateData = {
+    id: templateId,
+    name: templateName,
+    tagIds: tagIds,
+    sectionIds: sectionIds
+  };
+  openEditModal(templateId, templateName, tagIds, sectionIds);
+}
+</script>

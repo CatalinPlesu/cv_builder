@@ -12,13 +12,14 @@
     </div>
   </div>
   <div class="p-8">
-    <!-- Templates Grid -->
-    <div id="templates-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Templates List -->
+    <div id="templates-list" class="space-y-6 mb-8">
       <% @templates.each do |template| %>
         <%= render partial: 'template_card', locals: { template: template } %>
       <% end %>
+      
       <% if @templates.empty? %>
-        <div class="col-span-full text-center py-12">
+        <div class="text-center py-12">
           <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
           </svg>
@@ -139,10 +140,9 @@
   </div>
 </div>
 
-<!-- Dropdown Portal Container (Moved here as it's used by the templates section) -->
+<!-- Dropdown Portal Container -->
 <div id="dropdown-portals"></div>
 
-<!-- Move the related JavaScript here -->
 <script>
 // Global variables
 let currentDropdown = null;
@@ -184,46 +184,6 @@ function toggleTemplateMenu(templateId, event, templateName, tagIds, sectionIds)
   menu.innerHTML = `
     <button onclick="handleEditClick(${templateId})" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Edit</button>
     <button onclick="handleDeleteClick(${templateId})" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition-colors">Delete</button>
-  `;
-
-  portalContainer.appendChild(menu);
-  currentDropdown = menu;
-
-  // Adjust position if menu goes off screen
-  const menuRect = menu.getBoundingClientRect();
-  if (menuRect.right > window.innerWidth) {
-    menu.style.left = `${rect.left}px`;
-  }
-  if (menuRect.left < 0) {
-    menu.style.left = '8px';
-  }
-}
-
-function toggleExportMenu(templateId, event) {
-  event.stopPropagation();
-  const button = event.currentTarget;
-  const rect = button.getBoundingClientRect();
-  const portalContainer = document.getElementById('dropdown-portals');
-
-  // Close current dropdown if it's the same one
-  if (currentDropdown && currentDropdown.id === `export-menu-${templateId}`) {
-    closeAllDropdowns();
-    return;
-  }
-
-  // Close all other dropdowns first
-  closeAllDropdowns();
-
-  // Create new menu
-  const menu = document.createElement('div');
-  menu.id = `export-menu-${templateId}`;
-  menu.className = 'fixed bg-white rounded-md shadow-xl border border-gray-200 py-1 z-[9999] min-w-[12rem]';
-
-  // Position the menu right below the button, aligned to the left edge
-  menu.style.top = `${rect.bottom + 2}px`;
-  menu.style.left = `${rect.left}px`;
-
-  menu.innerHTML = `
     <a href="/templates/${templateId}.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Preview HTML</a>
     <a href="/templates/${templateId}.txt" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Preview TeX</a>
     <a href="/templates/${templateId}.tex" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" download>Download TeX</a>
@@ -236,7 +196,7 @@ function toggleExportMenu(templateId, event) {
   // Adjust position if menu goes off screen
   const menuRect = menu.getBoundingClientRect();
   if (menuRect.right > window.innerWidth) {
-    menu.style.left = `${rect.right - menuRect.width}px`;
+    menu.style.left = `${rect.left}px`;
   }
   if (menuRect.left < 0) {
     menu.style.left = '8px';
