@@ -1,0 +1,476 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-pink-600 to-rose-600 px-6 py-4">
+        <h1 class="text-2xl font-bold text-white">Edit Skills</h1>
+        <p class="text-pink-100 mt-1">Manage your professional skills</p>
+      </div>
+
+      <%= form_with url: upsert_skills_path, method: :put, local: true, html: { id: "skills-edit-form", class: "p-6 space-y-6" } do |form| %>
+
+        <!-- Info Box -->
+        <div class="bg-pink-50 border-l-4 border-pink-400 p-4 rounded-r-lg">
+          <div class="flex items-start">
+            <div class="flex-shrink-0">
+              <i class="fas fa-info-circle text-pink-600 mt-0.5"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-pink-800 font-medium">Skill Categories</p>
+              <p class="text-xs text-pink-600 mt-1">Add, remove, and reorder your skill categories and skills</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill Categories Section -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-800">Skill Categories</h3>
+            <button type="button"
+                    id="add-category-button"
+                    class="inline-flex items-center px-4 py-2 bg-pink-600 text-white text-sm font-medium rounded-lg hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors duration-200">
+              <i class="fas fa-plus mr-2"></i>
+              Add Category
+            </button>
+          </div>
+
+          <!-- Items Container -->
+          <div id="skill-categories-container" class="space-y-3">
+            <% @skill_categories.each_with_index do |category, index| %>
+              <div class="skill-category-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
+                <div class="flex items-center space-x-4 mb-3">
+                  <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-grip-vertical text-lg"></i>
+                  </div>
+
+                  <input type="hidden" name="skill_categories[<%= index %>][position]" value="<%= index + 1 %>" class="position-input">
+                  <input type="hidden" name="skill_categories[<%= index %>][id]" value="<%= category.id %>" class="id-input">
+
+                  <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Category Name</label>
+                    <input type="text"
+                           name="skill_categories[<%= index %>][name]"
+                           value="<%= category.name %>"
+                           placeholder="Technical Skills"
+                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-transparent">
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <label class="block text-xs font-medium text-gray-700 mb-1">Skills</label>
+                  <div class="space-y-2 skills-container" data-category-index="<%= index %>">
+                    <% category.skills.each_with_index do |skill, skill_index| %>
+                      <div class="flex items-center space-x-2 skill-row" data-skill-position="<%= skill_index + 1 %>">
+                        <div class="skill-drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+                          <i class="fas fa-grip-horizontal text-sm"></i>
+                        </div>
+                        <input type="text"
+                               name="skill_categories[<%= index %>][skills][<%= skill_index %>][name]"
+                               value="<%= skill.name %>"
+                               placeholder="Ruby on Rails"
+                               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-transparent">
+                        <input type="hidden" name="skill_categories[<%= index %>][skills][<%= skill_index %>][id]" value="<%= skill.id %>">
+                        <input type="hidden" name="skill_categories[<%= index %>][skills][<%= skill_index %>][position]" value="<%= skill_index + 1 %>" class="skill-position-input">
+                        <button type="button" class="remove-skill-button text-red-500 hover:text-red-700">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    <% end %>
+                  </div>
+                  <button type="button" class="add-skill-button mt-2 text-pink-600 hover:text-pink-800 text-sm">
+                    + Add Skill
+                  </button>
+                </div>
+
+                <div class="flex items-end mt-4">
+                  <button type="button"
+                          class="remove-category-button w-full py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+                    <i class="fas fa-trash mr-2"></i> Remove Category
+                  </button>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
+          <%= link_to "Cancel", master_cv_index_path,
+                      class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
+          <%= submit_tag "Save Skills",
+                         class: "flex-1 sm:flex-initial px-6 py-3 bg-pink-600 text-white font-medium rounded-lg hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors duration-200 cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const container = document.getElementById('skill-categories-container');
+  const addButton = document.getElementById('add-category-button');
+
+  if (!container || !addButton) return;
+
+  const SkillsEdit = {
+    addItem() {
+      const currentItems = container.children.length;
+      const newPosition = currentItems + 1;
+
+      const newRow = document.createElement('div');
+      newRow.className = 'skill-category-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200';
+      newRow.dataset.position = newPosition;
+      newRow.innerHTML = `
+        <div class="flex items-center space-x-4 mb-3">
+          <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+            <i class="fas fa-grip-vertical text-lg"></i>
+          </div>
+          <input type="hidden" name="skill_categories[${currentItems}][position]" value="${newPosition}" class="position-input">
+          <input type="hidden" name="skill_categories[${currentItems}][id]" value="" class="id-input">
+
+          <div class="flex-1">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Category Name</label>
+            <input type="text" name="skill_categories[${currentItems}][name]" value="" placeholder="Technical Skills"
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-transparent">
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label class="block text-xs font-medium text-gray-700 mb-1">Skills</label>
+          <div class="space-y-2 skills-container" data-category-index="${currentItems}">
+            <!-- Empty skills container - will be populated by user -->
+          </div>
+          <button type="button" class="add-skill-button mt-2 text-pink-600 hover:text-pink-800 text-sm">
+            + Add Skill
+          </button>
+        </div>
+
+        <div class="flex items-end mt-4">
+          <button type="button" class="remove-category-button w-full py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+            <i class="fas fa-trash mr-2"></i> Remove Category
+          </button>
+        </div>
+      `;
+
+      newRow.style.opacity = '0';
+      newRow.style.transform = 'translateY(-10px)';
+      container.appendChild(newRow);
+
+      requestAnimationFrame(() => {
+        newRow.style.transition = 'all 0.3s ease-out';
+        newRow.style.opacity = '1';
+        newRow.style.transform = 'translateY(0)';
+      });
+
+      this.updatePositions();
+      this.initSkillDragAndDrop(newRow);
+    },
+
+    removeItem(event) {
+      const button = event.target.closest('.remove-category-button');
+      const row = button.closest('.skill-category-row');
+
+      if (row && container.children.length > 1) {
+        row.style.transition = 'all 0.3s ease-out';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(-20px)';
+
+        setTimeout(() => {
+          row.remove();
+          this.updatePositions();
+        }, 300);
+      } else if (container.children.length <= 1) {
+        alert("Cannot remove the last category.");
+      }
+    },
+
+    addSkill(event) {
+      // Prevent event bubbling
+      event.stopPropagation();
+      
+      const button = event.target.closest('.add-skill-button');
+      const container = button.closest('.skill-category-row');
+      const skillsContainer = container.querySelector('.skills-container');
+      const categoryIndex = Array.from(container.parentNode.children).indexOf(container);
+      const skillCount = skillsContainer.children.length;
+
+      const newSkill = document.createElement('div');
+      newSkill.className = 'flex items-center space-x-2 skill-row';
+      newSkill.dataset.skillPosition = skillCount + 1;
+      newSkill.innerHTML = `
+        <div class="skill-drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+          <i class="fas fa-grip-horizontal text-sm"></i>
+        </div>
+        <input type="text" 
+               name="skill_categories[${categoryIndex}][skills][${skillCount}][name]" 
+               placeholder="Ruby on Rails"
+               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-transparent">
+        <input type="hidden" name="skill_categories[${categoryIndex}][skills][${skillCount}][id]" value="">
+        <input type="hidden" name="skill_categories[${categoryIndex}][skills][${skillCount}][position]" value="${skillCount + 1}" class="skill-position-input">
+        <button type="button" class="remove-skill-button text-red-500 hover:text-red-700">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+
+      skillsContainer.appendChild(newSkill);
+      this.updateSkillPositions(skillsContainer);
+    },
+
+    removeSkill(event) {
+      // Prevent event bubbling
+      event.stopPropagation();
+      
+      const button = event.target.closest('.remove-skill-button');
+      const skillRow = button.closest('.skill-row');
+      const skillsContainer = skillRow.closest('.skills-container');
+      
+      skillRow.remove();
+      this.updateSkillPositions(skillsContainer);
+    },
+
+    updatePositions() {
+      const rows = container.querySelectorAll('.skill-category-row');
+      rows.forEach((row, index) => {
+        const position = index + 1;
+        row.dataset.position = position;
+        
+        // Update category position input
+        const positionInput = row.querySelector('.position-input');
+        if (positionInput) {
+          positionInput.name = `skill_categories[${index}][position]`;
+          positionInput.value = position;
+        }
+        
+        // Update category ID input
+        const idInput = row.querySelector('.id-input');
+        if (idInput) {
+          idInput.name = `skill_categories[${index}][id]`;
+        }
+        
+        // Update all other inputs in this row
+        const inputs = row.querySelectorAll('input[name*="skill_categories["]');
+        inputs.forEach(input => {
+          const name = input.name;
+          const match = name.match(/skill_categories\[(\d+)\]/);
+          if (match) {
+            input.name = name.replace(/skill_categories\[\d+\]/, `skill_categories[${index}]`);
+          }
+        });
+        
+        // Update skill positions
+        const skillsContainer = row.querySelector('.skills-container');
+        if (skillsContainer) {
+          this.updateSkillPositions(skillsContainer);
+        }
+      });
+    },
+
+    updateSkillPositions(skillsContainer) {
+      const skillRows = skillsContainer.querySelectorAll('.skill-row');
+      const categoryIndex = skillsContainer.closest('.skill-category-row').dataset.position - 1;
+      
+      skillRows.forEach((skillRow, skillIndex) => {
+        skillRow.dataset.skillPosition = skillIndex + 1;
+        
+        const skillInputs = skillRow.querySelectorAll('input[name*="skills["]');
+        skillInputs.forEach(input => {
+          const name = input.name;
+          const match = name.match(/skills\[(\d+)\]/);
+          if (match) {
+            input.name = name.replace(/skills\[\d+\]/, `skills[${skillIndex}]`);
+          }
+        });
+        
+        // Update skill position input
+        const skillPositionInput = skillRow.querySelector('.skill-position-input');
+        if (skillPositionInput) {
+          skillPositionInput.value = skillIndex + 1;
+        }
+      });
+      
+      // Update category index for skills container
+      skillsContainer.dataset.categoryIndex = categoryIndex;
+    },
+
+    initDragAndDrop() {
+      let draggedElement = null;
+      let placeholder = null;
+
+      const createPlaceholder = () => {
+        const div = document.createElement('div');
+        div.className = 'placeholder bg-pink-100 border-2 border-dashed border-pink-300 rounded-lg p-4 opacity-50';
+        div.innerHTML = '<div class="text-center text-pink-500 font-medium">Drop here</div>';
+        return div;
+      };
+
+      container.addEventListener('mousedown', (e) => {
+        const handle = e.target.closest('.drag-handle');
+        if (!handle) return;
+
+        draggedElement = handle.closest('.skill-category-row');
+        placeholder = createPlaceholder();
+
+        draggedElement.classList.add('opacity-50', 'transform', 'rotate-2', 'scale-105', 'z-10');
+        draggedElement.style.pointerEvents = 'none';
+        document.body.style.cursor = 'grabbing';
+
+        e.preventDefault();
+      });
+
+      container.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+
+      container.addEventListener('mouseenter', (e) => {
+        if (!draggedElement) return;
+
+        const targetRow = e.target.closest('.skill-category-row');
+        if (!targetRow || targetRow === draggedElement) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (e.clientY < midY) {
+          targetRow.parentNode.insertBefore(placeholder, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
+        }
+      }, true);
+
+      document.addEventListener('mouseup', () => {
+        if (!draggedElement) return;
+
+        if (placeholder && placeholder.parentNode) {
+          placeholder.parentNode.insertBefore(draggedElement, placeholder);
+          placeholder.remove();
+        }
+
+        draggedElement.classList.remove('opacity-50', 'transform', 'rotate-2', 'scale-105', 'z-10');
+        draggedElement.style.pointerEvents = '';
+        document.body.style.cursor = '';
+
+        this.updatePositions();
+
+        draggedElement = null;
+        placeholder = null;
+      });
+
+      container.addEventListener('mousemove', (e) => {
+        if (!draggedElement) return;
+
+        const targetRow = e.target.closest('.skill-category-row');
+        if (!targetRow || targetRow === draggedElement) return;
+
+        const rect = targetRow.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (placeholder && placeholder.parentNode) {
+          placeholder.remove();
+        }
+
+        if (e.clientY < midY) {
+          targetRow.parentNode.insertBefore(placeholder, targetRow);
+        } else {
+          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
+        }
+      });
+    },
+
+    initSkillDragAndDrop(categoryRow) {
+      const skillsContainer = categoryRow.querySelector('.skills-container');
+      if (!skillsContainer) return;
+
+      let draggedSkill = null;
+      let skillPlaceholder = null;
+
+      const createSkillPlaceholder = () => {
+        const div = document.createElement('div');
+        div.className = 'skill-placeholder bg-pink-50 border border-dashed border-pink-200 rounded my-1 h-10';
+        return div;
+      };
+
+      skillsContainer.addEventListener('mousedown', (e) => {
+        const handle = e.target.closest('.skill-drag-handle');
+        if (!handle) return;
+
+        draggedSkill = handle.closest('.skill-row');
+        skillPlaceholder = createSkillPlaceholder();
+
+        draggedSkill.classList.add('opacity-50');
+        document.body.style.cursor = 'grabbing';
+
+        e.preventDefault();
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!draggedSkill) return;
+
+        if (skillPlaceholder && skillPlaceholder.parentNode) {
+          skillPlaceholder.parentNode.insertBefore(draggedSkill, skillPlaceholder);
+          skillPlaceholder.remove();
+        }
+
+        draggedSkill.classList.remove('opacity-50');
+        document.body.style.cursor = '';
+
+        this.updateSkillPositions(skillsContainer);
+
+        draggedSkill = null;
+        skillPlaceholder = null;
+      });
+
+      skillsContainer.addEventListener('mousemove', (e) => {
+        if (!draggedSkill) return;
+
+        const targetSkill = e.target.closest('.skill-row');
+        if (!targetSkill || targetSkill === draggedSkill) return;
+
+        const rect = targetSkill.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (skillPlaceholder && skillPlaceholder.parentNode) {
+          skillPlaceholder.remove();
+        }
+
+        if (e.clientY < midY) {
+          targetSkill.parentNode.insertBefore(skillPlaceholder, targetSkill);
+        } else {
+          targetSkill.parentNode.insertBefore(skillPlaceholder, targetSkill.nextSibling);
+        }
+      });
+    }
+  };
+
+  addButton.addEventListener('click', () => SkillsEdit.addItem());
+
+  container.addEventListener('click', function(event) {
+    if (event.target.closest('.remove-category-button')) {
+      SkillsEdit.removeItem(event);
+    } else if (event.target.closest('.add-skill-button')) {
+      SkillsEdit.addSkill(event);
+    } else if (event.target.closest('.remove-skill-button')) {
+      SkillsEdit.removeSkill(event);
+    }
+  });
+
+  // Add skill functionality to existing items
+  document.querySelectorAll('.add-skill-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+      SkillsEdit.addSkill(event);
+    });
+  });
+
+  document.querySelectorAll('.remove-skill-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+      SkillsEdit.removeSkill(event);
+    });
+  });
+
+  // Initialize drag and drop for existing skill points
+  document.querySelectorAll('.skill-category-row').forEach(row => {
+    SkillsEdit.initSkillDragAndDrop(row);
+  });
+
+  SkillsEdit.initDragAndDrop();
+});
+</script>
