@@ -14,7 +14,7 @@ class Tag < ApplicationRecord
   has_and_belongs_to_many :organizations
   has_and_belongs_to_many :references
 
-  validates :name, presence: true, uniqueness: true, length: { maximum: 25 }
+  validates :name, presence: true, uniqueness: { scope: :user_id }, length: { maximum: 25 }
   validates :color, presence: true, format: { with: /\A#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\z/, message: "must be a valid hex color" }
   validates :position, presence: true
 
