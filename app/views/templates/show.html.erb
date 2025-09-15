@@ -91,13 +91,11 @@
           <div class="entry">
             <div class="entry-header">
               <span class="project-name"><strong><%= project.name %></strong></span>
+              <% if project.link.present? %>
+                <%= link_to project.link_title.presence || project.link, project.link, target: "_blank", rel: "noopener", class: "project-link-inline" %>
+              <% end %>
               <span class="date"><%= project.date %></span>
             </div>
-            <% if project.link.present? %>
-              <div class="project-link">
-                <%= link_to project.link_title.presence || project.link, project.link, target: "_blank", rel: "noopener" %>
-              </div>
-            <% end %>
             <% if project.project_bullets.any? %>
               <ul class="description">
                 <% project.project_bullets.each do |bullet| %>
@@ -149,6 +147,13 @@
   .contact-info .separator {
     margin: 0 5px;
   }
+  .contact-info a {
+    color: #000;
+    text-decoration: none;
+  }
+  .contact-info a:hover {
+    text-decoration: underline;
+  }
   section {
     margin-bottom: 25px;
   }
@@ -164,6 +169,8 @@
   .entry-header {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
     font-weight: bold;
   }
   .entry-subheader {
@@ -172,6 +179,12 @@
     font-style: italic;
     font-size: 0.95em;
     margin-bottom: 5px;
+  }
+  .project-link-inline {
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .description, .additional-info, .skills-content, .awards-content, .coursework-content {
     margin-left: 10px;
