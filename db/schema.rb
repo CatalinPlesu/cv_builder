@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_15_070034) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_15_100946) do
   create_table "achievements", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -215,6 +215,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_15_070034) do
     t.integer "tag_id", null: false
     t.index ["reference_id", "tag_id"], name: "index_references_tags_on_reference_id_and_tag_id"
     t.index ["tag_id", "reference_id"], name: "index_references_tags_on_tag_id_and_reference_id"
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sections_templates", id: false, force: :cascade do |t|
+    t.integer "section_id", null: false
+    t.integer "template_id", null: false
+    t.index ["section_id", "template_id"], name: "index_sections_templates_on_section_id_and_template_id"
+    t.index ["template_id", "section_id"], name: "index_sections_templates_on_template_id_and_section_id"
   end
 
   create_table "skill_categories", force: :cascade do |t|
