@@ -96,7 +96,7 @@ class TemplatesController < ApplicationController
 
       format.tex {
         send_data @rendered_content,
-                  filename: "resume_#{@template.id}.tex",
+                  filename: "CV #{@user.cv_heading.full_name} #{@template.name}.tex",
                   type: "text/plain",
                   disposition: "attachment"
       }
