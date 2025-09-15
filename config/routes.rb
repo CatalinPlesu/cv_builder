@@ -12,6 +12,12 @@ Rails.application.routes.draw do
       end
     end
   end
+  resources :tags, only: [] do
+    collection do
+      get :edit
+      put :upsert
+    end
+  end
 
   resources :skills, only: [] do
     collection do

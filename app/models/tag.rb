@@ -16,4 +16,15 @@ class Tag < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true, length: { maximum: 25 }
   validates :color, presence: true, format: { with: /\A#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\z/, message: "must be a valid hex color" }
+  validates :position, presence: true
+
+  default_scope { order(:position) }
+  before_validation :set_position, on: :create
+
+  private
+  def set_position
+    return if position.present?
+    max_position = user.tags.maximum(:position) || 0
+    self.position = max_position + 1
+  end
 end

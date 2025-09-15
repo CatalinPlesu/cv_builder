@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_14_181719) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_15_070034) do
   create_table "achievements", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -255,6 +255,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_14_181719) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.integer "position"
     t.index ["user_id", "name"], name: "index_tags_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_tags_on_user_id"
   end
