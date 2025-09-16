@@ -77,5 +77,40 @@
     </nav>
 
     <%= yield %>
+
+  <footer class="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-8 px-6 mt-12">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-xl font-bold mb-4">Smart CV Builder</h3>
+        <p class="text-gray-400">
+          Build professional, customizable CVs with ease. Export clean, typeset PDFs using LaTeX.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+        <ul class="space-y-2 text-gray-400">
+          <li><%= link_to "GitHub Repository", "https://github.com/CatalinPlesu/cv_builder", target: "_blank", class: "hover:text-white transition" %></li>
+          <li><%= link_to "Docker LaTeX Compiler", "https://github.com/CatalinPlesu/docker-CV", target: "_blank", class: "hover:text-white transition" %></li>
+          <li><%= link_to "Aras Güngöre's CV Template", "https://github.com/arasgungore/arasgungore-CV", target: "_blank", class: "hover:text-white transition" %></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Built With</h3>
+        <ul class="space-y-2 text-gray-400">
+          <li>Ruby on Rails</li>
+          <li>Tailwind CSS</li>
+          <li>LaTeX (via Docker)</li>
+          <li>Devise Authentication</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-gray-700 text-center text-gray-500 text-sm">
+      <p class="mb-2">Special thanks to <a href="https://github.com/arasgungore/arasgungore-CV" target="_blank" class="text-gray-400 hover:text-white transition">Aras Güngöre</a> for his excellent LaTeX CV template.</p>
+      <p>&copy; <%= Date.current.year %> Smart CV Builder. All rights reserved.</p>
+    </div>
+  </footer>
   </body>
 </html>

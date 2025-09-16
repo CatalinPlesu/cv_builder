@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   post "/dashboard/templates", to: "dashboard#create_template", as: :create_template
   patch "/dashboard/templates/:id", to: "dashboard#update_template", as: :update_template
   delete "/dashboard/templates/:id", to: "dashboard#delete_template", as: :delete_template
+  get "/dashboard/template_pdfs/:id/preview", to: "dashboard#preview_pdf", as: :dashboard_preview_template_pdf
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

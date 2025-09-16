@@ -1,5 +1,6 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_dashboard_template_pdf, only: [ :preview_pdf ]
 
   def index
     @templates = current_user.templates.includes(:tags, :sections)
@@ -78,9 +79,26 @@ class DashboardController < ApplicationController
     end
   end
 
+def preview_pdf
+    unless @template_pdf.pdf_available?
+      redirect_to template_path(@template_pdf.template), alert: "PDF is not ready for preview."
+      return
+    end
+
+    redirect_to rails_blob_path(@template_pdf.pdf_file, disposition: :inline)
+  end
+
   private
 
   def template_params
     params.require(:template).permit(:name, tag_ids: [], section_ids: [])
+  end
+
+  def set_dashboard_template_pdf
+    @template_pdf = TemplatePdf.joins(:template)
+                               .where(templates: { user: current_user })
+                               .find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to dashboard_path, alert: "PDF not found."
   end
 end
