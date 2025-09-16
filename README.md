@@ -15,14 +15,13 @@ A Ruby on Rails application that allows users to build a master CV, tag content,
 
 Special thanks to **Aras Güngöre** for his excellent LaTeX CV template which serves as the foundation for our PDF exports.
 - GitHub: [https://github.com/arasgungore/arasgungore-CV](https://github.com/arasgungore/arasgungore-CV)
-- Hi there, my name is Aras Güngöre.
 
 ## 🔧 Setup Instructions
 
 ### Prerequisites
 
 - Ruby >= 3.0
-- Rails >= 7.0
+- Rails >= 8.0
 - SQLite3
 - Docker (for PDF generation)
 
