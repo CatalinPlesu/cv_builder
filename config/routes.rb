@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :templates do
     member do
       get :pdf_status
+      post :generate_pdf
     end
   end
   resources :cv_headings, only: [] do

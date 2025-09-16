@@ -147,10 +147,8 @@
           </span>
         <% end %>
 
-        <!-- Generate PDF Button (Keep as is, or update if needed) -->
-        <!-- This still uses the template_path with format :pdf -->
-        <%= link_to template_path(template, format: :pdf),
-            method: :get,
+        <!-- Generate PDF Button -->
+        <%= link_to '#',
             onclick: "generatePDF(#{template.id}); return false;",
             id: "generate-btn-#{template.id}",
             class: "generate-pdf-btn px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center justify-center gap-2" do %>
@@ -167,6 +165,7 @@
 <script>
 // Prevent spam clicking and handle PDF generation with 2-minute debounce
 let lastGenerationTime = {};
+let generatingTemplates = new Set(); // Track which templates are generating
 
 function generatePDF(templateId) {
   const now = Date.now();
@@ -176,11 +175,11 @@ function generatePDF(templateId) {
   if (now - lastTime < 120000) { // 120000 ms = 2 minutes
     const remainingTime = Math.ceil((120000 - (now - lastTime)) / 1000);
     alert(`Please wait ${Math.ceil(remainingTime / 60)} minute(s) before generating PDF again.`);
-    return;
+    return false;
   }
 
   const button = document.getElementById(`generate-btn-${templateId}`);
-  if (!button) return;
+  if (!button) return false;
   
   // Disable button and show loading state
   button.disabled = true;
@@ -189,66 +188,102 @@ function generatePDF(templateId) {
     <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
     </svg>
-    Requesting...
+    Generating...
   `;
   
   // Update last generation time
   lastGenerationTime[templateId] = now;
+  generatingTemplates.add(templateId);
   
-  // Make the request
-  fetch(`/templates/${templateId}.pdf`, {
-    method: 'GET',
+  // Make the request to the new endpoint
+  fetch(`/templates/${templateId}/generate_pdf`, {
+    method: 'POST',
     headers: {
-      'X-Requested-With': 'XMLHttpRequest'
+      'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     }
   })
-  .then(response => {
-    if (response.redirected) {
-      window.location.href = response.url;
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Update the status display immediately
+      updatePDFStatus(templateId, {
+        status: 'pending',
+        queue_position: data.queue_position
+      });
+      
+      // Start polling for this template
+      startStatusPolling(templateId);
+      
+      // Show success message (optional)
+      console.log(data.message);
+    } else {
+      alert(data.error || 'Failed to queue PDF generation');
+      // Restore button
+      button.disabled = false;
+      button.innerHTML = originalHtml;
+      generatingTemplates.delete(templateId);
     }
-    return response.text();
   })
   .catch(error => {
     console.error('Error:', error);
     alert('Failed to queue PDF generation. Please try again.');
-  })
-  .finally(() => {
-    // The page should redirect, but if it doesn't, restore button after 2 seconds
-    setTimeout(() => {
-      if (button) {
-        button.disabled = false;
-        button.innerHTML = originalHtml;
+    // Restore button
+    button.disabled = false;
+    button.innerHTML = originalHtml;
+    generatingTemplates.delete(templateId);
+  });
+  
+  return false; // Prevent default link behavior
+}
+
+// Poll status for a specific template
+function startStatusPolling(templateId) {
+  const pollInterval = setInterval(() => {
+    fetch(`/templates/${templateId}/pdf_status`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
       }
-    }, 2000);
-  });
-}
-
-// Auto-refresh status for pending/processing PDFs
-function refreshPDFStatus() {
-  const cards = document.querySelectorAll('[id^="template-card-"]');
-  cards.forEach(card => {
-    const templateId = card.id.replace('template-card-', '');
-    const statusElement = document.getElementById(`pdf-status-${templateId}`);
-    
-    if (statusElement && (statusElement.textContent.includes('Generating') || statusElement.textContent.includes('Queued'))) {
-      // Refresh this card's status
-      fetch(`/templates/${templateId}/pdf_status`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
+    })
+    .then(response => response.json())
+    .then(data => {
+      updatePDFStatus(templateId, data);
+      
+      // Stop polling if completed or failed
+      if (data.status === 'completed' || data.status === 'failed') {
+        clearInterval(pollInterval);
+        generatingTemplates.delete(templateId);
+        
+        // Update button
+        const button = document.getElementById(`generate-btn-${templateId}`);
+        if (button) {
+          button.disabled = false;
+          button.innerHTML = `
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            ${data.status === 'completed' ? 'Regenerate PDF' : 'Generate PDF'}
+          `;
         }
-      })
-      .then(response => response.json())
-      .then(data => {
-        updateCardStatus(templateId, data);
-      })
-      .catch(error => console.error('Status refresh error:', error));
-    }
-  });
+        
+        // Update View PDF button if completed
+        if (data.status === 'completed' && data.pdf_id) {
+          updateViewPDFButton(templateId, data.pdf_id);
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Status polling error:', error);
+      clearInterval(pollInterval);
+      generatingTemplates.delete(templateId);
+    });
+  }, 3000); // Poll every 3 seconds
 }
 
-function updateCardStatus(templateId, pdfData) {
+function updatePDFStatus(templateId, pdfData) {
   const statusElement = document.getElementById(`pdf-status-${templateId}`);
   
   if (statusElement) {
@@ -259,10 +294,10 @@ function updateCardStatus(templateId, pdfData) {
           <div class="flex items-center gap-1.5 text-xs">
             <div class="w-2 h-2 bg-green-500 rounded-full"></div>
             <span class="text-green-600 font-medium">PDF Ready</span>
-            <span class="text-gray-400">•</span>
-            <span class="text-gray-500">
-              Generated ${timeAgo(pdfData.completed_at)} ago
-            </span>
+            ${pdfData.completed_at ? `
+              <span class="text-gray-400">•</span>
+              <span class="text-gray-500">Generated ${timeAgo(pdfData.completed_at)} ago</span>
+            ` : ''}
             ${pdfData.pdf_size ? `<span class="text-gray-400">•</span><span class="text-gray-500">${formatBytes(pdfData.pdf_size)}</span>` : ''}
           </div>
         `;
@@ -293,9 +328,7 @@ function updateCardStatus(templateId, pdfData) {
             <div class="w-2 h-2 bg-red-500 rounded-full"></div>
             <span class="text-red-600 font-medium">Generation Failed</span>
             <span class="text-gray-400">•</span>
-            <span class="text-gray-500">
-              ${timeAgo(pdfData.updated_at)} ago
-            </span>
+            <span class="text-gray-500">${timeAgo(pdfData.updated_at)} ago</span>
           </div>
         `;
         break;
@@ -311,7 +344,32 @@ function updateCardStatus(templateId, pdfData) {
   }
 }
 
-// Helper function to calculate time ago
+function updateViewPDFButton(templateId, pdfId) {
+  // Find the PDF button container for this template
+  const card = document.getElementById(`template-card-${templateId}`);
+  if (!card) return;
+  
+  const pdfButtonContainer = card.querySelector('.flex.flex-col.gap-1');
+  if (!pdfButtonContainer) return;
+  
+  // Replace the disabled button with an active View PDF link
+  const viewButton = pdfButtonContainer.querySelector('a[href*="preview_template_pdf"], span.bg-gray-100');
+  if (viewButton) {
+    const newButton = document.createElement('a');
+    newButton.href = `/dashboard/template_pdfs/${pdfId}/preview`;
+    newButton.className = 'px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg text-sm font-medium hover:bg-yellow-200 transition-colors flex items-center justify-center gap-2';
+    newButton.target = '_blank';
+    newButton.innerHTML = `
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      View PDF
+    `;
+    viewButton.replaceWith(newButton);
+  }
+}
+
+// Helper functions (keep these as they are)
 function timeAgo(dateString) {
   const date = new Date(dateString);
   const now = new Date();
@@ -326,7 +384,6 @@ function timeAgo(dateString) {
   return `${days} days`;
 }
 
-// Helper function to format bytes
 function formatBytes(bytes) {
   if (bytes === 0) return '0 Bytes';
   const k = 1024;
@@ -335,30 +392,13 @@ function formatBytes(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-// Refresh every 10 seconds if there are pending/processing jobs
-setInterval(refreshPDFStatus, 10000);
-
-// FIXED: Delete template function now uses dashboard routes
-function deleteTemplate(templateId) {
-  if (confirm('Are you sure you want to delete this template?')) {
-    fetch(`/dashboard/templates/${templateId}`, {
-      method: 'DELETE',
-      headers: {
-        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        document.getElementById(`template-card-${templateId}`).remove();
-      } else {
-        alert('Failed to delete template');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('Failed to delete template');
-    });
-  }
-}
+// On page load, check for any templates that are currently generating
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[id^="pdf-status-"]').forEach(statusEl => {
+    const templateId = statusEl.id.replace('pdf-status-', '');
+    if (statusEl.textContent.includes('Generating') || statusEl.textContent.includes('Queued')) {
+      startStatusPolling(templateId);
+    }
+  });
+});
 </script>
