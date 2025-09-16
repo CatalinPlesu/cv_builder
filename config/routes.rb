@@ -17,12 +17,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :template_pdfs, only: [ :index, :show, :destroy ] do
-    member do
-      get :download
-    end
-  end
-
   resources :item_taggings, only: [ :index ] do collection do
       patch :update
     end
