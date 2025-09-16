@@ -115,18 +115,13 @@ class PdfGenerationJob < ApplicationJob
     temp_dir = Rails.root.join("tmp", "pdf_generation", cv_job.id.to_s)
     FileUtils.mkdir_p(temp_dir)
 
-    # Write LaTeX content to file
-    tex_file = File.join(temp_dir, "cv.tex")
-    File.write(tex_file, latex_content)
+    # Instead of writing tex file and using local compilation,
+    # call the HTTP service and write the result to a PDF file
+    pdf_data = compile_with_http_service(latex_content)
 
-    # Determine PDF compilation method
-    if docker_available?
-      compile_with_docker(tex_file, temp_dir)
-    else
-      compile_with_local_pdflatex(tex_file, temp_dir)
-    end
-
+    # Write PDF data to file to maintain same interface
     pdf_file = File.join(temp_dir, "cv.pdf")
+    File.write(pdf_file, pdf_data, mode: "wb")
 
     unless File.exist?(pdf_file)
       raise "PDF compilation failed - output file not found"
@@ -135,54 +130,56 @@ class PdfGenerationJob < ApplicationJob
     pdf_file
   end
 
-  def docker_available?
-    # Check if Docker is available and your image exists
-    system("docker --version > /dev/null 2>&1") &&
-    system("docker images | grep -q your-pdflatex-image > /dev/null 2>&1")
+  def compile_with_http_service(latex_content)
+    require "net/http"
+    require "uri"
+    require "json"
+
+    service_url = latex_service_url
+    uri = URI.parse("#{service_url}/compile")
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = uri.scheme == "https"
+    http.read_timeout = 60 # 60 second timeout for PDF compilation
+
+    request = Net::HTTP::Post.new(uri)
+    request["Content-Type"] = "application/json"
+    request.body = { latex: latex_content }.to_json
+
+    Rails.logger.info "Sending LaTeX compilation request to #{service_url}"
+
+    response = http.request(request)
+
+    case response.code.to_i
+    when 200
+      Rails.logger.info "PDF compilation successful via HTTP service"
+      response.body
+    when 400
+      error_data = JSON.parse(response.body) rescue { "error" => "Invalid request" }
+      raise "LaTeX compilation failed: #{error_data['error']}"
+    when 500
+      error_data = JSON.parse(response.body) rescue { "error" => "Internal server error" }
+      raise "LaTeX service error: #{error_data['error']}"
+    else
+      raise "LaTeX service returned unexpected status: #{response.code}"
+    end
+  rescue Net::TimeoutError
+    raise "LaTeX service timeout - compilation took too long"
+  rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+    raise "Cannot connect to LaTeX service at #{service_url}"
+  rescue JSON::ParserError
+    raise "Invalid response from LaTeX service"
   end
 
-  def compile_with_docker(tex_file, temp_dir)
-    # Adjust this command based on your Docker image
-    docker_cmd = [
-      "docker", "run", "--rm",
-      "-v", "#{temp_dir}:/workspace",
-      "your-pdflatex-image",  # Replace with your actual image name
-      "pdflatex",
-      "-interaction=nonstopmode",
-      "-output-directory=/workspace",
-      "/workspace/cv.tex"
-    ]
-
-    Rails.logger.info "Running Docker command: #{docker_cmd.join(' ')}"
-
-    result = system(*docker_cmd, chdir: temp_dir)
-
-    unless result
-      raise "Docker pdflatex compilation failed"
+  def latex_service_url
+    # Check for environment variable first (for external service)
+    if ENV["LATEX_SERVICE_URL"].present?
+      ENV["LATEX_SERVICE_URL"]
+    else
+      # Default to Docker Compose service name
+      "http://latex-service:3001"
     end
   end
-
-    def compile_with_local_pdflatex(tex_file, temp_dir)
-      # Convert Pathnames to Strings
-      temp_dir_str = temp_dir.to_s
-      tex_file_str = tex_file.to_s
-
-      pdflatex_cmd = [
-        "pdflatex",
-        "-interaction=nonstopmode",
-        "-output-directory", temp_dir_str, # Use String
-        tex_file_str                       # Use String
-      ]
-
-      Rails.logger.info "Running pdflatex command: #{pdflatex_cmd.join(' ')}"
-
-      # Pass the string versions and use string for chdir as well
-      result = system(*pdflatex_cmd, chdir: temp_dir_str)
-
-      unless result
-        raise "Local pdflatex compilation failed"
-      end
-    end
 
   def store_pdf_file(cv_job, pdf_path, pdf_filename)
     # Attach the PDF file using Active Storage
