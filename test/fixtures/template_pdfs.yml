@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  template: one
+  status: MyString
+  error_message: MyText
+  started_at: 2025-09-16 08:42:43
+  completed_at: 2025-09-16 08:42:43
+
+two:
+  user: two
+  template: two
+  status: MyString
+  error_message: MyText
+  started_at: 2025-09-16 08:42:43
+  completed_at: 2025-09-16 08:42:43

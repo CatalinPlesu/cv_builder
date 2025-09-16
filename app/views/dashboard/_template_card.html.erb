@@ -1,83 +1,316 @@
-<div class="border border-gray-200 rounded-xl p-4 transition-all duration-300 hover:shadow-lg hover:border-purple-300 flex flex-col sm:flex-row gap-4">
+<div class="border border-gray-200 rounded-xl p-4 transition-all duration-300 hover:shadow-lg hover:border-purple-300 flex flex-col sm:flex-row gap-4" 
+     id="template-card-<%= template.id %>">
   <!-- Left Content -->
   <div class="flex-1">
     <div class="flex justify-between items-start mb-3">
       <div>
-        <h3 class="font-bold text-lg text-gray-900"><%= template.name %></h3>
+        <h3 class="font-semibold text-gray-800"><%= template.name %></h3>
         <p class="text-gray-500 text-xs mt-1">
           <%= template.tags.size %> tags, <%= template.sections.size %> sections
         </p>
+        <!-- PDF Status -->
+        <div class="mt-2" id="pdf-status-<%= template.id %>">
+          <% if template.template_pdf %>
+            <% pdf = template.template_pdf %>
+            <% case pdf.status %>
+            <% when 'completed' %>
+              <div class="flex items-center gap-1.5 text-xs">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span class="text-green-600 font-medium">PDF Ready</span>
+                <span class="text-gray-400">•</span>
+                <span class="text-gray-500">
+                  Generated <%= time_ago_in_words(pdf.completed_at) %> ago
+                </span>
+                <% if pdf.pdf_size %>
+                  <span class="text-gray-400">•</span>
+                  <span class="text-gray-500"><%= pdf.pdf_size_human %></span>
+                <% end %>
+              </div>
+            <% when 'processing' %>
+              <div class="flex items-center gap-1.5 text-xs">
+                <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span class="text-blue-600 font-medium">Generating PDF...</span>
+                <% if pdf.started_at %>
+                  <span class="text-gray-400">•</span>
+                  <span class="text-gray-500">
+                    Started <%= time_ago_in_words(pdf.started_at) %> ago
+                  </span>
+                <% end %>
+              </div>
+            <% when 'pending' %>
+              <div class="flex items-center gap-1.5 text-xs">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+                <span class="text-yellow-600 font-medium">Queued for generation</span>
+                <span class="text-gray-400">•</span>
+                <span class="text-gray-500">Position #<%= pdf.queue_position %></span>
+                <% if pdf.estimated_wait_time_human %>
+                  <span class="text-gray-400">•</span>
+                  <span class="text-gray-500">~<%= pdf.estimated_wait_time_human %> wait</span>
+                <% end %>
+              </div>
+            <% when 'failed' %>
+              <div class="flex items-center gap-1.5 text-xs">
+                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                <span class="text-red-600 font-medium">Generation Failed</span>
+                <span class="text-gray-400">•</span>
+                <span class="text-gray-500">
+                  <%= time_ago_in_words(pdf.updated_at) %> ago
+                </span>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="flex items-center gap-1.5 text-xs">
+              <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+              <span class="text-gray-500">No PDF generated yet</span>
+            </div>
+          <% end %>
+        </div>
       </div>
       <div class="relative flex items-center gap-1">
         <!-- Edit Button -->
-        <button onclick="openEditModalDirect(<%= template.id %>, '<%= j(template.name) %>', <%= template.tag_ids.to_json %>, <%= template.section_ids.to_json %>)" class="p-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Edit">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <button onclick="openEditModalDirect(<%= template.id %>, '<%= j(template.name) %>', <%= template.tag_ids.to_json %>, <%= template.section_ids.to_json %>)" 
+                class="p-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Edit">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
           </svg>
         </button>
 
         <!-- Actions Menu -->
-        <button onclick="toggleTemplateMenu(<%= template.id %>, event, '<%= j(template.name) %>', <%= template.tag_ids.to_json %>, <%= template.section_ids.to_json %>)" class="p-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Actions">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <button onclick="toggleTemplateMenu(<%= template.id %>, event, '<%= j(template.name) %>', <%= template.tag_ids.to_json %>, <%= template.section_ids.to_json %>)" 
+                class="p-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Actions">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
           </svg>
         </button>
       </div>
     </div>
-
-    <!-- Tags and Sections -->
-    <div class="mb-3">
-      <p class="text-xs text-gray-500 mb-1">TAGS:</p>
-      <div class="flex flex-wrap gap-1.5">
-        <% template.tags.each do |tag| %>
-          <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium"><%= tag.name %></span>
-        <% end %>
-      </div>
-    </div>
-
-    <div>
-      <p class="text-xs text-gray-500 mb-1">SECTIONS:</p>
-      <div class="flex flex-wrap gap-1.5">
-        <% template.sections.each do |section| %>
-          <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium"><%= section.label %></span>
-        <% end %>
-      </div>
-    </div>
   </div>
 
   <!-- Right - Action Buttons Stack -->
-  <div class="flex flex-col gap-2 w-full sm:w-32">
-    <%= link_to template_path(template), class: "px-3 py-2 bg-green-100 text-green-600 rounded-lg text-sm font-medium hover:bg-green-200 transition-colors flex items-center justify-center gap-2" do %>
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <div class="flex flex-col gap-2 w-full sm:w-40">
+    <!-- Preview Button -->
+    <%= link_to template_path(template), 
+               class: "px-3 py-2 bg-green-100 text-green-600 rounded-lg text-sm font-medium hover:bg-green-200 transition-colors flex items-center justify-center gap-2",
+               target: "_blank" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
       </svg>
-      Preview
+      Preview HTML
     <% end %>
 
-    <%= link_to template_path(template), class: "px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center justify-center gap-2" do %>
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+    <!-- Download LaTeX Button -->
+    <%= link_to template_path(template, format: :tex), 
+               class: "px-3 py-2 bg-purple-100 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-200 transition-colors flex items-center justify-center gap-2" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
       </svg>
-      Generate CV
+      Download .tex
     <% end %>
 
-    <%= link_to template_path(template), class: "px-3 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2" do %>
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-      </svg>
-      Download
+    <!-- PDF Action Buttons (Always available) -->
+    <div class="flex flex-col gap-1">
+      <!-- Download PDF Button (always available if PDF exists) -->
+      <% if template.template_pdf&.pdf_available? %>
+        <%= link_to download_template_pdf_path(template.template_pdf), 
+                   class: "px-3 py-2 bg-red-100 text-red-600 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors flex items-center justify-center gap-2" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          Download PDF
+        <% end %>
+      <% end %>
+
+      <!-- Generate PDF Button (always available) -->
+      <button onclick="generatePDF(<%= template.id %>)" 
+              id="generate-btn-<%= template.id %>"
+              class="generate-pdf-btn px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        Generate PDF
+      </button>
+    </div>
+
+    <!-- Last Generated Info -->
+    <% if template.template_pdf&.completed_at %>
+      <div class="text-xs text-gray-500 text-center">
+        Last: <%= time_ago_in_words(template.template_pdf.completed_at) %> ago
+      </div>
     <% end %>
   </div>
 </div>
 
 <script>
-function openEditModalDirect(templateId, templateName, tagIds, sectionIds) {
-  currentTemplateData = {
-    id: templateId,
-    name: templateName,
-    tagIds: tagIds,
-    sectionIds: sectionIds
-  };
-  openEditModal(templateId, templateName, tagIds, sectionIds);
+// Prevent spam clicking and handle PDF generation with 2-minute debounce
+let lastGenerationTime = {};
+
+function generatePDF(templateId) {
+  const now = Date.now();
+  const lastTime = lastGenerationTime[templateId] || 0;
+  
+  // Check if 2 minutes have passed since last generation
+  if (now - lastTime < 120000) { // 120000 ms = 2 minutes
+    const remainingTime = Math.ceil((120000 - (now - lastTime)) / 1000);
+    alert(`Please wait ${Math.ceil(remainingTime / 60)} minute(s) before generating PDF again.`);
+    return;
+  }
+
+  const button = document.getElementById(`generate-btn-${templateId}`);
+  if (!button) return;
+  
+  // Disable button and show loading state
+  button.disabled = true;
+  const originalHtml = button.innerHTML;
+  button.innerHTML = `
+    <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+    </svg>
+    Requesting...
+  `;
+  
+  // Update last generation time
+  lastGenerationTime[templateId] = now;
+  
+  // Make the request
+  fetch(`/templates/${templateId}.pdf`, {
+    method: 'GET',
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => {
+    if (response.redirected) {
+      window.location.href = response.url;
+    }
+    return response.text();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Failed to queue PDF generation. Please try again.');
+  })
+  .finally(() => {
+    // The page should redirect, but if it doesn't, restore button after 2 seconds
+    setTimeout(() => {
+      if (button) {
+        button.disabled = false;
+        button.innerHTML = originalHtml;
+      }
+    }, 2000);
+  });
 }
+
+// Auto-refresh status for pending/processing PDFs
+function refreshPDFStatus() {
+  const cards = document.querySelectorAll('[id^="template-card-"]');
+  cards.forEach(card => {
+    const templateId = card.id.replace('template-card-', '');
+    const statusElement = document.getElementById(`pdf-status-${templateId}`);
+    
+    if (statusElement && (statusElement.textContent.includes('Generating') || statusElement.textContent.includes('Queued'))) {
+      // Refresh this card's status
+      fetch(`/templates/${templateId}/pdf_status`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        updateCardStatus(templateId, data);
+      })
+      .catch(error => console.error('Status refresh error:', error));
+    }
+  });
+}
+
+function updateCardStatus(templateId, pdfData) {
+  const statusElement = document.getElementById(`pdf-status-${templateId}`);
+  
+  if (statusElement) {
+    let statusHtml = '';
+    switch(pdfData.status) {
+      case 'completed':
+        statusHtml = `
+          <div class="flex items-center gap-1.5 text-xs">
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span class="text-green-600 font-medium">PDF Ready</span>
+            <span class="text-gray-400">•</span>
+            <span class="text-gray-500">
+              Generated ${timeAgo(pdfData.completed_at)} ago
+            </span>
+            ${pdfData.pdf_size ? `<span class="text-gray-400">•</span><span class="text-gray-500">${formatBytes(pdfData.pdf_size)}</span>` : ''}
+          </div>
+        `;
+        break;
+      case 'processing':
+        statusHtml = `
+          <div class="flex items-center gap-1.5 text-xs">
+            <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+            <span class="text-blue-600 font-medium">Generating PDF...</span>
+            ${pdfData.started_at ? `<span class="text-gray-400">•</span><span class="text-gray-500">Started ${timeAgo(pdfData.started_at)} ago</span>` : ''}
+          </div>
+        `;
+        break;
+      case 'pending':
+        statusHtml = `
+          <div class="flex items-center gap-1.5 text-xs">
+            <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+            <span class="text-yellow-600 font-medium">Queued for generation</span>
+            <span class="text-gray-400">•</span>
+            <span class="text-gray-500">Position #${pdfData.queue_position}</span>
+            ${pdfData.estimated_wait_time_human ? `<span class="text-gray-400">•</span><span class="text-gray-500">~${pdfData.estimated_wait_time_human} wait</span>` : ''}
+          </div>
+        `;
+        break;
+      case 'failed':
+        statusHtml = `
+          <div class="flex items-center gap-1.5 text-xs">
+            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+            <span class="text-red-600 font-medium">Generation Failed</span>
+            <span class="text-gray-400">•</span>
+            <span class="text-gray-500">
+              ${timeAgo(pdfData.updated_at)} ago
+            </span>
+          </div>
+        `;
+        break;
+      default:
+        statusHtml = `
+          <div class="flex items-center gap-1.5 text-xs">
+            <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+            <span class="text-gray-500">No PDF generated yet</span>
+          </div>
+        `;
+    }
+    statusElement.innerHTML = statusHtml;
+  }
+}
+
+// Helper function to calculate time ago
+function timeAgo(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const seconds = Math.floor((now - date) / 1000);
+  
+  if (seconds < 60) return `${seconds} seconds`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes} minutes`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hours`;
+  const days = Math.floor(hours / 24);
+  return `${days} days`;
+}
+
+// Helper function to format bytes
+function formatBytes(bytes) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Refresh every 10 seconds if there are pending/processing jobs
+setInterval(refreshPDFStatus, 10000);
 </script>

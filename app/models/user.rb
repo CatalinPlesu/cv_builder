@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :certificates, dependent: :destroy
   has_many :organizations, dependent: :destroy
   has_many :references, dependent: :destroy
+  has_many :template_pdfs, dependent: :destroy
 
   default_scope { includes(:templates) }
 

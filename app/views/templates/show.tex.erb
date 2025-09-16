@@ -131,15 +131,14 @@
 
 
 %---------- HEADING ----------
-
 \begin{center}
-  \textbf{\Huge \scshape <%= @user.cv_heading.full_name %>} \\ \vspace{3pt}
+  \textbf{\Huge \scshape <%= cv_heading&.full_name %>} \\ \vspace{3pt}
   \small
-<% @user.cv_heading.cv_heading_items.each_with_index do |item, index| %>
+<% cv_heading&.cv_heading_items&.each_with_index do |item, index| %>
 <%   latex_icon = IconMapper.latex_icon_name(item.icon) || '' %>
 <%   item_text = item.text.to_s %>
 <%   item_url = item.url.presence %>
-<%   is_last = (index == @user.cv_heading.cv_heading_items.length - 1) %>
+<%   is_last = (index == cv_heading.cv_heading_items.length - 1) %>
 <%   if item_url %>
 <%     if latex_icon.present? %>
     <%= latex_icon %> \hspace{.5pt} \href{<%= item_url %>}{<%= item_text %>}

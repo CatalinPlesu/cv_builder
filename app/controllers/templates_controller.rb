@@ -27,6 +27,7 @@ class TemplatesController < ApplicationController
       # --- Build locals hash for .tex rendering (as before) ---
       locals = {
         user: @user,
+        cv_heading: @user.cv_heading,
         experiences: [],
         educations: [],
         projects: [],
@@ -49,6 +50,7 @@ class TemplatesController < ApplicationController
                            .joins(:tags)
                            .where(tags: { id: tag_ids })
                            .distinct
+                           .includes(:education_bullets)  # Add includes here too
         locals[:educations] = @educations
       end
 
@@ -69,13 +71,6 @@ class TemplatesController < ApplicationController
                                        .includes(:skills)
         locals[:skill_categories] = @skill_categories
       end
-
-      # Add similar blocks for awards, certificates, etc. if used in HTML view
-      # Example for awards (adjust model/association names as needed):
-      # if section_names.include?("award")
-      #   @awards = @user.awards.joins(:tags).where(tags: { id: tag_ids }).distinct
-      # end
-
 
       # Render the ERB template file directly for .tex format
       @rendered_content = render_to_string(
@@ -105,41 +100,41 @@ class TemplatesController < ApplicationController
         render plain: @rendered_content, content_type: "text/plain"
       }
 
-    format.pdf {
-      pending_jobs_count = TemplatePdf.pending.count
+      format.pdf {
+        pending_jobs_count = TemplatePdf.pending.count
 
-      if pending_jobs_count >= 500
-        redirect_to template_path(@template),
-                   alert: "PDF generation queue is full (500 jobs). Please try again later."
-        return
-      end
+        if pending_jobs_count >= 500
+          redirect_to template_path(@template),
+                     alert: "PDF generation queue is full (500 jobs). Please try again later."
+          return
+        end
 
-      # Find or create the template PDF - this ensures 1:1 relationship
-      template_pdf = @template.template_pdf || @template.build_template_pdf(
-        user: current_user,
-        status: "pending"
-      )
+        # Find or create the template PDF - this ensures 1:1 relationship
+        template_pdf = @template.template_pdf || @template.build_template_pdf(
+          user: current_user,
+          status: "pending"
+        )
 
-      # If it already exists but is completed/failed, update it for regeneration
-      unless template_pdf.pending? || template_pdf.processing?
-        template_pdf.status = "pending"
-        template_pdf.error_message = nil
-        template_pdf.started_at = nil
-        template_pdf.completed_at = nil
-        template_pdf.save!
-      end
+        # If it already exists but is completed/failed, update it for regeneration
+        unless template_pdf.pending? || template_pdf.processing?
+          template_pdf.status = "pending"
+          template_pdf.error_message = nil
+          template_pdf.started_at = nil
+          template_pdf.completed_at = nil
+          template_pdf.save!
+        end
 
-      # Queue the job
-      begin
-        PdfGenerationJob.perform_later(template_pdf.id)
-        redirect_to template_pdf_path(template_pdf),
-                   notice: "PDF generation queued! Position ##{template_pdf.queue_position} in queue."
-      rescue => e
-        template_pdf.update!(status: "failed", error_message: e.message)
-        redirect_to template_path(@template),
-                   alert: "Failed to queue PDF generation: #{e.message}"
-      end
-    }
+        # Queue the job
+        begin
+          PdfGenerationJob.perform_later(template_pdf.id)
+          redirect_to template_pdf_path(template_pdf),
+                     notice: "PDF generation queued! Position ##{template_pdf.queue_position} in queue."
+        rescue => e
+          template_pdf.update!(status: "failed", error_message: e.message)
+          redirect_to template_path(@template),
+                     alert: "Failed to queue PDF generation: #{e.message}"
+        end
+      }
     end
   end
 

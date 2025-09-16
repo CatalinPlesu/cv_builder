@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :templates
+  resources :templates do
+    member do
+      get :pdf_status
+    end
+  end
   resources :cv_headings, only: [] do
     collection do
       get :edit
@@ -10,6 +14,12 @@ Rails.application.routes.draw do
       collection do
         patch :reorder
       end
+    end
+  end
+
+  resources :template_pdfs, only: [ :index, :show, :destroy ] do
+    member do
+      get :download
     end
   end
 
