@@ -9,19 +9,6 @@
 
       <%= form_with url: upsert_projects_path, method: :put, local: true, html: { id: "projects-edit-form", class: "p-6 space-y-6" } do |form| %>
 
-        <!-- Info Box -->
-        <div class="bg-purple-50 border-l-4 border-purple-400 p-4 rounded-r-lg">
-          <div class="flex items-start">
-            <div class="flex-shrink-0">
-              <i class="fas fa-info-circle text-purple-600 mt-0.5"></i>
-            </div>
-            <div class="ml-3">
-              <p class="text-sm text-purple-800 font-medium">Project Entries</p>
-              <p class="text-xs text-purple-600 mt-1">Add, remove, and reorder your projects</p>
-            </div>
-          </div>
-        </div>
-
         <!-- Projects Items Section -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
