@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  resources :cv_data, only: [] do
+    collection do
+      get "export"
+      get "import", to: "cv_data#new_import", as: "new_import"
+      post "import"
+      post "import_json"
+      post "import_demo", to: "cv_data#import_demo"
+    end
+  end
   resources :templates do
     member do
       get :pdf_status

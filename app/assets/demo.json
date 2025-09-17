@@ -1,0 +1,558 @@
+{
+    "version": "1.0",
+    "exported_at": "2025-09-17T09:12:10Z",
+    "data": {
+		"heading": {
+			"full_name": "Joe Doe",
+			"items": [
+				{
+					"icon": "mobile",
+					"text": "+1 555 123 4567",
+					"url": "tel:+15551234567",
+					"position": 1
+				},
+				{
+					"icon": "at",
+					"text": "joe.doe@example.com",
+					"url": "mailto:joe.doe@example.com",
+					"position": 2
+				},
+				{
+					"icon": "linkedin-square",
+					"text": "LinkedIn",
+					"url": "https://www.linkedin.com/in/joedoe",
+					"position": 3
+				},
+				{
+					"icon": "camera",
+					"text": "GitHub",
+					"url": "https://github.com/joedoe",
+					"position": 4
+				},
+				{
+					"icon": "globe",
+					"text": "Portfolio",
+					"url": "https://joedoe.dev",
+					"position": 5
+				},
+				{
+					"icon": "map-marker",
+					"text": "Austin, TX",
+					"url": "",
+					"position": 6
+				}
+			]
+		},
+        "educations": [
+            {
+                "institution": "University of Texas at Austin",
+                "degree": "Master of Science in Computer Science",
+                "location": "Austin, TX",
+                "start_date": "2023-09-01",
+                "end_date": null,
+                "gpa": "",
+                "position": 1,
+                "bullets": [],
+                "tag_names": [
+                    "base"
+                ]
+            },
+            {
+                "institution": "University of Texas at Austin",
+                "degree": "Bachelor of Science in Software Engineering",
+                "location": "Austin, TX",
+                "start_date": "2019-09-01",
+                "end_date": "2023-05-15",
+                "gpa": "3.8/4.0",
+                "position": 2,
+                "bullets": [],
+                "tag_names": [
+                    "base"
+                ]
+            },
+            {
+                "institution": "TechStart Inc.",
+                "degree": "Summer Internship - Full Stack Development",
+                "location": "Remote",
+                "start_date": "2021-06-01",
+                "end_date": "2021-08-31",
+                "gpa": "",
+                "position": 3,
+                "bullets": [
+                    {
+                        "content": "Participated in a full-stack development internship, gaining experience with modern web frameworks and agile methodologies.",
+                        "position": 1
+                    },
+                    {
+                        "content": "Learned and applied containerization tools for development environments.",
+                        "position": 2
+                    }
+                ],
+                "tag_names": [
+                    "Web"
+                ]
+            }
+        ],
+        "experiences": [
+            {
+                "company": "CloudTech Solutions",
+                "position_title": "Software Development Engineer I",
+                "location": "Austin, TX",
+                "start_date": "2023-06-01",
+                "end_date": "2024-06-01",
+                "current": false,
+                "position": 1,
+                "bullets": [
+                    {
+                        "content": "Developed and maintained scalable microservices for cloud infrastructure management, adhering to industry best practices.",
+                        "position": 1,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "content": "Collaborated within Agile/Scrum teams, utilizing Jira for task tracking and Git for version control.",
+                        "position": 2,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "content": "Optimized existing codebases for performance and maintainability through refactoring and testing.",
+                        "position": 3,
+                        "tag_names": [
+                            "base"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "base"
+                ]
+            }
+        ],
+        "projects": [
+            {
+                "name": "EcoTrack Dashboard",
+                "link": "https://ecotrack.example.com",
+                "link_title": "Live",
+                "start_date": null,
+                "end_date": "2025-07-15",
+                "position": 1,
+                "bullets": [
+                    {
+                        "content": "Built a web dashboard for environmental data monitoring using a modern web framework (similar to Phoenix) leveraging MVC principles.",
+                        "position": 1,
+                        "tag_names": [
+                            "Web",
+                            "Back"
+                        ]
+                    },
+                    {
+                        "content": "Implemented database storage, caching mechanisms, data validation, and usage analytics.",
+                        "position": 2,
+                        "tag_names": [
+                            "Web",
+                            "Back"
+                        ]
+                    },
+                    {
+                        "content": "Integrated secure authentication for admin access and analytics tools for user behavior insights.",
+                        "position": 3,
+                        "tag_names": [
+                            "Web",
+                            "Back"
+                        ]
+                    },
+                    {
+                        "content": "Deployed on a cloud VPS using containerization and a reverse proxy for HTTPS.",
+                        "position": 4,
+                        "tag_names": [
+                            "Web",
+                            "Back"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "Web",
+                    "Back"
+                ]
+            },
+            {
+                "name": "CityJob Market Insights",
+                "link": "https://github.com/alexmorgan/job_insights",
+                "link_title": "GitHub",
+                "start_date": "2025-04-01",
+                "end_date": "2025-05-31",
+                "position": 2,
+                "bullets": [
+                    {
+                        "content": "Created a Python-based data pipeline to scrape, structure, and analyze local job market trends.",
+                        "position": 1,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    },
+                    {
+                        "content": "Used data analysis libraries for insights, JSON for data storage, and automated collection with system tasks.",
+                        "position": 2,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "Back"
+                ]
+            },
+            {
+                "name": "AdventureLog",
+                "link": "https://github.com/alexmorgan/AdventureLog",
+                "link_title": "GitHub",
+                "start_date": "2024-11-01",
+                "end_date": "2024-12-20",
+                "position": 3,
+                "bullets": [
+                    {
+                        "content": "Developed a full-stack application with a JavaScript frontend for creating interactive travel journals.",
+                        "position": 1,
+                        "tag_names": [
+                            "Web",
+                            "Back"
+                        ]
+                    },
+                    {
+                        "content": "Implemented client-side data storage, with plans to add user accounts and synchronization.",
+                        "position": 2,
+                        "tag_names": [
+                            "Web",
+                            "Back"
+                        ]
+                    },
+                    {
+                        "content": "Applied OOP principles and design patterns to create a maintainable codebase focused on usability.",
+                        "position": 3,
+                        "tag_names": [
+                            "Web",
+                            "Back"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "Web",
+                    "Back"
+                ]
+            },
+            {
+                "name": "LibraryHub",
+                "link": "https://github.com/alexmorgan/LibraryHub",
+                "link_title": "GitHub",
+                "start_date": "2021-09-01",
+                "end_date": "2021-12-15",
+                "position": 4,
+                "bullets": [
+                    {
+                        "content": "Built a library management system implementing CRUD operations and user authentication using a server-side language and framework.",
+                        "position": 1,
+                        "tag_names": []
+                    }
+                ],
+                "tag_names": [
+                    "Back"
+                ]
+            }
+        ],
+        "skill_categories": [
+            {
+                "name": "Programming",
+                "position": 1,
+                "skills": [
+                    {
+                        "name": "Python",
+                        "position": 1,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "JavaScript",
+                        "position": 2,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Java",
+                        "position": 3,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "C++",
+                        "position": 4,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "TypeScript",
+                        "position": 5,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Shell Scripting",
+                        "position": 6,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Go",
+                        "position": 7,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "C#",
+                        "position": 8,
+                        "tag_names": [
+                            "base"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "base"
+                ]
+            },
+            {
+                "name": "Backend & Web",
+                "position": 2,
+                "skills": [
+                    {
+                        "name": "REST APIs",
+                        "position": 1,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    },
+                    {
+                        "name": "PostgreSQL",
+                        "position": 2,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    },
+                    {
+                        "name": "Redis",
+                        "position": 3,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    },
+                    {
+                        "name": "Docker",
+                        "position": 4,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    },
+                    {
+                        "name": "Git",
+                        "position": 5,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "Back"
+                ]
+            },
+            {
+                "name": "DevOps",
+                "position": 3,
+                "skills": [
+                    {
+                        "name": "Cloud VPS",
+                        "position": 1,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    },
+                    {
+                        "name": "Docker",
+                        "position": 2,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    },
+                    {
+                        "name": "Nginx",
+                        "position": 3,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    },
+                    {
+                        "name": "Linux",
+                        "position": 4,
+                        "tag_names": [
+                            "Back"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "Back"
+                ]
+            },
+            {
+                "name": "Tools & Methodologies",
+                "position": 4,
+                "skills": [
+                    {
+                        "name": "Git",
+                        "position": 1,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Agile",
+                        "position": 2,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Debugging",
+                        "position": 3,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "OOP",
+                        "position": 4,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Design Patterns",
+                        "position": 5,
+                        "tag_names": [
+                            "base"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "base"
+                ]
+            },
+            {
+                "name": "Soft Skills",
+                "position": 5,
+                "skills": [
+                    {
+                        "name": "Fast Learner",
+                        "position": 1,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Problem-Solving",
+                        "position": 2,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Team Collaboration",
+                        "position": 3,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Attention to Detail",
+                        "position": 4,
+                        "tag_names": [
+                            "base"
+                        ]
+                    },
+                    {
+                        "name": "Adaptability",
+                        "position": 5,
+                        "tag_names": [
+                            "base"
+                        ]
+                    }
+                ],
+                "tag_names": [
+                    "base"
+                ]
+            }
+        ],
+        "tags": [
+            {
+                "name": "base",
+                "color": "#7f55ec",
+                "position": 1
+            },
+            {
+                "name": "Web",
+                "color": "#f3c92b",
+                "position": 2
+            },
+            {
+                "name": "Back",
+                "color": "#269a8e",
+                "position": 3
+            }
+        ],
+        "templates": [
+            {
+                "name": "Full Stack Engineer",
+                "tag_names": [
+                    "base",
+                    "Web",
+                    "Back"
+                ],
+                "section_names": [
+                    "education",
+                    "experience",
+                    "project",
+                    "skill"
+                ]
+            },
+            {
+                "name": "Backend Engineer",
+                "tag_names": [
+                    "base",
+                    "Back"
+                ],
+                "section_names": [
+                    "experience",
+                    "project",
+                    "skill"
+                ]
+            },
+            {
+                "name": "General",
+                "tag_names": [
+                    "base"
+                ],
+                "section_names": [
+                    "education",
+                    "experience",
+                    "project",
+                    "skill"
+                ]
+            }
+        ]
+    }
+}
