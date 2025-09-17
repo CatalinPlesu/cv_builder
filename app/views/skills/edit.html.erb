@@ -9,19 +9,6 @@
 
       <%= form_with url: upsert_skills_path, method: :put, local: true, html: { id: "skills-edit-form", class: "p-6 space-y-6" } do |form| %>
 
-        <!-- Info Box -->
-        <div class="bg-pink-50 border-l-4 border-pink-400 p-4 rounded-r-lg">
-          <div class="flex items-start">
-            <div class="flex-shrink-0">
-              <i class="fas fa-info-circle text-pink-600 mt-0.5"></i>
-            </div>
-            <div class="ml-3">
-              <p class="text-sm text-pink-800 font-medium">Skill Categories</p>
-              <p class="text-xs text-pink-600 mt-1">Add, remove, and reorder your skill categories and skills</p>
-            </div>
-          </div>
-        </div>
-
         <!-- Skill Categories Section -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
