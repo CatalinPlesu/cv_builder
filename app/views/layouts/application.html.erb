@@ -17,7 +17,6 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
@@ -73,7 +72,7 @@
       
       <div class="flex gap-4 items-center">
         <% if user_signed_in? %>
-          <%= link_to "Dashboard", dashboard_path, class: "no-underline bg-white bg-opacity-90 text-indigo-700 font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl hover:bg-opacity-100 transform hover:-translate-y-1 hover:scale-105 transition-all duration-200 backdrop-blur-sm" %>
+          <%= link_to "Dashboard", dashboard_path, class: "btn btn-error" %>
           <div class="glass-effect text-white font-medium px-4 py-2 rounded-lg shadow-lg">
             <span class="hero-text-shadow"><%= current_user.email %></span>
           </div>

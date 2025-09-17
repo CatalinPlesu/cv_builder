@@ -5,6 +5,7 @@
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
   },
   "devDependencies": {
+    "daisyui": "^5.1.12",
     "esbuild": "^0.19.0"
   }
 }
