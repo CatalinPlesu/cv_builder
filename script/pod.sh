@@ -21,7 +21,7 @@ podman run -d \
   --pod cv-builder-pod \
   --name cv_builder \
   --user "${UID:-1000}:${GID:-1000}" \
-  -v cv_builder_data:/app/storage \
+  -v cv_builder_data:/rails/storage \
   -e RAILS_ENV=production \
   -e RAILS_MASTER_KEY="${RAILS_MASTER_KEY}" \
   -e SECRET_KEY_BASE="${SECRET_KEY_BASE}" \
