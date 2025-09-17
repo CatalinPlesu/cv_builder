@@ -1,5 +1,12 @@
-<div class="min-h-screen bg-gray-50 py-8">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex min-h-screen bg-gray-50 py-8">
+  <!-- Sticky Sidebar -->
+  <div class="w-64 p-6 bg-white shadow-xl rounded-r-2xl flex flex-col space-y-4 sticky top-6 h-fit self-start mt-6 ml-6">
+    <%= link_to "← Back", master_cv_index_path, class: "px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition text-center border border-gray-200" %>
+    <%= button_tag "💾 Save Changes", form: "cv-edit-form", class: "px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition shadow-lg" %>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white shadow-xl rounded-lg overflow-hidden">
       <!-- Header -->
       <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
@@ -25,10 +32,10 @@
               <p class="text-sm text-blue-800 font-medium">Font Awesome Icons</p>
               <p class="text-xs text-blue-600 mt-1">
                 Icon names can be found at
-                <%= link_to "https://fontawesome.com/icons  ", "https://fontawesome.com/icons  ", 
+                <%= link_to "https://fontawesome.com/icons", "https://fontawesome.com/icons", 
                             class: "text-blue-600 hover:text-blue-800 hover:underline font-medium", 
                             target: "_blank" %>.
-                PDFLaTeX uses icons from <%= link_to "this document", "https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf  ", 
+                PDFLaTeX uses icons from <%= link_to "this document", "https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf", 
                                            class: "text-blue-600 hover:text-blue-800 hover:underline font-medium", 
                                            target: "_blank" %>.
               </p>
@@ -113,27 +120,26 @@
             <% end %>
           </div>
 
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-800"></h3>
+              <button type="button"
+                      id="add-item-button"
+                      class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                <i class="fas fa-plus mr-2"></i>
+                Add Item
+              </button>
+            </div>
+          </div>
 
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-gray-800"></h3>
-            <button type="button"
-                    id="add-item-button"
-                    class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
-              <i class="fas fa-plus mr-2"></i>
-              Add Item
-            </button>
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
+            <%= link_to "Cancel", master_cv_index_path,
+                        class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
+            <%= submit_tag "Save Changes",
+                           class: "flex-1 sm:flex-initial px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 cursor-pointer" %>
           </div>
         </div>
-
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
-          <%= link_to "Cancel", master_cv_index_path,
-                      class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
-          <%= submit_tag "Save Changes",
-                         class: "flex-1 sm:flex-initial px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 cursor-pointer" %>
-        </div>
-
       <% end %>
     </div>
   </div>

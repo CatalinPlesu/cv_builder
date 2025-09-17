@@ -1,5 +1,12 @@
-<div class="min-h-screen bg-gray-50 py-8">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex min-h-screen bg-gray-50 py-8">
+  <!-- Sticky Sidebar -->
+  <div class="w-64 p-6 bg-white shadow-xl rounded-r-2xl flex flex-col space-y-4 sticky top-6 h-fit self-start mt-6 ml-6">
+    <%= link_to "← Back", master_cv_index_path, class: "px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition text-center border border-gray-200" %>
+    <%= button_tag "💾 Save Projects", form: "projects-edit-form", class: "px-4 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-medium rounded-lg hover:from-purple-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition shadow-lg" %>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white shadow-xl rounded-lg overflow-hidden">
       <!-- Header -->
       <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-4">
