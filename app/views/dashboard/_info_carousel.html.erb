@@ -5,23 +5,29 @@
   <!-- Wrapper for carousel items -->
   <div id="carouselItems" class="carousel-items-container mb-12"> <!-- Added mb-12 for space below content -->
 
-    <!-- Item 1: Getting Started Tip 1 -->
-    <div class="carousel-item active">
-      <div class="flex flex-col items-center mb-4">
-        <div class="w-16 h-16 bg-green-200 rounded-full flex items-center justify-center mb-2">
-          <svg class="w-8 h-8 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-        </div>
-        <h3 class="text-lg font-semibold text-green-800 text-center">Getting Started - Step 1</h3>
+  <!-- Item 1: Getting Started Tip 1 (Updated with two options) -->
+  <div class="carousel-item active">
+    <div class="flex flex-col items-center mb-4">
+      <div class="w-16 h-16 bg-green-200 rounded-full flex items-center justify-center mb-2">
+        <svg class="w-8 h-8 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
       </div>
-      <p class="text-gray-700 text-sm mb-3 text-center">
-        <span class="font-medium">1.</span> Open your <strong>Master CV</strong> and start populating it with your data (Education, Projects, Experiences, Skills).
-      </p>
-      <div class="flex justify-center">
-        <%= link_to "Go to Master CV", master_cv_index_path, class: "inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition-colors shadow hover:shadow-md text-sm" %>
-      </div>
+      <h3 class="text-lg font-semibold text-green-800 text-center">Getting Started - Step 1</h3>
     </div>
+    <p class="text-gray-700 text-sm mb-3 text-center">
+      <span class="font-medium">1.</span> Start by either opening your existing <strong>Master CV</strong> to populate it with your data, or importing the demo data to see how it works.
+    </p>
+    <div class="flex flex-col sm:flex-row sm:justify-center gap-3"> <!-- Flex container for buttons -->
+      <%= link_to "Go to Master CV", master_cv_index_path, class: "inline-flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 transition-colors shadow hover:shadow-md text-sm" %>
+
+      <%= button_to 'Import Demo CV',
+          new_import_cv_data_path,
+          method: :get,
+          class: "inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors shadow hover:shadow-md text-sm",
+          data: { confirm: 'This will replace all your current CV data with demo data. Are you sure?' } %>
+    </div>
+  </div>
 
     <!-- Item 2: Getting Started Tip 2 (formerly 2a) - Edit/Create Tags -->
     <div class="carousel-item hidden">
