@@ -1,344 +1,244 @@
-<style>
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-    }
-    @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
-        50% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.6); }
-    }
-    @keyframes slide-up {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes sparkle {
-        0%, 100% { opacity: 0; transform: scale(0); }
-        50% { opacity: 1; transform: scale(1); }
-    }
-    @keyframes typewriter {
-        from { width: 0; }
-        to { width: 100%; }
-    }
-    .float-animation { animation: float 3s ease-in-out infinite; }
-    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-    .slide-up { animation: slide-up 0.8s ease-out forwards; }
-    .sparkle { animation: sparkle 2s ease-in-out infinite; }
-    .gradient-bg {
-        background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 25%, #7c3aed 50%, #be185d 75%, #dc2626 100%);
-        background-size: 200% 200%;
-        animation: gradientShift 8s ease infinite;
-    }
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    .glass-effect {
-        backdrop-filter: blur(16px);
-        background: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-    .hero-text-shadow {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-    .github-star {
-        background: linear-gradient(45deg, #ffd700, #ffed4e);
-        animation: sparkle 2s ease-in-out infinite;
-    }
-</style>
-
 <!-- Hero Section -->
-<div class="relative overflow-hidden gradient-bg min-h-screen flex items-center">
-    <!-- Enhanced background decorative elements -->
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute -top-40 -right-32 w-96 h-96 bg-yellow-400 bg-opacity-20 rounded-full blur-3xl float-animation"></div>
-        <div class="absolute -bottom-40 -left-32 w-96 h-96 bg-pink-400 bg-opacity-20 rounded-full blur-3xl float-animation" style="animation-delay: -1s;"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-300 bg-opacity-15 rounded-full blur-2xl float-animation" style="animation-delay: -2s;"></div>
-        <!-- Sparkle elements -->
-        <div class="absolute top-20 left-20 w-2 h-2 bg-white rounded-full sparkle"></div>
-        <div class="absolute top-40 right-40 w-1 h-1 bg-yellow-300 rounded-full sparkle" style="animation-delay: 0.5s;"></div>
-        <div class="absolute bottom-32 left-1/3 w-1.5 h-1.5 bg-pink-300 rounded-full sparkle" style="animation-delay: 1s;"></div>
-    </div>
-
-    <div class="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-24 w-full">
-        <div class="mx-auto max-w-5xl text-center">
-            <!-- GitHub Badge -->
-            <div class="slide-up mb-8">
-                <a href="https://github.com/catalinPlesu/cv_builder" target="_blank" class="inline-flex items-center px-6 py-2 bg-gray-900 bg-opacity-80 text-white text-sm font-medium rounded-full hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
-                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span class="github-star mr-1">⭐</span>
-                    Open Source on GitHub
-                </a>
+<div class="hero min-h-screen bg-gradient-to-br from-primary-500 via-primary-600 to-indigo-800">
+    <div class="hero-content text-center text-neutral-content flex flex-col">
+        <!-- GitHub Badge -->
+        <div class="mb-8 animate-bounce">
+            <a href="https://github.com/catalinPlesu/cv_builder" target="_blank" class="btn btn-primary btn-outline btn-sm glass rounded-full">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"></path>
+                </svg>
+                ⭐ Open Source on GitHub
+            </a>
+        </div>
+        <!-- Main Heading -->
+        <div class="max-w-2xl mb-12">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in-down">
+                Smart
+                <span class="bg-gradient-to-r from-yellow-300 to-pink-300 text-transparent bg-clip-text">
+                    CV Builder
+                </span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-4">One master CV, infinite targeted resumes</p>
+            <div class="text-lg opacity-90">
+                <span class="badge badge-primary badge-lg mr-2">🚀 Free Portfolio Project</span>
+                <span class="badge badge-secondary badge-lg mr-2">No Ads</span>
+                <span class="badge badge-accent badge-lg">Built with ❤️ by Catalin</span>
             </div>
-
-            <!-- Main Heading -->
-            <div class="slide-up">
-                <h1 class="text-6xl font-black text-white sm:text-7xl lg:text-8xl hero-text-shadow">
-                    Smart 
-                    <span class="bg-gradient-to-r from-yellow-300 via-pink-300 to-cyan-300 bg-clip-text text-transparent">
-                        CV Builder
-                    </span>
-                </h1>
-                <p class="mt-8 text-2xl text-white sm:text-3xl lg:text-4xl font-light hero-text-shadow">
-                    One master CV, infinite targeted resumes
-                </p>
-                <div class="mt-6 text-lg text-yellow-100 hero-text-shadow">
-                    <span class="inline-flex items-center">
-                        🚀 Free Portfolio Project • No Ads • No BS 
-                        <span class="mx-2">•</span>
-                        Built with ❤️ by Catalin
-                    </span>
+        </div>
+        <!-- Enhanced Visual CV Cards -->
+        <div class="mt-8 flex flex-wrap justify-center gap-6">
+            <div class="card glass w-72 shadow-2xl transform hover:scale-105 transition-transform duration-300 hover:shadow-primary/30">
+                <div class="card-body">
+                    <h2 class="card-title text-white">Frontend Developer</h2>
+                    <div class="space-y-2 my-4">
+                        <div class="skeleton h-3 w-full"></div>
+                        <div class="skeleton h-3 w-3/4"></div>
+                        <div class="skeleton h-3 w-1/2"></div>
+                    </div>
+                    <div class="card-actions justify-start">
+                        <div class="badge badge-primary">React</div>
+                        <div class="badge badge-secondary">CSS3</div>
+                        <div class="badge badge-accent">JS</div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Enhanced Visual CV Cards Animation -->
-            <div class="mt-20 relative">
-                <div class="flex justify-center items-center space-x-6">
-                    <div class="glass-effect rounded-xl p-6 w-72 h-96 transform rotate-12 hover:rotate-6 transition-all duration-500 slide-up shadow-2xl" style="animation-delay: 0.2s;">
-                        <div class="text-white text-lg font-bold mb-6 hero-text-shadow">Frontend Developer</div>
-                        <div class="space-y-4">
-                            <div class="h-3 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full shadow-lg"></div>
-                            <div class="h-3 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full w-3/4 shadow-lg"></div>
-                            <div class="h-3 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full w-1/2 shadow-lg"></div>
-                        </div>
-                        <div class="mt-6 flex flex-wrap gap-2">
-                            <span class="px-3 py-2 bg-blue-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">React</span>
-                            <span class="px-3 py-2 bg-green-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">CSS3</span>
-                            <span class="px-3 py-2 bg-yellow-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">JS</span>
-                        </div>
+            <div class="card glass w-72 shadow-2xl shadow-primary/30 transform hover:scale-105 transition-transform duration-300">
+                <div class="card-body">
+                    <h2 class="card-title text-white">Full Stack Developer</h2>
+                    <div class="space-y-2 my-4">
+                        <div class="skeleton h-3 w-full"></div>
+                        <div class="skeleton h-3 w-5/6"></div>
+                        <div class="skeleton h-3 w-2/3"></div>
+                        <div class="skeleton h-3 w-3/4"></div>
                     </div>
-
-                    <div class="glass-effect rounded-xl p-6 w-72 h-96 transform -rotate-6 hover:rotate-0 transition-all duration-500 slide-up pulse-glow z-10 shadow-2xl" style="animation-delay: 0.4s;">
-                        <div class="text-white text-lg font-bold mb-6 hero-text-shadow">Full Stack Developer</div>
-                        <div class="space-y-4">
-                            <div class="h-3 bg-gradient-to-r from-orange-400 to-red-400 rounded-full shadow-lg"></div>
-                            <div class="h-3 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full w-5/6 shadow-lg"></div>
-                            <div class="h-3 bg-gradient-to-r from-pink-400 to-rose-400 rounded-full w-2/3 shadow-lg"></div>
-                            <div class="h-3 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full w-3/4 shadow-lg"></div>
-                        </div>
-                        <div class="mt-6 flex flex-wrap gap-2">
-                            <span class="px-3 py-2 bg-red-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">Ruby</span>
-                            <span class="px-3 py-2 bg-indigo-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">Rails</span>
-                            <span class="px-3 py-2 bg-green-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">Node</span>
-                        </div>
+                    <div class="card-actions justify-start">
+                        <div class="badge badge-primary">Ruby</div>
+                        <div class="badge badge-secondary">Rails</div>
+                        <div class="badge badge-accent">Node</div>
                     </div>
-
-                    <div class="glass-effect rounded-xl p-6 w-72 h-96 transform rotate-12 hover:rotate-6 transition-all duration-500 slide-up shadow-2xl" style="animation-delay: 0.6s;">
-                        <div class="text-white text-lg font-bold mb-6 hero-text-shadow">Backend Developer</div>
-                        <div class="space-y-4">
-                            <div class="h-3 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full shadow-lg"></div>
-                            <div class="h-3 bg-gradient-to-r from-red-400 to-pink-400 rounded-full w-4/5 shadow-lg"></div>
-                            <div class="h-3 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full w-3/5 shadow-lg"></div>
-                        </div>
-                        <div class="mt-6 flex flex-wrap gap-2">
-                            <span class="px-3 py-2 bg-purple-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">APIs</span>
-                            <span class="px-3 py-2 bg-orange-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">SQL</span>
-                            <span class="px-3 py-2 bg-blue-500 bg-opacity-90 text-white text-sm rounded-full font-medium shadow-lg">Docker</span>
-                        </div>
+                </div>
+            </div>
+            <div class="card glass w-72 shadow-2xl transform hover:scale-105 transition-transform duration-300 hover:shadow-primary/30">
+                <div class="card-body">
+                    <h2 class="card-title text-white">Backend Developer</h2>
+                    <div class="space-y-2 my-4">
+                        <div class="skeleton h-3 w-full"></div>
+                        <div class="skeleton h-3 w-4/5"></div>
+                        <div class="skeleton h-3 w-3/5"></div>
+                    </div>
+                    <div class="card-actions justify-start">
+                        <div class="badge badge-primary">APIs</div>
+                        <div class="badge badge-secondary">SQL</div>
+                        <div class="badge badge-accent">Docker</div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Scroll indicator -->
+        <div class="mt-16 animate-bounce">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
     </div>
 </div>
-
 <!-- Problem & Solution Section -->
-<div class="bg-white">
-    <div class="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+<div class="py-24 bg-base-100">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center mb-16">From CV Chaos to <span class="text-primary">Clarity</span></h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <!-- Problem -->
-            <div class="slide-up">
-                <div class="flex items-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-600 rounded-xl flex items-center justify-center mr-6 shadow-lg">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
+            <div class="card shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <div class="card-body">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-error rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-error-content" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="card-title text-3xl text-error">The Struggle</h2>
                     </div>
-                    <h2 class="text-5xl font-bold text-gray-900">The Struggle</h2>
-                </div>
-                <div class="bg-gradient-to-r from-red-50 to-pink-50 border-l-4 border-red-400 p-8 rounded-r-xl shadow-lg">
-                    <p class="text-xl text-red-800 leading-relaxed mb-6">
+                    <p class="text-lg mb-6 text-base-content">
                         Crafting the perfect CV for every job application is exhausting. You end up with dozens of Word documents, constant copy-pasting, and that sinking feeling you sent the wrong version to your dream job.
                     </p>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="px-4 py-2 bg-red-200 text-red-800 font-medium rounded-full">😤 Version Hell</span>
-                        <span class="px-4 py-2 bg-red-200 text-red-800 font-medium rounded-full">⏰ Hours Wasted</span>
-                        <span class="px-4 py-2 bg-red-200 text-red-800 font-medium rounded-full">😱 Wrong CV Sent</span>
+                    <div class="card-actions justify-start">
+                        <div class="badge badge-error gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Version Hell
+                        </div>
+                        <div class="badge badge-error gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Hours Wasted
+                        </div>
+                        <div class="badge badge-error gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Wrong CV Sent
+                        </div>
                     </div>
                 </div>
             </div>
-
             <!-- Solution -->
-            <div class="slide-up" style="animation-delay: 0.2s;">
-                <div class="flex items-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-6 shadow-lg">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
+            <div class="card shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <div class="card-body">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-success rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-success-content" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="card-title text-3xl text-success">The Magic</h2>
                     </div>
-                    <h2 class="text-5xl font-bold text-gray-900">The Magic</h2>
-                </div>
-                <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-400 p-8 rounded-r-xl shadow-lg">
-                    <p class="text-xl text-green-800 leading-relaxed mb-6">
+                    <p class="text-lg mb-6 text-base-content">
                         Build your ultimate master CV once. Tag every experience, skill, and achievement. Then generate laser-focused resumes in seconds by simply selecting the relevant tags. It's like magic, but better!
                     </p>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="px-4 py-2 bg-green-200 text-green-800 font-medium rounded-full">✨ One Master CV</span>
-                        <span class="px-4 py-2 bg-green-200 text-green-800 font-medium rounded-full">🏷️ Smart Tagging</span>
-                        <span class="px-4 py-2 bg-green-200 text-green-800 font-medium rounded-full">⚡ Instant Results</span>
+                    <div class="card-actions justify-start">
+                        <div class="badge badge-success gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            One Master CV
+                        </div>
+                        <div class="badge badge-success gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                            Smart Tagging
+                        </div>
+                        <div class="badge badge-success gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            Instant Results
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Enhanced How It Works -->
-<div class="gradient-bg">
-    <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div class="text-center mb-20 slide-up">
-            <h2 class="text-5xl font-bold text-white sm:text-6xl hero-text-shadow mb-6">How The Magic Works</h2>
-            <p class="text-2xl text-white opacity-90 hero-text-shadow">Four steps to CV domination</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Step 1 -->
-            <div class="text-center slide-up group" style="animation-delay: 0.1s;">
-                <div class="glass-effect rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-8 text-3xl font-bold text-white shadow-xl group-hover:scale-110 transition-all duration-300">1</div>
-                <div class="glass-effect rounded-xl p-8 h-full group-hover:scale-105 transition-all duration-300 shadow-xl">
-                    <div class="text-4xl mb-4">📝</div>
-                    <h3 class="text-xl font-bold text-white mb-4 hero-text-shadow">Load Everything</h3>
-                    <p class="text-white opacity-90 text-base leading-relaxed">Dump all your experiences, projects, skills, and achievements into your master CV. Don't hold back - include everything!</p>
-                </div>
+<!-- How It Works Section -->
+<div class="hero min-h-screen bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-900">
+    <div class="hero-content text-center text-neutral-content">
+        <div class="max-w-5xl">
+            <div class="max-w-3xl mx-auto mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">How The Magic Works</h2>
+                <p class="text-xl opacity-90">Four steps to CV domination</p>
             </div>
-
-            <!-- Step 2 -->
-            <div class="text-center slide-up group" style="animation-delay: 0.2s;">
-                <div class="glass-effect rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-8 text-3xl font-bold text-white shadow-xl group-hover:scale-110 transition-all duration-300">2</div>
-                <div class="glass-effect rounded-xl p-8 h-full group-hover:scale-105 transition-all duration-300 shadow-xl">
-                    <div class="text-4xl mb-4">🏷️</div>
-                    <h3 class="text-xl font-bold text-white mb-4 hero-text-shadow">Tag Like a Pro</h3>
-                    <p class="text-white opacity-90 text-base leading-relaxed mb-4">Organize everything with tags</p>
-                    <div class="flex flex-wrap gap-2 justify-center">
-                        <span class="px-3 py-1 bg-blue-500 bg-opacity-80 text-white text-xs rounded-full font-medium shadow-lg">frontend</span>
-                        <span class="px-3 py-1 bg-green-500 bg-opacity-80 text-white text-xs rounded-full font-medium shadow-lg">python</span>
-                        <span class="px-3 py-1 bg-purple-500 bg-opacity-80 text-white text-xs rounded-full font-medium shadow-lg">leadership</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="card glass w-64 shadow-xl transform hover:scale-105 transition-transform duration-300">
+                    <figure class="px-10 pt-10">
+                        <div class="text-5xl mb-4">📝</div>
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h3 class="card-title mb-2">1. Load Everything</h3>
+                        <p class="text-sm opacity-90">Dump all your experiences, projects, skills, and achievements into your master CV. Don't hold back - include everything!</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="text-center slide-up group" style="animation-delay: 0.3s;">
-                <div class="glass-effect rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-8 text-3xl font-bold text-white shadow-xl group-hover:scale-110 transition-all duration-300">3</div>
-                <div class="glass-effect rounded-xl p-8 h-full group-hover:scale-105 transition-all duration-300 shadow-xl">
-                    <div class="text-4xl mb-4">🎯</div>
-                    <h3 class="text-xl font-bold text-white mb-4 hero-text-shadow">Target & Filter</h3>
-                    <p class="text-white opacity-90 text-base leading-relaxed">Frontend role? Select frontend tags. Backend position? Pick backend tags. Watch your CV transform instantly!</p>
+                <!-- Step 2 -->
+                <div class="card glass w-64 shadow-xl transform hover:scale-105 transition-transform duration-300">
+                    <figure class="px-10 pt-10">
+                        <div class="text-5xl mb-4">🏷️</div>
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h3 class="card-title mb-2">2. Tag Like a Pro</h3>
+                        <p class="text-sm opacity-90 mb-4">Organize everything with tags</p>
+                        <div class="card-actions justify-center">
+                            <div class="badge badge-primary">frontend</div>
+                            <div class="badge badge-secondary">python</div>
+                            <div class="badge badge-accent">leadership</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Step 4 -->
-            <div class="text-center slide-up group" style="animation-delay: 0.4s;">
-                <div class="glass-effect rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-8 text-3xl font-bold text-white shadow-xl group-hover:scale-110 transition-all duration-300">4</div>
-                <div class="glass-effect rounded-xl p-8 h-full group-hover:scale-105 transition-all duration-300 shadow-xl">
-                    <div class="text-4xl mb-4">📄</div>
-                    <h3 class="text-xl font-bold text-white mb-4 hero-text-shadow">Export Perfection</h3>
-                    <p class="text-white opacity-90 text-base leading-relaxed">Get a stunning, ATS-friendly PDF that'll make recruiters stop scrolling and start calling.</p>
+                <!-- Step 3 -->
+                <div class="card glass w-64 shadow-xl transform hover:scale-105 transition-transform duration-300">
+                    <figure class="px-10 pt-10">
+                        <div class="text-5xl mb-4">🎯</div>
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h3 class="card-title mb-2">3. Target & Filter</h3>
+                        <p class="text-sm opacity-90">Frontend role? Select frontend tags. Backend position? Pick backend tags. Watch your CV transform instantly!</p>
+                    </div>
+                </div>
+                <!-- Step 4 -->
+                <div class="card glass w-64 shadow-xl transform hover:scale-105 transition-transform duration-300">
+                    <figure class="px-10 pt-10">
+                        <div class="text-5xl mb-4">📄</div>
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h3 class="card-title mb-2">4. Export Perfection</h3>
+                        <p class="text-sm opacity-90">Get a stunning, ATS-friendly PDF that'll make recruiters stop scrolling and start calling.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <!-- CTA Section -->
-<div class="bg-white">
-    <div class="mx-auto max-w-5xl px-4 py-24 sm:px-6 lg:px-8 text-center">
-        <div class="slide-up">
-            <h2 class="text-5xl font-bold text-gray-900 sm:text-6xl mb-8">
-                Ready to end CV chaos forever?
-            </h2>
-            <p class="text-2xl text-gray-600 mb-6">
-                This is a passion project built to solve a real problem I faced
-            </p>
-            <p class="text-lg text-gray-500 mb-12">
-                💯 Completely free • 🚫 No ads • 📖 Open source • 🎯 Portfolio project by a fellow developer
-            </p>
-            
-            <!-- Large CTA Button -->
-            <div class="relative inline-block mb-8">
-                <div class="absolute -inset-2 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-                <a href="#" class="relative inline-flex items-center justify-center px-16 py-6 text-2xl font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 rounded-xl hover:from-purple-700 hover:via-indigo-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-2xl">
-                    <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7"></path>
-                    </svg>
-                    Try It Now - It's Free Forever!
-                </a>
-            </div>
-            
-            <div class="text-center">
-                <p class="text-lg text-gray-500 mb-4">
-                    ⚡ Setup in under 2 minutes • 👨‍💻 Made with love
-                </p>
-                <a href="https://github.com/catalinPlesu/cv_builder" target="_blank" class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"></path>
-                    </svg>
-                    Check out the code on GitHub →
-                </a>
-            </div>
+<div class="py-24 bg-base-100">
+    <div class="container mx-auto px-4 text-center max-w-4xl">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to end CV chaos forever?</h2>
+        <p class="text-xl mb-4 text-base-content opacity-80">This is a passion project built to solve a real problem I faced</p>
+        <p class="text-lg mb-8 text-base-content opacity-70">
+            <span class="badge badge-primary badge-lg mr-2">💯 Completely free</span>
+            <span class="badge badge-secondary badge-lg mr-2">🚫 No ads</span>
+            <span class="badge badge-accent badge-lg mr-2">📖 Open source</span>
+            <span class="badge badge-neutral badge-lg">🎯 Portfolio project</span>
+        </p>
+        <div class="mb-8">
+            <%= link_to "Get Started Free", new_user_registration_path, class: "no-underline bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-black py-4 px-10 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-200 text-xl" %>
         </div>
+        <p class="text-lg mb-4 text-base-content opacity-70">
+            ⚡ Setup in under 2 minutes • 👨‍💻 Made with love
+        </p>
+        <a href="https://github.com/catalinPlesu/cv_builder" target="_blank" class="link link-primary text-lg">
+            Check out the code on GitHub →
+        </a>
     </div>
 </div>
-
-<script>
-    // Enhanced scroll-triggered animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.slide-up').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(50px)';
-        el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-        observer.observe(el);
-    });
-
-    // Enhanced hover effects for CV cards with 3D transforms
-    document.querySelectorAll('.glass-effect').forEach((card, index) => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform += ' translateZ(20px) scale(1.05)';
-            card.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.2)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = card.style.transform.replace(' translateZ(20px) scale(1.05)', '');
-            card.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
-        });
-    });
-
-    // Add subtle parallax effect to floating elements
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const parallaxElements = document.querySelectorAll('.float-animation');
-        const speed = 0.5;
-        
-        parallaxElements.forEach((element, index) => {
-            const yPos = -(scrolled * speed * (index + 1) * 0.3);
-            element.style.transform += ` translateY(${yPos}px)`;
-        });
-    });
-</script>
