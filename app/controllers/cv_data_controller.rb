@@ -33,7 +33,7 @@ class CvDataController < ApplicationController
       service = CvDataService.new(current_user)
 
       if service.import(json_content)
-        redirect_to root_path, notice: "CV data imported successfully!"
+        redirect_to dashboard_path, notice: "CV data imported successfully!"
       else
         redirect_to new_import_cv_data_path, alert: "Import failed. Please check your file format."
       end
@@ -52,7 +52,7 @@ class CvDataController < ApplicationController
       service = CvDataService.new(current_user)
 
       if service.import(json_content)
-        redirect_to root_path, notice: "Demo CV data imported successfully!"
+        redirect_to dashboard_path, notice: "Demo CV data imported successfully!"
       else
         redirect_to new_import_cv_data_path, alert: "Demo import failed."
       end
