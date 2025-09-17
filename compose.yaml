@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   web:
+    container_name: cv_builder
     image: cv_builder
     ports:
       - "127.0.0.1:3000:3000"
@@ -9,6 +10,7 @@ services:
     environment:
       - RAILS_ENV=production
       - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - BIND=0.0.0.0
       # Optional: set this if you want to use an external LaTeX service
       # - LATEX_SERVICE_URL=https://your-external-latex-service.com
@@ -17,6 +19,7 @@ services:
     user: "${UID:-1000}:${GID:-1000}" 
     
   latex-service:
+    container_name: latex-compiler
     image: latex-compiler
     ports:
       - "3001:3001"  # Expose port for the HTTP server
@@ -24,3 +27,4 @@ services:
     
 volumes:
   rails_storage:
+    name: cv_builder_data
