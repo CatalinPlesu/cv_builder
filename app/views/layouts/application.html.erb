@@ -25,6 +25,15 @@
     <%= javascript_importmap_tags %>
   </head>
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LX6C05528M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LX6C05528M');
+</script>
+
   <body>
   <div id="flash-container" class="fixed top-4 right-4 z-50 space-y-2">
     <% if notice %>
