@@ -33,14 +33,14 @@
   gtag('config', 'G-LX6C05528M');
 </script>
 
-<body>
+<body class="bg-white text-gray-800">
   <!-- Flash Messages -->
   <div id="flash-container" class="fixed top-4 right-4 z-50 space-y-2">
     <% if notice %>
-      <div class="flash-notice bg-white border-l-4 border-primary-500 text-primary-900 p-4 rounded-lg shadow-lg max-w-md animate-fade-in cursor-pointer">
+      <div class="flash-notice bg-white border-l-4 border-blue-500 text-gray-700 p-4 rounded shadow-lg max-w-md animate-fade-in cursor-pointer">
         <div class="flex items-center justify-between">
           <p class="font-medium"><%= notice %></p>
-          <span class="ml-4 text-primary-600 hover:text-primary-800">
+          <span class="ml-4 text-gray-500 hover:text-gray-700">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -49,10 +49,10 @@
       </div>
     <% end %>
     <% if alert %>
-      <div class="flash-alert bg-white border-l-4 border-error-500 text-error-900 p-4 rounded-lg shadow-lg max-w-md animate-fade-in cursor-pointer">
+      <div class="flash-alert bg-white border-l-4 border-red-500 text-gray-700 p-4 rounded shadow-lg max-w-md animate-fade-in cursor-pointer">
         <div class="flex items-center justify-between">
           <p class="font-medium"><%= alert %></p>
-          <span class="ml-4 text-error-600 hover:text-error-800">
+          <span class="ml-4 text-gray-500 hover:text-gray-700">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -63,63 +63,63 @@
   </div>
 
   <!-- Navigation -->
-  <nav class="flex justify-between items-center py-4 px-8 bg-gradient-to-br from-primary-500 via-primary-600 to-indigo-800 shadow-xl">
-    <%= link_to root_path, class: "no-underline group" do %>
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-gradient-to-br from-yellow-300 to-pink-300 rounded-lg flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
-          <span class="text-white font-black text-lg">CV</span>
+  <nav class="border-b border-gray-200 py-4 px-6">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <%= link_to root_path, class: "no-underline flex items-center space-x-3 group" do %>
+        <div class="w-8 h-8 bg-black rounded flex items-center justify-center">
+          <span class="text-white font-bold text-sm">CV</span>
         </div>
-        <span class="text-3xl font-black tracking-tight text-white group-hover:text-yellow-200 transition-colors duration-300">
+        <span class="text-xl font-bold tracking-tight text-gray-900 group-hover:text-gray-600 transition-colors">
           Smart CV Builder
         </span>
-      </div>
-    <% end %>
-    <div class="flex gap-4 items-center">
-      <% if user_signed_in? %>
-        <%= link_to "Dashboard", dashboard_path, class: "btn btn-primary btn-outline text-white border-white hover:bg-white hover:text-primary-600" %>
-        <div class="glass text-white font-medium px-4 py-2 rounded-lg shadow-lg">
-          <span><%= current_user.email %></span>
-        </div>
-        <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "no-underline bg-gradient-to-r from-primary-600 to-indigo-700 hover:from-primary-700 hover:to-indigo-800 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-200" %>
-      <% else %>
-        <%= link_to "Login", new_user_session_path, class:"no-underline glass border-2 border-white border-opacity-50 text-white font-bold py-3 px-6 rounded-xl hover:bg-white hover:bg-opacity-20 hover:border-opacity-80 transform hover:scale-105 transition-all duration-200" %>
-        <%= link_to "Get Started Free", new_user_registration_path, class:"no-underline bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-black py-4 px-10 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-200 text-xl" %>
       <% end %>
+      <div class="flex gap-4 items-center">
+        <% if user_signed_in? %>
+          <%= link_to "Dashboard", dashboard_path, class: "text-gray-700 hover:text-gray-900 font-medium" %>
+          <span class="text-gray-500 text-sm"><%= current_user.email %></span>
+          <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "text-gray-700 hover:text-gray-900 text-sm font-medium" %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "text-gray-700 hover:text-gray-900 font-medium" %>
+          <%= link_to "Get Started", new_user_registration_path, class: "bg-black text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition" %>
+        <% end %>
+      </div>
     </div>
   </nav>
 
   <%= yield %>
 
   <!-- Footer -->
-  <footer class="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-8 px-6 mt-12">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div>
-        <h3 class="text-xl font-bold mb-4">Smart CV Builder</h3>
-        <p class="text-gray-400">
-          Build professional, customizable CVs with ease. Export clean, typeset PDFs using LaTeX.
-        </p>
+  <footer class="border-t border-gray-200 py-8 px-6 mt-12">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+        <div>
+          <h3 class="font-bold mb-3">Smart CV Builder</h3>
+          <p class="text-gray-600">
+            Build professional, customizable CVs with ease. Export clean, typeset PDFs using LaTeX.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold mb-3">Resources</h3>
+          <ul class="space-y-2 text-gray-600">
+            <li><%= link_to "GitHub Repository", "https://github.com/CatalinPlesu/cv_builder", target: "_blank", class: "hover:text-gray-900 transition" %></li>
+            <li><%= link_to "Docker LaTeX Compiler", "https://github.com/CatalinPlesu/docker-CV", target: "_blank", class: "hover:text-gray-900 transition" %></li>
+            <li><%= link_to "Aras Güngöre's CV Template", "https://github.com/arasgungore/arasgungore-CV", target: "_blank", class: "hover:text-gray-900 transition" %></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold mb-3">Built With</h3>
+          <ul class="space-y-2 text-gray-600">
+            <li>Ruby on Rails</li>
+            <li>Tailwind CSS</li>
+            <li>LaTeX (via Docker)</li>
+            <li>Devise Authentication</li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Resources</h3>
-        <ul class="space-y-2 text-gray-400">
-          <li><%= link_to "GitHub Repository", "https://github.com/CatalinPlesu/cv_builder", target: "_blank", class: "hover:text-white transition" %></li>
-          <li><%= link_to "Docker LaTeX Compiler", "https://github.com/CatalinPlesu/docker-CV", target: "_blank", class: "hover:text-white transition" %></li>
-          <li><%= link_to "Aras Güngöre's CV Template", "https://github.com/arasgungore/arasgungore-CV", target: "_blank", class: "hover:text-white transition" %></li>
-        </ul>
+      <div class="mt-8 pt-6 border-t border-gray-200 text-center text-gray-500 text-xs">
+        <p class="mb-1">Special thanks to <a href="https://github.com/arasgungore/arasgungore-CV" target="_blank" class="text-gray-600 hover:text-gray-900 transition">Aras Güngöre</a> for his excellent LaTeX CV template.</p>
+        <p>&copy; <%= Date.current.year %> Smart CV Builder. All rights reserved.</p>
       </div>
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Built With</h3>
-        <ul class="space-y-2 text-gray-400">
-          <li>Ruby on Rails</li>
-          <li>Tailwind CSS</li>
-          <li>LaTeX (via Docker)</li>
-          <li>Devise Authentication</li>
-        </ul>
-      </div>
-    </div>
-    <div class="mt-8 pt-6 border-t border-gray-700 text-center text-gray-500 text-sm">
-      <p class="mb-2">Special thanks to <a href="https://github.com/arasgungore/arasgungore-CV" target="_blank" class="text-gray-400 hover:text-white transition">Aras Güngöre</a> for his excellent LaTeX CV template.</p>
-      <p>&copy; <%= Date.current.year %> Smart CV Builder. All rights reserved.</p>
     </div>
   </footer>
 </body>
