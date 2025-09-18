@@ -1,20 +1,26 @@
-<div class="border border-gray-200 rounded-xl p-4 transition-all duration-300 hover:shadow-lg hover:border-purple-300 flex flex-col sm:flex-row gap-4" 
+<div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border border-base-300" 
      id="template-card-<%= template.id %>">
-  <!-- Left Content -->
-  <div class="flex-1">
-    <div class="flex justify-between items-start mb-3">
-      <div>
-        <h3 class="font-semibold text-gray-800"><%= template.name %></h3>
-        <p class="text-gray-500 text-xs mt-1">
-          <%= template.tags.size %> tags, <%= template.sections.size %> sections
-        </p>
+  <div class="card-body p-6">
+    <!-- Header with title and stats -->
+    <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+      <div class="flex-1">
+        <h2 class="card-title text-2xl mb-2"><%= template.name %></h2>
+        <div class="flex gap-2 mb-3">
+          <div class="badge badge-primary badge-lg">
+            <%= template.tags.size %> tags
+          </div>
+          <div class="badge badge-secondary badge-lg">
+            <%= template.sections.size %> sections
+          </div>
+        </div>
+        
         <!-- PDF Status -->
         <div class="mt-2" id="pdf-status-<%= template.id %>">
           <% if template.template_pdf %>
             <% pdf = template.template_pdf %>
             <% case pdf.status %>
             <% when 'completed' %>
-              <div class="flex items-center gap-1.5 text-xs">
+              <div class="flex items-center gap-2 text-sm">
                 <div class="w-2 h-2 bg-green-500 rounded-full"></div>
                 <span class="text-green-600 font-medium">PDF Ready</span>
                 <span class="text-gray-400">•</span>
@@ -27,7 +33,7 @@
                 <% end %>
               </div>
             <% when 'processing' %>
-              <div class="flex items-center gap-1.5 text-xs">
+              <div class="flex items-center gap-2 text-sm">
                 <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                 <span class="text-blue-600 font-medium">Generating PDF...</span>
                 <% if pdf.started_at %>
@@ -38,7 +44,7 @@
                 <% end %>
               </div>
             <% when 'pending' %>
-              <div class="flex items-center gap-1.5 text-xs">
+              <div class="flex items-center gap-2 text-sm">
                 <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
                 <span class="text-yellow-600 font-medium">Queued for generation</span>
                 <span class="text-gray-400">•</span>
@@ -49,7 +55,7 @@
                 <% end %>
               </div>
             <% when 'failed' %>
-              <div class="flex items-center gap-1.5 text-xs">
+              <div class="flex items-center gap-2 text-sm">
                 <div class="w-2 h-2 bg-red-500 rounded-full"></div>
                 <span class="text-red-600 font-medium">Generation Failed</span>
                 <span class="text-gray-400">•</span>
@@ -59,104 +65,102 @@
               </div>
             <% end %>
           <% else %>
-            <div class="flex items-center gap-1.5 text-xs">
+            <div class="flex items-center gap-2 text-sm">
               <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
               <span class="text-gray-500">No PDF generated yet</span>
             </div>
           <% end %>
         </div>
       </div>
-    </div>
-  </div>
+      
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+        <!-- Primary Actions -->
+        <div class="flex flex-col gap-2">
+          <!-- Edit Button -->
+          <%= link_to '#',
+                      onclick: "openEditModal(#{template.id}, '#{j(template.name)}', #{template.tag_ids.to_json}, #{template.section_ids.to_json}); return false;",
+                      class: "btn btn-outline btn-sm gap-2" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+            Edit
+          <% end %>
 
-  <!-- Right - Action Buttons -->
-  <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-    <!-- Primary Actions Column -->
-    <div class="flex flex-col gap-2">
-      <!-- Edit Button -->
-      <!-- Kept as link_to because it triggers JS, not a direct server request -->
-      <%= link_to '#', # Doesn't navigate, JS handles the action
-                  onclick: "openEditModal(#{template.id}, '#{j(template.name)}', #{template.tag_ids.to_json}, #{template.section_ids.to_json}); return false;", # Prevent default link action
-                  class: "px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors flex items-center justify-center gap-2" do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2  0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-        </svg>
-        Edit
-      <% end %>
+          <!-- Delete Button -->
+          <%= button_to delete_template_path(template),
+                        method: :delete,
+                        form: { data: { turbo_confirm: 'Are you sure you want to delete this template?' } },
+                        class: "btn btn-outline btn-error btn-sm gap-2" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            Delete
+          <% end %>
+        </div>
 
-      <!-- Delete Button -->
-      <!-- Uses button_to for proper DELETE request -->
-      <%= button_to delete_template_path(template), # This resolves to the correct path for DELETE
-                    method: :delete, # Specifies the HTTP method
-                    form: { data: { turbo_confirm: 'Are you sure you want to delete this template?' } }, # Adds confirmation (Rails 7+ style, or use `confirm:` option for older versions/without Turbo)
-                    class: "px-3 py-2 bg-red-100 text-red-600 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors flex items-center justify-center gap-2 w-full" do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-        </svg>
-        Delete
-      <% end %>
-    </div>
+        <!-- Secondary Actions -->
+        <div class="flex flex-col gap-2">
+          <!-- Preview HTML Button -->
+          <%= link_to template_path(template),
+                     class: "btn btn-outline btn-success btn-sm gap-2",
+                     target: "_blank" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+            View HTML
+          <% end %>
 
-    <!-- Secondary Actions Column -->
-    <div class="flex flex-col gap-2">
-      <!-- Preview HTML Button -->
-      <%= link_to template_path(template),
-                 class: "px-3 py-2 bg-green-100 text-green-600 rounded-lg text-sm font-medium hover:bg-green-200 transition-colors flex items-center justify-center gap-2",
-                 target: "_blank" do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-        </svg>
-        Preview HTML
-      <% end %>
+          <!-- Preview TeX Button -->
+          <%= link_to template_path(template, format: :txt),
+                     class: "btn btn-outline btn-info btn-sm gap-2",
+                     target: "_blank" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            View TeX
+          <% end %>
 
-      <!-- Preview TeX Button - FIXED: Now uses .txt format for preview -->
-      <%= link_to template_path(template, format: :txt),
-                 class: "px-3 py-2 bg-purple-100 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-200 transition-colors flex items-center justify-center gap-2",
-                 target: "_blank" do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-        Preview TeX
-      <% end %>
-
-      <!-- Download TeX Button - Uses .tex format with download -->
-      <%= link_to template_path(template, format: :tex),
-                 class: "px-3 py-2 bg-indigo-100 text-indigo-600 rounded-lg text-sm font-medium hover:bg-indigo-200 transition-colors flex items-center justify-center gap-2",
-                 download: true do %>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-        Download .tex
-      <% end %>
-
-      <!-- PDF Actions -->
-      <div class="flex flex-col gap-1">
-        <!-- Preview PDF Button (RESTORED with correct syntax) -->
-        <% if template.template_pdf&.id %>
-          <%= link_to dashboard_preview_template_pdf_path(template.template_pdf),
-                      class: "px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg text-sm font-medium hover:bg-yellow-200 transition-colors flex items-center justify-center gap-2",
-                      target: "_blank" do %>
+          <!-- Download TeX Button -->
+          <%= link_to template_path(template, format: :tex),
+                     class: "btn btn-outline btn-primary btn-sm gap-2",
+                     download: true do %>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
-            View PDF
+            Download Tex
           <% end %>
-        <% else %>
-          <span class="px-3 py-2 bg-gray-100 text-gray-500 rounded-lg text-sm font-medium">
-            PDF not available
-          </span>
-        <% end %>
 
-        <!-- Generate PDF Button -->
-        <%= link_to '#',
-            onclick: "generatePDF(#{template.id}); return false;",
-            id: "generate-btn-#{template.id}",
-            class: "generate-pdf-btn px-3 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center justify-center gap-2" do %>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          Generate PDF
-        <% end %>
+          <!-- PDF Actions - This container needs a specific ID for JavaScript to target -->
+          <div class="flex flex-col gap-1" id="pdf-actions-<%= template.id %>">
+            <!-- Preview PDF Button -->
+            <% if template.template_pdf&.id %>
+              <%= link_to dashboard_preview_template_pdf_path(template.template_pdf),
+                          class: "btn btn-outline btn-warning btn-sm gap-2",
+                          target: "_blank" do %>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                View PDF
+              <% end %>
+            <% else %>
+              <span class="btn btn-outline btn-disabled btn-sm" id="pdf-placeholder-<%= template.id %>">
+                PDF not available
+              </span>
+            <% end %>
+
+            <!-- Generate PDF Button -->
+            <%= link_to '#',
+                onclick: "generatePDF(#{template.id}); return false;",
+                id: "generate-btn-#{template.id}",
+                class: "btn btn-outline btn-accent btn-sm gap-2" do %>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              Generate PDF
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -291,7 +295,7 @@ function updatePDFStatus(templateId, pdfData) {
     switch(pdfData.status) {
       case 'completed':
         statusHtml = `
-          <div class="flex items-center gap-1.5 text-xs">
+          <div class="flex items-center gap-2 text-sm">
             <div class="w-2 h-2 bg-green-500 rounded-full"></div>
             <span class="text-green-600 font-medium">PDF Ready</span>
             ${pdfData.completed_at ? `
@@ -304,7 +308,7 @@ function updatePDFStatus(templateId, pdfData) {
         break;
       case 'processing':
         statusHtml = `
-          <div class="flex items-center gap-1.5 text-xs">
+          <div class="flex items-center gap-2 text-sm">
             <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
             <span class="text-blue-600 font-medium">Generating PDF...</span>
             ${pdfData.started_at ? `<span class="text-gray-400">•</span><span class="text-gray-500">Started ${timeAgo(pdfData.started_at)} ago</span>` : ''}
@@ -313,7 +317,7 @@ function updatePDFStatus(templateId, pdfData) {
         break;
       case 'pending':
         statusHtml = `
-          <div class="flex items-center gap-1.5 text-xs">
+          <div class="flex items-center gap-2 text-sm">
             <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
             <span class="text-yellow-600 font-medium">Queued for generation</span>
             <span class="text-gray-400">•</span>
@@ -324,7 +328,7 @@ function updatePDFStatus(templateId, pdfData) {
         break;
       case 'failed':
         statusHtml = `
-          <div class="flex items-center gap-1.5 text-xs">
+          <div class="flex items-center gap-2 text-sm">
             <div class="w-2 h-2 bg-red-500 rounded-full"></div>
             <span class="text-red-600 font-medium">Generation Failed</span>
             <span class="text-gray-400">•</span>
@@ -334,7 +338,7 @@ function updatePDFStatus(templateId, pdfData) {
         break;
       default:
         statusHtml = `
-          <div class="flex items-center gap-1.5 text-xs">
+          <div class="flex items-center gap-2 text-sm">
             <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
             <span class="text-gray-500">No PDF generated yet</span>
           </div>
@@ -346,18 +350,16 @@ function updatePDFStatus(templateId, pdfData) {
 
 function updateViewPDFButton(templateId, pdfId) {
   // Find the PDF button container for this template
-  const card = document.getElementById(`template-card-${templateId}`);
-  if (!card) return;
+  const pdfActionsContainer = document.getElementById(`pdf-actions-${templateId}`);
+  if (!pdfActionsContainer) return;
   
-  const pdfButtonContainer = card.querySelector('.flex.flex-col.gap-1');
-  if (!pdfButtonContainer) return;
-  
-  // Replace the disabled button with an active View PDF link
-  const viewButton = pdfButtonContainer.querySelector('a[href*="preview_template_pdf"], span.bg-gray-100');
-  if (viewButton) {
+  // Check if there's a disabled placeholder button
+  const placeholderButton = document.getElementById(`pdf-placeholder-${templateId}`);
+  if (placeholderButton) {
+    // Replace the disabled button with an active View PDF link
     const newButton = document.createElement('a');
     newButton.href = `/dashboard/template_pdfs/${pdfId}/preview`;
-    newButton.className = 'px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg text-sm font-medium hover:bg-yellow-200 transition-colors flex items-center justify-center gap-2';
+    newButton.className = 'btn btn-outline btn-warning btn-sm gap-2';
     newButton.target = '_blank';
     newButton.innerHTML = `
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -365,11 +367,17 @@ function updateViewPDFButton(templateId, pdfId) {
       </svg>
       View PDF
     `;
-    viewButton.replaceWith(newButton);
+    placeholderButton.replaceWith(newButton);
+  } else {
+    // If there's already a View PDF button, just update its href
+    const existingButton = pdfActionsContainer.querySelector('a[href*="preview_template_pdf"]');
+    if (existingButton) {
+      existingButton.href = `/dashboard/template_pdfs/${pdfId}/preview`;
+    }
   }
 }
 
-// Helper functions (keep these as they are)
+// Helper functions
 function timeAgo(dateString) {
   const date = new Date(dateString);
   const now = new Date();
