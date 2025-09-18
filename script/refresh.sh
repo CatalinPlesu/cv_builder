@@ -1,3 +1,5 @@
+source .env
+
 podman image load --input cv_builder.image
 
 podman pod stop cv-builder-pod
