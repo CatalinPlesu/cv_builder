@@ -1,17 +1,17 @@
-<div class="flex min-h-screen bg-gray-50 py-8">
+<div class="flex min-h-screen bg-base-200 py-8">
   <!-- Sticky Sidebar -->
-  <div class="w-64 p-6 bg-white shadow-xl rounded-r-2xl flex flex-col space-y-4 sticky top-6 h-fit self-start mt-6 ml-6">
-    <%= link_to "← Back", master_cv_index_path, class: "px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition text-center border border-gray-200" %>
-    <%= button_tag "💾 Save Projects", form: "projects-edit-form", class: "px-4 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-medium rounded-lg hover:from-purple-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition shadow-lg" %>
+  <div class="w-64 p-6 bg-base-100 shadow-xl rounded-r-2xl flex flex-col space-y-4 sticky top-6 h-fit self-start mt-6 ml-6">
+    <%= link_to "← Back", master_cv_index_path, class: "px-4 py-3 bg-base-200 text-base-content font-medium rounded-lg hover:bg-base-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-base-300 transition text-center border border-base-300" %>
+    <%= button_tag "💾 Save Projects", form: "projects-edit-form", class: "px-4 py-3 btn btn-primary rounded-lg transition shadow-lg" %>
   </div>
 
   <!-- Main Content -->
   <div class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+    <div class="bg-base-100 shadow-xl rounded-lg overflow-hidden">
       <!-- Header -->
-      <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-4">
-        <h1 class="text-2xl font-bold text-white">Edit Projects</h1>
-        <p class="text-purple-100 mt-1">Manage your projects and accomplishments</p>
+      <div class="bg-primary px-6 py-4">
+        <h1 class="text-2xl font-bold text-primary-content">Edit Projects</h1>
+        <p class="text-primary-content/80 mt-1">Manage your projects and accomplishments</p>
       </div>
 
       <%= form_with url: upsert_projects_path, method: :put, local: true, html: { id: "projects-edit-form", class: "p-6 space-y-6" } do |form| %>
@@ -19,105 +19,105 @@
         <!-- Projects Items Section -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-gray-800">Projects</h3>
+            <h3 class="text-lg font-semibold text-base-content">Projects</h3>
           </div>
 
           <!-- Items Container -->
           <div id="projects-container" class="space-y-3">
             <% @projects.each_with_index do |project, index| %>
-              <div class="project-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
+              <div class="project-row bg-base-100 border border-base-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
                 <div class="flex items-center space-x-4 mb-3">
                   <!-- Drag Handle -->
-                  <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                  <div class="drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-2 rounded-md hover:bg-base-200 transition-colors duration-200">
                     <i class="fas fa-grip-vertical text-lg"></i>
                   </div>
 
                   <!-- Position (hidden input) -->
-                  <input type="hidden" name="projects[][position]" value="<%= index + 1 %>" class="position-input">
-                  <input type="hidden" name="projects[][id]" value="<%= project.id %>" class="id-input">
+                  <input type="hidden" name="projects[<%= index %>][position]" value="<%= index + 1 %>" class="position-input">
+                  <input type="hidden" name="projects[<%= index %>][id]" value="<%= project.id %>" class="id-input">
 
                   <!-- Project Name -->
                   <div class="flex-1">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Project Name</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Project Name</label>
                     <input type="text"
-                           name="projects[][name]"
+                           name="projects[<%= index %>][name]"
                            value="<%= project.name %>"
                            placeholder="E-commerce Platform"
-                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                           class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
 
                   <!-- Link -->
                   <div class="flex-1">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Link</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Link</label>
                     <input type="text"
-                           name="projects[][link]"
+                           name="projects[<%= index %>][link]"
                            value="<%= project.link %>"
                            placeholder="https://github.com/username/project"
-                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                           class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
                   <!-- Start Date -->
                   <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Start Date</label>
                     <input type="date"
-                           name="projects[][start_date]"
+                           name="projects[<%= index %>][start_date]"
                            value="<%= project.start_date %>"
-                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                           class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
 
                   <!-- End Date -->
                   <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">End Date</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">End Date</label>
                     <input type="date"
-                           name="projects[][end_date]"
+                           name="projects[<%= index %>][end_date]"
                            value="<%= project.end_date %>"
-                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                           class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
 
                   <!-- Link Title -->
                   <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Link Title</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Link Title</label>
                     <input type="text"
-                           name="projects[][link_title]"
+                           name="projects[<%= index %>][link_title]"
                            value="<%= project.link_title %>"
                            placeholder="GitHub Repository"
-                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+                           class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
                 </div>
 
                 <!-- Remove Button -->
                 <div class="mb-3">
                   <button type="button"
-                          class="remove-project-button w-full py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+                          class="remove-project-button w-full py-2 btn btn-error rounded-md transition-colors duration-200 flex items-center justify-center">
                     <i class="fas fa-trash mr-2"></i> Remove Project
                   </button>
                 </div>
 
                 <!-- Bullets Section -->
                 <div class="mb-3">
-                  <label class="block text-xs font-medium text-gray-700 mb-2">Project Details/Bullets</label>
-                  <div class="space-y-2 bullets-container">
+                  <label class="block text-xs font-medium text-base-content mb-2">Project Details/Bullets</label>
+                  <div class="space-y-2 bullets-container" data-project-index="<%= index %>">
                     <% project.project_bullets.each_with_index do |bullet, bullet_index| %>
-                      <div class="bullet-row flex items-center space-x-2">
-                        <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+                      <div class="bullet-row flex items-center space-x-2" data-bullet-position="<%= bullet_index + 1 %>">
+                        <div class="bullet-drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-1 rounded hover:bg-base-200">
                           <i class="fas fa-grip-horizontal text-sm"></i>
                         </div>
-                        <input type="hidden" name="projects[][bullets][<%= bullet_index %>][position]" value="<%= bullet_index + 1 %>" class="bullet-position-input">
-                        <input type="hidden" name="projects[][bullets][<%= bullet_index %>][id]" value="<%= bullet.id %>" class="bullet-id-input">
+                        <input type="hidden" name="projects[<%= index %>][bullets][<%= bullet_index %>][position]" value="<%= bullet_index + 1 %>" class="bullet-position-input">
+                        <input type="hidden" name="projects[<%= index %>][bullets][<%= bullet_index %>][id]" value="<%= bullet.id %>" class="bullet-id-input">
                         <input type="text"
-                               name="projects[][bullets][<%= bullet_index %>][content]"
+                               name="projects[<%= index %>][bullets][<%= bullet_index %>][content]"
                                value="<%= bullet.content %>"
                                placeholder="Built responsive UI with React..."
-                               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
-                        <button type="button" class="remove-bullet-button text-red-500 hover:text-red-700 p-2">
+                               class="flex-1 px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
+                        <button type="button" class="remove-bullet-button text-error hover:text-error/80 p-2">
                           <i class="fas fa-times"></i>
                         </button>
                       </div>
                     <% end %>
                     <!-- Add Bullet Button -->
-                    <button type="button" class="add-bullet-button text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center mt-2">
+                    <button type="button" class="add-bullet-button text-primary hover:text-primary/80 text-sm font-medium flex items-center mt-2">
                       <i class="fas fa-plus mr-1"></i> Add Bullet Point
                     </button>
                   </div>
@@ -127,10 +127,10 @@
           </div>
 
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-gray-800"></h3>
+            <h3 class="text-lg font-semibold text-base-content"></h3>
             <button type="button"
                     id="add-project-button"
-                    class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
+                    class="inline-flex items-center px-4 py-2 btn btn-success rounded-lg transition-colors duration-200">
               <i class="fas fa-plus mr-2"></i>
               Add Project
             </button>
@@ -138,11 +138,11 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-base-300 justify-between">
           <%= link_to "Cancel", master_cv_index_path,
-                      class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
+                      class: "flex-1 sm:flex-initial px-6 py-3 btn btn-error rounded-lg transition-colors duration-200 text-center" %>
           <%= submit_tag "Save Projects",
-                         class: "flex-1 sm:flex-initial px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200 cursor-pointer" %>
+                         class: "flex-1 sm:flex-initial px-6 py-3 btn btn-success rounded-lg transition-colors duration-200 cursor-pointer" %>
         </div>
 
       <% end %>
@@ -163,52 +163,52 @@ document.addEventListener("DOMContentLoaded", function() {
       const newPosition = currentItems + 1;
 
       const newRow = document.createElement('div');
-      newRow.className = 'project-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200';
+      newRow.className = 'project-row bg-base-100 border border-base-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200';
       newRow.dataset.position = newPosition;
       newRow.innerHTML = `
         <div class="flex items-center space-x-4 mb-3">
-          <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+          <div class="drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-2 rounded-md hover:bg-base-200 transition-colors duration-200">
             <i class="fas fa-grip-vertical text-lg"></i>
           </div>
-          <input type="hidden" name="projects[][position]" value="${newPosition}" class="position-input">
-          <input type="hidden" name="projects[][id]" value="" class="id-input">
+          <input type="hidden" name="projects[${currentItems}][position]" value="${newPosition}" class="position-input">
+          <input type="hidden" name="projects[${currentItems}][id]" value="" class="id-input">
           <div class="flex-1">
-            <label class="block text-xs font-medium text-gray-700 mb-1">Project Name</label>
-            <input type="text" name="projects[][name]" value="" placeholder="E-commerce Platform"
-                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+            <label class="block text-xs font-medium text-base-content mb-1">Project Name</label>
+            <input type="text" name="projects[${currentItems}][name]" value="" placeholder="E-commerce Platform"
+                   class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
           <div class="flex-1">
-            <label class="block text-xs font-medium text-gray-700 mb-1">Link</label>
-            <input type="text" name="projects[][link]" value="" placeholder="https://github.com/username/project  "
-                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+            <label class="block text-xs font-medium text-base-content mb-1">Link</label>
+            <input type="text" name="projects[${currentItems}][link]" value="" placeholder="https://github.com/username/project"
+                   class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Start Date</label>
-            <input type="date" name="projects[][start_date]" value=""
-                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+            <label class="block text-xs font-medium text-base-content mb-1">Start Date</label>
+            <input type="date" name="projects[${currentItems}][start_date]" value=""
+                   class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">End Date</label>
-            <input type="date" name="projects[][end_date]" value=""
-                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+            <label class="block text-xs font-medium text-base-content mb-1">End Date</label>
+            <input type="date" name="projects[${currentItems}][end_date]" value=""
+                   class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Link Title</label>
-            <input type="text" name="projects[][link_title]" value="" placeholder="GitHub Repository"
-                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
+            <label class="block text-xs font-medium text-base-content mb-1">Link Title</label>
+            <input type="text" name="projects[${currentItems}][link_title]" value="" placeholder="GitHub Repository"
+                   class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
         </div>
         <div class="mb-3">
-          <button type="button" class="remove-project-button w-full py-2 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+          <button type="button" class="remove-project-button w-full py-2 btn btn-error rounded-md transition-colors duration-200 flex items-center justify-center">
             <i class="fas fa-trash mr-2"></i> Remove Project
           </button>
         </div>
         <div class="mb-3">
-          <label class="block text-xs font-medium text-gray-700 mb-2">Project Details/Bullets</label>
-          <div class="space-y-2 bullets-container">
-            <button type="button" class="add-bullet-button text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center">
+          <label class="block text-xs font-medium text-base-content mb-2">Project Details/Bullets</label>
+          <div class="space-y-2 bullets-container" data-project-index="${currentItems}">
+            <button type="button" class="add-bullet-button text-primary hover:text-primary/80 text-sm font-medium flex items-center">
               <i class="fas fa-plus mr-1"></i> Add Bullet Point
             </button>
           </div>
@@ -226,6 +226,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
 
       this.updatePositions();
+      this.initBulletDragAndDrop(newRow);
     },
 
     removeItem(event) {
@@ -248,21 +249,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
     addBullet(event) {
       const button = event.target.closest('.add-bullet-button');
+      const container = button.closest('.project-row');
       const bulletsContainer = button.closest('.bullets-container');
+      const projectIndex = Array.from(container.parentNode.children).indexOf(container);
       const bulletRows = bulletsContainer.querySelectorAll('.bullet-row');
       const newIndex = bulletRows.length;
 
       const newBullet = document.createElement('div');
       newBullet.className = 'bullet-row flex items-center space-x-2';
+      newBullet.dataset.bulletPosition = newIndex + 1;
       newBullet.innerHTML = `
-        <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+        <div class="bullet-drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-1 rounded hover:bg-base-200">
           <i class="fas fa-grip-horizontal text-sm"></i>
         </div>
-        <input type="hidden" name="projects[][bullets][${newIndex}][position]" value="${newIndex + 1}" class="bullet-position-input">
-        <input type="hidden" name="projects[][bullets][${newIndex}][id]" value="" class="bullet-id-input">
-        <input type="text" name="projects[][bullets][${newIndex}][content]" value="" placeholder="Built responsive UI with React..."
-               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-transparent">
-        <button type="button" class="remove-bullet-button text-red-500 hover:text-red-700 p-2">
+        <input type="hidden" name="projects[${projectIndex}][bullets][${newIndex}][position]" value="${newIndex + 1}" class="bullet-position-input">
+        <input type="hidden" name="projects[${projectIndex}][bullets][${newIndex}][id]" value="" class="bullet-id-input">
+        <input type="text" name="projects[${projectIndex}][bullets][${newIndex}][content]" value="" placeholder="Built responsive UI with React..."
+               class="flex-1 px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
+        <button type="button" class="remove-bullet-button text-error hover:text-error/80 p-2">
           <i class="fas fa-times"></i>
         </button>
       `;
@@ -283,11 +287,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
     updateBulletPositions(bulletsContainer) {
       const bullets = bulletsContainer.querySelectorAll('.bullet-row');
+      const projectIndex = bulletsContainer.closest('.project-row').dataset.position - 1;
+      
       bullets.forEach((bullet, index) => {
-        const position = index + 1;
+        bullet.dataset.bulletPosition = index + 1;
+        
         const positionInput = bullet.querySelector('.bullet-position-input');
         if (positionInput) {
-          positionInput.value = position;
+          positionInput.name = `projects[${projectIndex}][bullets][${index}][position]`;
+          positionInput.value = index + 1;
+        }
+        
+        const idInput = bullet.querySelector('.bullet-id-input');
+        if (idInput) {
+          idInput.name = `projects[${projectIndex}][bullets][${index}][id]`;
+        }
+        
+        const contentInput = bullet.querySelector('input[type="text"]');
+        if (contentInput) {
+          contentInput.name = `projects[${projectIndex}][bullets][${index}][content]`;
         }
       });
     },
@@ -297,9 +315,32 @@ document.addEventListener("DOMContentLoaded", function() {
       rows.forEach((row, index) => {
         const position = index + 1;
         row.dataset.position = position;
+        
         const positionInput = row.querySelector('.position-input');
         if (positionInput) {
+          positionInput.name = `projects[${index}][position]`;
           positionInput.value = position;
+        }
+        
+        const idInput = row.querySelector('.id-input');
+        if (idInput) {
+          idInput.name = `projects[${index}][id]`;
+        }
+        
+        // Update all other inputs in this row
+        const inputs = row.querySelectorAll('input[name*="projects["]');
+        inputs.forEach(input => {
+          const name = input.name;
+          const match = name.match(/projects\[(\d+)\]/);
+          if (match) {
+            input.name = name.replace(/projects\[\d+\]/, `projects[${index}]`);
+          }
+        });
+        
+        // Update bullet positions
+        const bulletsContainer = row.querySelector('.bullets-container');
+        if (bulletsContainer) {
+          this.updateBulletPositions(bulletsContainer);
         }
       });
     },
@@ -310,8 +351,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
       const createPlaceholder = () => {
         const div = document.createElement('div');
-        div.className = 'placeholder bg-purple-100 border-2 border-dashed border-purple-300 rounded-lg p-4 opacity-50';
-        div.innerHTML = '<div class="text-center text-purple-500 font-medium">Drop here</div>';
+        div.className = 'placeholder bg-primary/10 border-2 border-dashed border-primary rounded-lg p-4 opacity-50';
+        div.innerHTML = '<div class="text-center text-primary font-medium">Drop here</div>';
         return div;
       };
 
@@ -386,6 +427,70 @@ document.addEventListener("DOMContentLoaded", function() {
           targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
         }
       });
+    },
+
+    initBulletDragAndDrop(projectRow) {
+      const bulletsContainer = projectRow.querySelector('.bullets-container');
+      if (!bulletsContainer) return;
+
+      let draggedBullet = null;
+      let bulletPlaceholder = null;
+
+      const createBulletPlaceholder = () => {
+        const div = document.createElement('div');
+        div.className = 'bullet-placeholder bg-primary/5 border border-dashed border-primary rounded my-1 h-10';
+        return div;
+      };
+
+      bulletsContainer.addEventListener('mousedown', (e) => {
+        const handle = e.target.closest('.bullet-drag-handle');
+        if (!handle) return;
+
+        draggedBullet = handle.closest('.bullet-row');
+        bulletPlaceholder = createBulletPlaceholder();
+
+        draggedBullet.classList.add('opacity-50');
+        document.body.style.cursor = 'grabbing';
+
+        e.preventDefault();
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!draggedBullet) return;
+
+        if (bulletPlaceholder && bulletPlaceholder.parentNode) {
+          bulletPlaceholder.parentNode.insertBefore(draggedBullet, bulletPlaceholder);
+          bulletPlaceholder.remove();
+        }
+
+        draggedBullet.classList.remove('opacity-50');
+        document.body.style.cursor = '';
+
+        this.updateBulletPositions(bulletsContainer);
+
+        draggedBullet = null;
+        bulletPlaceholder = null;
+      });
+
+      bulletsContainer.addEventListener('mousemove', (e) => {
+        if (!draggedBullet) return;
+
+        const targetBullet = e.target.closest('.bullet-row');
+        if (!targetBullet || targetBullet === draggedBullet) return;
+
+        const rect = targetBullet.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+
+        if (bulletPlaceholder && bulletPlaceholder.parentNode) {
+          bulletPlaceholder.remove();
+        }
+
+        if (e.clientY < midY) {
+          targetBullet.parentNode.insertBefore(bulletPlaceholder, targetBullet);
+        } else {
+          targetBullet.parentNode.insertBefore(bulletPlaceholder, targetBullet.nextSibling);
+        }
+      });
     }
   };
 
@@ -399,6 +504,24 @@ document.addEventListener("DOMContentLoaded", function() {
     } else if (event.target.closest('.remove-bullet-button')) {
       ProjectsEdit.removeBullet(event);
     }
+  });
+
+  // Add bullet functionality to existing items
+  document.querySelectorAll('.add-bullet-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+      ProjectsEdit.addBullet(event);
+    });
+  });
+
+  document.querySelectorAll('.remove-bullet-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+      ProjectsEdit.removeBullet(event);
+    });
+  });
+
+  // Initialize drag and drop for existing bullet points
+  document.querySelectorAll('.project-row').forEach(row => {
+    ProjectsEdit.initBulletDragAndDrop(row);
   });
 
   ProjectsEdit.initDragAndDrop();

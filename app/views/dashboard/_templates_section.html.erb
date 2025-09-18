@@ -1,15 +1,21 @@
-<!-- Templates Section -->
-<div class="card bg-base-100 border border-accent">
+<!-- Templates Section - Theme Aware -->
+<div class="card bg-base-100 border border-base-content/20"> <!-- Changed border-accent -->
   <div class="card-body p-4">
     <!-- Header matching other cards -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <div>
-        <h3 class="card-title text-accent">CV Templates</h3>
-        <p class="text-accent/70 text-sm">Tag-based templates for quick CV generation</p>
+        <h3 class="card-title text-base-content">CV Templates</h3>
+        <p class="text-base-content/70 text-sm">Tag-based templates for quick CV generation</p>
       </div>
-      <button onclick="openCreateModal()" class="btn btn-outline btn-accent btn-sm">
+      <!-- CHANGED: Make the button more visible in dark mode -->
+      <!-- Option 1: Use btn-outline with base-content color -->
+      <!-- <button onclick="openCreateModal()" class="btn btn-outline btn-sm border-base-content text-base-content hover:bg-base-content hover:text-base-100"> -->
+      <!-- Option 2: Use a subtle primary color (often works well in both themes) -->
+      <button onclick="openCreateModal()" class="btn btn-primary btn-sm">
         Create New Template
       </button>
+      <!-- Option 3: Use btn-outline with primary color -->
+      <!-- <button onclick="openCreateModal()" class="btn btn-outline btn-primary btn-sm"> -->
     </div>
 
     <div class="p-2">
@@ -21,13 +27,13 @@
 
         <% if @templates.empty? %>
           <div class="text-center py-8">
-            <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
-              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div class="w-12 h-12 bg-base-200 rounded-full flex items-center justify-center mx-auto mb-3 border border-base-300"> <!-- Changed bg-accent/10, added border -->
+              <svg class="w-6 h-6 text-base-content/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <!-- Changed text-accent -->
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
               </svg>
             </div>
-            <h3 class="font-medium text-base-content">No templates yet</h3>
-            <p class="text-sm text-base-content/70 mt-1">Get started by creating a new template.</p>
+            <h3 class="font-medium text-base-content">No templates yet</h3> <!-- Changed text-base-content -->
+            <p class="text-sm text-base-content/70 mt-1">Get started by creating a new template.</p> <!-- Changed text-base-content/70 -->
           </div>
         <% end %>
       </div>
@@ -35,94 +41,102 @@
   </div>
 </div>
 
-<!-- Create Template Modal -->
+<!-- Create Template Modal - Theme Aware -->
 <dialog id="create-template-modal" class="modal">
-  <div class="modal-box max-w-2xl w-full max-h-[90vh]">
+  <div class="modal-box bg-base-100 border border-base-300 max-w-2xl w-full max-h-[90vh]"> <!-- Added bg-base-100, border -->
     <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </form>
-    <h3 class="font-bold text-lg mb-4">Create New Template</h3>
+    <h3 class="font-bold text-lg mb-4 text-base-content">Create New Template</h3> <!-- Added text-base-content -->
     
     <%= form_with url: create_template_path, method: :post, local: true, id: "create-template-form" do |form| %>
       <div class="space-y-4">
         <div>
-          <%= form.label :name, class: "block text-sm font-medium mb-1" %>
-          <%= form.text_field :name, class: "input input-bordered w-full input-sm", placeholder: "e.g., Frontend Specialist", required: true %>
+          <%= form.label :name, class: "block text-sm font-medium mb-1 text-base-content" %> <!-- Added text-base-content -->
+          <%= form.text_field :name, class: "input input-bordered w-full input-sm bg-base-100 text-base-content border-base-300", placeholder: "e.g., Frontend Specialist", required: true %> <!-- Added bg, text, border classes -->
         </div>
         <div>
-          <%= form.label "Tags", class: "block text-sm font-medium mb-2" %>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-base-300 rounded-lg bg-base-200">
+          <%= form.label "Tags", class: "block text-sm font-medium mb-2 text-base-content" %> <!-- Added text-base-content -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-base-300 rounded-lg bg-base-200"> <!-- Kept bg-base-200 for subtle contrast -->
             <% @tags.each do |tag| %>
               <label class="flex items-center space-x-2 cursor-pointer">
-                <%= check_box_tag "template[tag_ids][]", tag.id, false, class: "checkbox checkbox-sm checkbox-primary" %>
-                <span class="text-sm label-text"><%= tag.name %></span>
+                <%= check_box_tag "template[tag_ids][]", tag.id, false, class: "checkbox checkbox-sm checkbox-primary" %> <!-- Kept checkbox-primary -->
+                <span class="text-sm label-text text-base-content"><%= tag.name %></span> <!-- Added text-base-content -->
               </label>
             <% end %>
           </div>
         </div>
         <div>
-          <%= form.label "Sections", class: "block text-sm font-medium mb-2" %>
+          <%= form.label "Sections", class: "block text-sm font-medium mb-2 text-base-content" %> <!-- Added text-base-content -->
           <div class="grid grid-cols-2 gap-2">
             <% @sections.each do |section| %>
               <label class="flex items-center space-x-2 cursor-pointer">
-                <%= check_box_tag "template[section_ids][]", section.id, true, class: "checkbox checkbox-sm checkbox-secondary" %>
-                <span class="text-sm label-text"><%= section.label %></span>
+                <%= check_box_tag "template[section_ids][]", section.id, true, class: "checkbox checkbox-sm checkbox-secondary" %> <!-- Kept checkbox-secondary -->
+                <span class="text-sm label-text text-base-content"><%= section.label %></span> <!-- Added text-base-content -->
               </label>
             <% end %>
           </div>
         </div>
-        <div class="modal-action flex justify-end space-x-3 pt-4">
+        <div class="modal-action flex justify-end space-x-3 pt-4 border-t border-base-300"> <!-- Added border-t -->
           <!-- ✅ FIXED: Cancel button outside any form wrapper -->
           <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('create-template-modal').close()">Cancel</button>
-          <%= form.submit "Create Template", class: "btn btn-primary btn-sm" %>
+          <%= form.submit "Create Template", class: "btn btn-primary btn-sm" %> <!-- Kept btn-primary -->
         </div>
       </div>
     <% end %>
   </div>
 </dialog>
 
-<!-- Edit Template Modal -->
+<!-- Edit Template Modal - Theme Aware -->
 <dialog id="edit-template-modal" class="modal">
-  <div class="modal-box max-w-2xl w-full max-h-[90vh]">
+  <div class="modal-box bg-base-100 border border-base-300 max-w-2xl w-full max-h-[90vh]"> <!-- Added bg-base-100, border -->
     <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </form>
-    <h3 class="font-bold text-lg mb-4">Edit Template</h3>
+    <h3 class="font-bold text-lg mb-4 text-base-content">Edit Template</h3> <!-- Added text-base-content -->
     <form id="edit-template-form" method="post">
       <input type="hidden" name="_method" value="patch" />
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
       <input type="hidden" name="id" id="edit-template-id" />
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium mb-1">Name</label>
-          <input type="text" name="template[name]" id="edit-template-name" class="input input-bordered w-full input-sm" placeholder="e.g., Frontend Specialist" required>
+          <label class="block text-sm font-medium mb-1 text-base-content">Name</label> <!-- Added text-base-content -->
+          <input type="text" name="template[name]" id="edit-template-name" class="input input-bordered w-full input-sm bg-base-100 text-base-content border-base-300" placeholder="e.g., Frontend Specialist" required> <!-- Added bg, text, border classes -->
         </div>
         <div>
-          <label class="block text-sm font-medium mb-2">Tags</label>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-base-300 rounded-lg bg-base-200">
+          <label class="block text-sm font-medium mb-2 text-base-content">Tags</label> <!-- Added text-base-content -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-base-300 rounded-lg bg-base-200"> <!-- Kept bg-base-200 for subtle contrast -->
             <% @tags.each do |tag| %>
               <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" name="template[tag_ids][]" value="<%= tag.id %>" class="checkbox checkbox-sm checkbox-primary edit-tag-checkbox" id="edit-tag-<%= tag.id %>">
-                <span class="text-sm label-text"><%= tag.name %></span>
+                <input type="checkbox" name="template[tag_ids][]" value="<%= tag.id %>" class="checkbox checkbox-sm checkbox-primary edit-tag-checkbox" id="edit-tag-<%= tag.id %>"> <!-- Kept checkbox-primary -->
+                <span class="text-sm label-text text-base-content"><%= tag.name %></span> <!-- Added text-base-content -->
               </label>
             <% end %>
           </div>
         </div>
         <div>
-          <label class="block text-sm font-medium mb-2">Sections</label>
+          <label class="block text-sm font-medium mb-2 text-base-content">Sections</label> <!-- Added text-base-content -->
           <div class="grid grid-cols-2 gap-2">
             <% @sections.each do |section| %>
               <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" name="template[section_ids][]" value="<%= section.id %>" class="checkbox checkbox-sm checkbox-secondary edit-section-checkbox" id="edit-section-<%= section.id %>">
-                <span class="text-sm label-text"><%= section.label %></span>
+                <input type="checkbox" name="template[section_ids][]" value="<%= section.id %>" class="checkbox checkbox-sm checkbox-secondary edit-section-checkbox" id="edit-section-<%= section.id %>"> <!-- Kept checkbox-secondary -->
+                <span class="text-sm label-text text-base-content"><%= section.label %></span> <!-- Added text-base-content -->
               </label>
             <% end %>
           </div>
         </div>
-        <div class="modal-action flex justify-end space-x-3 pt-4">
+        <div class="modal-action flex justify-end space-x-3 pt-4 border-t border-base-300"> <!-- Added border-t -->
           <!-- ✅ FIXED: Cancel button that works with nested forms -->
           <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('edit-template-modal').close()">Cancel</button>
-          <button type="submit" class="btn btn-primary btn-sm">Update Template</button>
+          <button type="submit" class="btn btn-primary btn-sm">Update Template</button> <!-- Kept btn-primary -->
         </div>
       </div>
     </form>
@@ -135,42 +149,62 @@
     const modal = document.getElementById('create-template-modal');
     if (modal) {
       modal.showModal();
-      document.getElementById('create-template-form').reset();
+      // Reset form elements explicitly for better theme consistency
+      const form = document.getElementById('create-template-form');
+      if (form) {
+        form.reset();
+        // Reset checkboxes if needed (though reset() should handle it)
+        form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = cb.defaultChecked);
+      }
     }
   }
 
   function openEditModal(templateId, templateName, selectedTagIds, selectedSectionIds) {
     // Set form action and hidden id field
-    document.getElementById('edit-template-form').action = `/dashboard/templates/${templateId}`;
-    document.getElementById('edit-template-id').value = templateId;
+    const editForm = document.getElementById('edit-template-form');
+    if (editForm) {
+      editForm.action = `/dashboard/templates/${templateId}`;
+    }
+    const idField = document.getElementById('edit-template-id');
+    if (idField) {
+      idField.value = templateId;
+    }
+
 
     // Populate form fields
-    document.getElementById('edit-template-name').value = templateName;
+    const nameField = document.getElementById('edit-template-name');
+    if (nameField) {
+      nameField.value = templateName;
+    }
+
 
     // Reset all checkboxes first
-    document.querySelectorAll('.edit-tag-checkbox').forEach(checkbox => {
+    document.querySelectorAll('.edit-tag-checkbox, .edit-section-checkbox').forEach(checkbox => {
       checkbox.checked = false;
     });
 
-    document.querySelectorAll('.edit-section-checkbox').forEach(checkbox => {
-      checkbox.checked = false;
-    });
 
     // Check the selected tags
-    selectedTagIds.forEach(tagId => {
-      const checkbox = document.getElementById(`edit-tag-${tagId}`);
-      if (checkbox) {
-        checkbox.checked = true;
-      }
-    });
+    if (selectedTagIds) {
+      selectedTagIds.forEach(tagId => {
+        const checkbox = document.getElementById(`edit-tag-${tagId}`);
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
 
     // Check the selected sections
-    selectedSectionIds.forEach(sectionId => {
-      const checkbox = document.getElementById(`edit-section-${sectionId}`);
-      if (checkbox) {
-        checkbox.checked = true;
-      }
-    });
+    if (selectedSectionIds) {
+      selectedSectionIds.forEach(sectionId => {
+        const checkbox = document.getElementById(`edit-section-${sectionId}`);
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
 
     // Show modal
     const modal = document.getElementById('edit-template-modal');
@@ -178,6 +212,7 @@
       modal.showModal();
     }
   }
+
 
   // Event listeners for closing modals are handled by Daisy UI's dialog and the '✕' button.
 </script>

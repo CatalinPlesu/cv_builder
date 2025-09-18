@@ -1,8 +1,8 @@
 <!-- app/views/shared/_info_carousel.html.erb -->
-<!-- Info Carousel with Getting Started Steps and Support - Restyled -->
+<!-- Info Carousel with Getting Started Steps and Support - Warning/Yellow Themed -->
 <div id="infoCarousel" class="card bg-base-100 border border-warning">
   <div class="card-body p-4 flex flex-col">
-    <!-- Header matching other cards -->
+    <!-- Header matching other cards - Using warning theme -->
     <div class="flex items-center justify-between mb-4">
       <h3 class="card-title text-warning">Getting Started & Support</h3>
       <div class="w-8 h-8 flex items-center justify-center">
@@ -14,96 +14,101 @@
 
     <!-- Wrapper for carousel items -->
     <div id="carouselItems" class="carousel-items-container flex-grow mb-6 min-h-[200px]">
-      <!-- Item 1: Getting Started Tip 1 -->
+      <!-- Item 1: Getting Started Tip 1 - Using 'success' color scheme internally -->
       <div class="carousel-item h-full flex flex-col">
         <div class="flex flex-col items-center mb-3">
-          <div class="w-12 h-12 bg-success/20 rounded-full flex items-center justify-center mb-2">
+          <div class="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center mb-2 border border-success/20">
             <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
           </div>
           <h4 class="font-semibold text-success text-center text-sm">Step 1: Import or Manage Data</h4>
         </div>
-        <p class="text-success text-xs mb-3 text-center flex-grow">
+        <p class="text-base-content text-xs mb-3 text-center flex-grow">
           <span class="font-medium">1.</span> Start by either opening your existing <strong>Master CV</strong> to populate it, or importing demo data to see how it works.
         </p>
         <div class="flex flex-col sm:flex-row sm:justify-center gap-2 mt-auto">
-          <%= link_to "Go to Master CV", master_cv_index_path, class: "btn btn-outline btn-success btn-xs" %>
+          <!-- FIXED: Changed btn-xs to btn-sm and added py-1 -->
+          <%= link_to "Go to Master CV", master_cv_index_path, class: "btn btn-outline btn-success btn-sm py-1" %>
+          <!-- FIXED: Changed btn-xs to btn-sm and added py-1 -->
+          <!-- Inside Item 1, replacing the old button_to line -->
           <%= button_to 'Import Demo CV',
               new_import_cv_data_path,
-              method: :get,
-              class: "btn btn-outline btn-primary btn-xs",
-               data: { turbo_confirm: 'This will replace all your current CV data with demo data. Are you sure?' } %>
+              { method: :get, class: "btn btn-outline btn-primary btn-sm py-1", data: { turbo_confirm: 'This will replace all your current CV data with demo data. Are you sure?' } } %>
         </div>
       </div>
 
-      <!-- Item 2: Getting Started Tip 2 -->
+      <!-- Item 2: Getting Started Tip 2 - Using 'info' color scheme internally -->
       <div class="carousel-item hidden h-full flex flex-col">
         <div class="flex flex-col items-center mb-3">
-          <div class="w-12 h-12 bg-info/20 rounded-full flex items-center justify-center mb-2">
+          <div class="w-12 h-12 bg-info/10 rounded-full flex items-center justify-center mb-2 border border-info/20">
             <svg class="w-6 h-6 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
             </svg>
           </div>
           <h4 class="font-semibold text-info text-center text-sm">Step 2: Manage Tags</h4>
         </div>
-        <p class="text-info text-xs mb-3 text-center flex-grow">
+        <p class="text-base-content text-xs mb-3 text-center flex-grow">
           <span class="font-medium">2.</span> Go to the <strong>Tags</strong> section and <strong>Edit Tags</strong> to create or manage categories and colors.
         </p>
         <div class="flex justify-center mt-auto">
-          <%= link_to "Manage Tags", edit_tags_path, class: "btn btn-outline btn-info btn-xs" %>
+          <!-- FIXED: Changed btn-xs to btn-sm and added py-1 -->
+          <%= link_to "Manage Tags", edit_tags_path, class: "btn btn-outline btn-info btn-sm py-1" %>
         </div>
       </div>
 
-      <!-- Item 3: Getting Started Tip 3 -->
+      <!-- Item 3: Getting Started Tip 3 - Using 'primary' color scheme internally -->
       <div class="carousel-item hidden h-full flex flex-col">
         <div class="flex flex-col items-center mb-3">
-          <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-2">
+          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2 border border-primary/20">
             <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
             </svg>
           </div>
           <h4 class="font-semibold text-primary text-center text-sm">Step 3: Link Tags</h4>
         </div>
-        <p class="text-primary text-xs mb-3 text-center flex-grow">
+        <p class="text-base-content text-xs mb-3 text-center flex-grow">
           <span class="font-medium">3.</span> Use the <strong>"Tags to Items"</strong> link to assign your tags to CV items (skills, projects, etc.).
         </p>
         <div class="flex justify-center mt-auto">
-          <%= link_to "Link Tags to Items", item_taggings_path, class: "btn btn-outline btn-primary btn-xs" %>
+          <!-- FIXED: Changed btn-xs to btn-sm and added py-1 -->
+          <%= link_to "Link Tags to Items", item_taggings_path, class: "btn btn-outline btn-primary btn-sm py-1" %>
         </div>
       </div>
 
-      <!-- Item 4: Getting Started Tip 4 -->
+      <!-- Item 4: Getting Started Tip 4 - Using 'secondary' color scheme internally -->
       <div class="carousel-item hidden h-full flex flex-col">
         <div class="flex flex-col items-center mb-3">
-          <div class="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center mb-2">
+          <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-2 border border-secondary/20">
             <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
             </svg>
           </div>
           <h4 class="font-semibold text-secondary text-center text-sm">Step 4: Create Templates</h4>
         </div>
-        <p class="text-secondary text-xs mb-3 text-center flex-grow">
+        <p class="text-base-content text-xs mb-3 text-center flex-grow">
           <span class="font-medium">4.</span> Go back to the <strong>Dashboard</strong>, create a new <strong>Template</strong>, preview your CV, or generate the PDF.
         </p>
         <div class="flex justify-center mt-auto">
-          <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-outline btn-secondary btn-xs" %>
+          <!-- FIXED: Changed btn-xs to btn-sm and added py-1 -->
+          <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-outline btn-secondary btn-sm py-1" %>
         </div>
       </div>
 
-      <!-- Item 5: Support Message -->
+      <!-- Item 5: Support Message - Using 'warning' color scheme internally -->
       <div class="carousel-item hidden h-full flex flex-col">
         <div class="flex flex-col items-center mb-3">
-          <div class="w-12 h-12 bg-warning/20 rounded-full flex items-center justify-center mb-2">
+          <div class="w-12 h-12 bg-warning/10 rounded-full flex items-center justify-center mb-2 border border-warning/20">
             <svg class="w-6 h-6 text-warning" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/>
             </svg>
           </div>
           <h4 class="font-semibold text-warning text-center text-sm">Support My Work</h4>
         </div>
-        <p class="text-warning text-xs mb-3 text-center flex-grow">If you find this tool helpful, consider buying me a coffee!</p>
+        <p class="text-base-content text-xs mb-3 text-center flex-grow">If you find this tool helpful, consider buying me a coffee!</p>
         <div class="flex justify-center mt-auto">
-          <a href="https://buymeacoffee.com/catalinplesu" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-warning btn-xs">
+          <!-- FIXED: Changed btn-xs to btn-sm and added py-1 -->
+          <a href="https://buymeacoffee.com/catalinplesu" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-warning btn-sm py-1">
             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/>
             </svg>
@@ -113,10 +118,10 @@
       </div>
     </div>
 
-    <!-- Bottom Controls Container - Matching style -->
+    <!-- Bottom Controls Container - Matching style - Using warning theme -->
     <div class="mt-auto pt-2 flex justify-between items-center border-t border-base-200">
-      <!-- Previous Button -->
-      <button id="carouselPrev" class="btn btn-circle btn-xs btn-warning">
+      <!-- Previous Button - Taller and wider warning button -->
+      <button id="carouselPrev" class="btn btn-sm btn-warning px-3"> <!-- Kept btn-sm and px-3 -->
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
@@ -130,8 +135,8 @@
         </div>
       </div>
 
-      <!-- Next Button -->
-      <button id="carouselNext" class="btn btn-circle btn-xs btn-warning">
+      <!-- Next Button - Taller and wider warning button -->
+      <button id="carouselNext" class="btn btn-sm btn-warning px-3"> <!-- Kept btn-sm and px-3 -->
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -141,21 +146,16 @@
 </div>
 
 <style>
-  /* Custom styles for carousel indicators - Using direct color fallback */
+  /* Custom styles for carousel indicators - Using explicit oklch for warning theme */
   .carousel-indicator {
     width: 8px;
     height: 8px;
     border-radius: 9999px; /* Fully rounded */
-    /* --- CHANGED: Use direct color instead of variable --- */
-    /* Example using a common yellowish warning color */
-    background-color: #facc15aa; /* 67% opacity yellow */
-    /* Or use oklch directly if you find the exact values */
-    /* background-color: oklch(84.71% 0.199 83.87 / 0.67);  */
-    /* Add a subtle border for better definition against the background */
-    /* --- CHANGED: Use direct color instead of variable --- */
-    border: 1px solid #facc15bb; /* Slightly more opaque border */
-    /* Or: border: 1px solid oklch(84.71% 0.199 83.87 / 0.73); */
-    /* --- END CHANGES --- */
+    /* Use explicit oklch value for DaisyUI's default warning accent color */
+    /* oklch(72.75% 0.191 85.27) - Use 50% alpha for inactive */
+    background-color: oklch(72.75% 0.191 85.27 / 0.5);
+    /* Use 70% alpha for border */
+    border: 1px solid oklch(72.75% 0.191 85.27 / 0.7);
     transition: all 0.3s ease;
     cursor: pointer;
     display: block;
@@ -166,13 +166,9 @@
     width: 20px;
     height: 8px;
     border-radius: 4px; /* Slightly less rounded to match the wider shape */
-    /* --- CHANGED: Use direct color instead of variable --- */
-    background-color: #facc15; /* Solid yellow */
-    /* Or: background-color: oklch(84.71% 0.199 83.87); */
-    /* --- CHANGED: Use direct color instead of variable --- */
-    border-color: #facc15; /* Ensure border is also solid */
-     /* Or: border-color: oklch(84.71% 0.199 83.87); */
-    /* --- END CHANGES --- */
+    /* Use solid oklch value for active state */
+    background-color: oklch(72.75% 0.191 85.27);
+    border-color: oklch(72.75% 0.191 85.27); /* Explicitly set border color */
     transform: scaleX(1); /* Reset any potential scale */
   }
 
@@ -186,6 +182,60 @@
 </style>
 
 <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const carouselItems = document.getElementById('carouselItems');
+    const items = carouselItems ? carouselItems.querySelectorAll('.carousel-item') : [];
+    const indicatorsContainer = document.getElementById('carouselIndicators');
+    const prevButton = document.getElementById('carouselPrev');
+    const nextButton = document.getElementById('carouselNext');
+
+    if (!carouselItems || !indicatorsContainer || !prevButton || !nextButton || items.length === 0) {
+        console.warn("Info Carousel elements not found or no items, skipping initialization.");
+        return;
+    }
+
+    let currentIndex = 0;
+
+    indicatorsContainer.innerHTML = '';
+
+    items.forEach((_, index) => {
+      const indicator = document.createElement('div');
+      indicator.classList.add('carousel-indicator');
+      if (index === 0) indicator.classList.add('active');
+      indicator.addEventListener('click', () => showSlide(index));
+      indicatorsContainer.appendChild(indicator);
+    });
+
+    function showSlide(index) {
+      items.forEach(item => item.classList.add('hidden'));
+      if (items[index]) {
+        items[index].classList.remove('hidden');
+      }
+
+      const indicators = document.querySelectorAll('.carousel-indicator');
+      indicators.forEach((indicator, i) => {
+        indicator.classList.toggle('active', i === index);
+      });
+
+      currentIndex = index;
+    }
+
+    function nextSlide() {
+      let newIndex = (currentIndex + 1) % items.length;
+      showSlide(newIndex);
+    }
+
+    function prevSlide() {
+      let newIndex = (currentIndex - 1 + items.length) % items.length;
+      showSlide(newIndex);
+    }
+
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
+
+    showSlide(currentIndex);
+  });
+
   document.addEventListener('DOMContentLoaded', function () {
     const carouselItems = document.getElementById('carouselItems');
     const items = carouselItems ? carouselItems.querySelectorAll('.carousel-item') : [];

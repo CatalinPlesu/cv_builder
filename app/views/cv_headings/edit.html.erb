@@ -1,42 +1,42 @@
-<div class="flex min-h-screen bg-gray-50 py-8">
+<div class="flex min-h-screen bg-base-200 py-8">
   <!-- Sticky Sidebar -->
-  <div class="w-64 p-6 bg-white shadow-xl rounded-r-2xl flex flex-col space-y-4 sticky top-6 h-fit self-start mt-6 ml-6">
-    <%= link_to "← Back", master_cv_index_path, class: "px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition text-center border border-gray-200" %>
-    <%= button_tag "💾 Save Changes", form: "cv-edit-form", class: "px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition shadow-lg" %>
+  <div class="w-64 p-6 bg-base-100 shadow-xl rounded-r-2xl flex flex-col space-y-4 sticky top-6 h-fit self-start mt-6 ml-6">
+    <%= link_to "← Back", master_cv_index_path, class: "px-4 py-3 bg-base-200 text-base-content font-medium rounded-lg hover:bg-base-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-base-300 transition text-center border border-base-300" %>
+    <%= button_tag "💾 Save Changes", form: "cv-edit-form", class: "px-4 py-3 btn btn-primary rounded-lg transition shadow-lg" %>
   </div>
 
   <!-- Main Content -->
   <div class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+    <div class="bg-base-100 shadow-xl rounded-lg overflow-hidden">
       <!-- Header -->
-      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
-        <h1 class="text-2xl font-bold text-white">Edit CV Information</h1>
-        <p class="text-blue-100 mt-1">Update your contact details and social links</p>
+      <div class="bg-primary px-6 py-4">
+        <h1 class="text-2xl font-bold text-primary-content">Edit CV Information</h1>
+        <p class="text-primary-content/80 mt-1">Update your contact details and social links</p>
       </div>
 
       <%= form_with(model: @cv_heading, url: upsert_cv_headings_path, method: :put, local: true, html: { id: "cv-edit-form", class: "p-6 space-y-6" }) do |form| %>
         <!-- Full Name Field -->
-        <div class="bg-gray-50 rounded-lg p-4">
-          <label for="full_name" class="block text-sm font-semibold text-gray-800 mb-2">Full Name</label>
+        <div class="bg-base-200 rounded-lg p-4">
+          <label for="full_name" class="block text-sm font-semibold text-base-content mb-2">Full Name</label>
           <%= form.text_field :full_name, 
-                              class: "w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" %>
+                              class: "w-full px-4 py-3 border border-base-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-base-100 text-base-content" %>
         </div>
 
         <!-- Info Box -->
-        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+        <div class="bg-info/10 border-l-4 border-info p-4 rounded-r-lg">
           <div class="flex items-start">
             <div class="flex-shrink-0">
-              <i class="fas fa-info-circle text-blue-600 mt-0.5"></i>
+              <i class="fas fa-info-circle text-info mt-0.5"></i>
             </div>
             <div class="ml-3">
-              <p class="text-sm text-blue-800 font-medium">Font Awesome Icons</p>
-              <p class="text-xs text-blue-600 mt-1">
+              <p class="text-sm text-info font-medium">Font Awesome Icons</p>
+              <p class="text-xs text-info/80 mt-1">
                 Icon names can be found at
-                <%= link_to "https://fontawesome.com/icons", "https://fontawesome.com/icons", 
-                            class: "text-blue-600 hover:text-blue-800 hover:underline font-medium", 
+                <%= link_to "https://fontawesome.com/icons  ", "https://fontawesome.com/icons  ", 
+                            class: "text-info hover:text-info/70 hover:underline font-medium", 
                             target: "_blank" %>.
-                PDFLaTeX uses icons from <%= link_to "this document", "https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf", 
-                                           class: "text-blue-600 hover:text-blue-800 hover:underline font-medium", 
+                PDFLaTeX uses icons from <%= link_to "this document", "https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf  ", 
+                                           class: "text-info hover:text-info/70 hover:underline font-medium", 
                                            target: "_blank" %>.
               </p>
             </div>
@@ -46,16 +46,16 @@
         <!-- Contact Items Section -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-gray-800">Contact Information</h3>
+            <h3 class="text-lg font-semibold text-base-content">Contact Information</h3>
           </div>
 
           <!-- Items Container -->
           <div id="heading-items-container" class="space-y-3">
             <% @heading_items.each_with_index do |item, index| %>
-              <div class="item-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
+              <div class="item-row bg-base-100 border border-base-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
                 <div class="flex items-center space-x-4">
                   <!-- Drag Handle -->
-                  <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                  <div class="drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-2 rounded-md hover:bg-base-200 transition-colors duration-200">
                     <i class="fas fa-grip-vertical text-lg"></i>
                   </div>
 
@@ -64,23 +64,23 @@
 
                   <!-- Icon Input -->
                   <div class="flex-shrink-0 w-32">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Icon</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Icon</label>
                     <input type="text" 
                            name="heading_items[][icon]" 
                            value="<%= item[:icon] %>" 
                            placeholder="envelope"
-                           class="icon-input w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                           class="icon-input w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
 
                   <!-- Icon Preview -->
                   <div class="flex-shrink-0 w-16">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Preview</label>
-                    <div class="icon-preview-cell flex items-center justify-center h-10 bg-gray-50 rounded-md border">
+                    <label class="block text-xs font-medium text-base-content mb-1">Preview</label>
+                    <div class="icon-preview-cell flex items-center justify-center h-10 bg-base-200 rounded-md border border-base-300">
                       <% icon_name = item[:icon].to_s.tr('_', '-') %>
-                      <span class="icon-preview-fas text-lg text-gray-600 mr-1">
+                      <span class="icon-preview-fas text-lg text-base-content mr-1">
                         <i class="fas fa-<%= icon_name %>"></i>
                       </span>
-                      <span class="icon-preview-fab text-lg text-gray-600">
+                      <span class="icon-preview-fab text-lg text-base-content">
                         <i class="fab fa-<%= icon_name %>"></i>
                       </span>
                     </div>
@@ -88,29 +88,29 @@
 
                   <!-- Text Input -->
                   <div class="flex-1">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Display Text</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Display Text</label>
                     <input type="text" 
                            name="heading_items[][text]" 
                            value="<%= item[:text] %>" 
                            placeholder="john@example.com"
-                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                           class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
 
                   <!-- URL Input -->
                   <div class="flex-1">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Link (Optional)</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Link (Optional)</label>
                     <input type="url" 
                            name="heading_items[][url]" 
                            value="<%= item[:url].to_s %>" 
                            placeholder="https://..."
-                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                           class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
 
                   <!-- Remove Button -->
                   <div class="flex-shrink-0">
                     <label class="block text-xs font-medium text-transparent mb-1">Remove</label>
                     <button type="button"
-                            class="remove-item-button p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors duration-200"
+                            class="remove-item-button p-2 text-error hover:text-error/80 hover:bg-error/10 rounded-md transition-colors duration-200"
                             title="Remove this item">
                       <i class="fas fa-trash text-lg"></i>
                     </button>
@@ -122,10 +122,10 @@
 
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <h3 class="text-lg font-semibold text-gray-800"></h3>
+              <h3 class="text-lg font-semibold text-base-content"></h3>
               <button type="button"
                       id="add-item-button"
-                      class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                      class="inline-flex items-center px-4 py-2 btn btn-success rounded-lg transition-colors duration-200">
                 <i class="fas fa-plus mr-2"></i>
                 Add Item
               </button>
@@ -133,11 +133,11 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
+          <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-base-300 justify-between">
             <%= link_to "Cancel", master_cv_index_path,
-                        class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
+                        class: "flex-1 sm:flex-initial px-6 py-3 btn btn-error rounded-lg transition-colors duration-200 text-center" %>
             <%= submit_tag "Save Changes",
-                           class: "flex-1 sm:flex-initial px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 cursor-pointer" %>
+                           class: "flex-1 sm:flex-initial px-6 py-3 btn btn-success rounded-lg transition-colors duration-200 cursor-pointer" %>
           </div>
         </div>
       <% end %>

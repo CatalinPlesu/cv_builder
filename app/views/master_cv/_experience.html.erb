@@ -1,16 +1,14 @@
 <%= render 'section_container',
            heading_text: "Experience",
-           heading_color: "cyan-500",
-           border_color: "cyan-500",
            edit_path: edit_experiences_path do %>
 
   <% if @experiences.any? %>
     <ul class="space-y-4">
       <% @experiences.each do |exp| %>
-        <li class="border-l-4 border-blue-500 pl-4">
-          <h3 class="font-bold text-gray-900"><%= exp.position_title %></h3>
-          <p class="text-gray-700"><%= exp.company %> – <%= exp.location %></p>
-          <p class="text-sm text-gray-500">
+        <li class="border-l-4 border-primary pl-4">
+          <h3 class="font-bold text-base-content"><%= exp.position_title %></h3>
+          <p class="text-base-content/90"><%= exp.company %> – <%= exp.location %></p>
+          <p class="text-sm text-base-content/60">
             <% if exp.start_date %>
               <%= exp.start_date.strftime("%b %Y") %>
             <% else %>
@@ -25,7 +23,7 @@
             <% end %>
           </p>
           <% if exp.experience_bullets.any? %>
-            <ul class="list-disc ml-5 mt-1 text-gray-700">
+            <ul class="list-disc ml-5 mt-1 text-base-content/90">
               <% exp.experience_bullets.each do |bullet| %>
                 <li><%= bullet.content %></li>
               <% end %>
@@ -35,6 +33,6 @@
       <% end %>
     </ul>
   <% else %>
-    <p class="text-gray-500 italic">No experience added yet.</p>
+    <p class="text-base-content/60 italic">No experience added yet.</p>
   <% end %>
 <% end %>

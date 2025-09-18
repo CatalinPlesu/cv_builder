@@ -1,23 +1,21 @@
 <!-- Education Section -->
 <%= render 'section_container',
            heading_text: "Education",
-           heading_color: "blue-500",
-           border_color: "blue-500",
            edit_path: edit_educations_path do %>
 
   <% if @educations.any? %>
     <ul class="space-y-6">
       <% @educations.each do |edu| %>
-        <li class="border-l-4 border-blue-500 pl-4 py-2">
-          <h3 class="font-semibold text-lg"><%= edu.institution %></h3>
-          <p class="text-gray-600"><%= edu.degree %></p>
-          <p class="text-sm text-gray-500">
+        <li class="border-l-4 border-primary pl-4 py-2">
+          <h3 class="font-semibold text-lg text-base-content"><%= edu.institution %></h3>
+          <p class="text-base-content/80"><%= edu.degree %></p>
+          <p class="text-sm text-base-content/60">
             <%= edu.location %> •
             <%= edu.start_date.strftime("%b %Y") if edu.start_date %> –
             <%= edu.end_date ? edu.end_date.strftime("%b %Y") : "Present" %>
           </p>
           <% if edu.gpa.present? %>
-            <p class="text-sm text-gray-500">GPA: <%= edu.gpa %></p>
+            <p class="text-sm text-base-content/60">GPA: <%= edu.gpa %></p>
           <% end %>
           
           <!-- Education Bullets -->
@@ -25,8 +23,8 @@
             <ul class="mt-2 space-y-1">
               <% edu.education_bullets.order(:position).each do |bullet| %>
                 <li class="flex items-start">
-                  <span class="text-gray-500 mr-2">•</span>
-                  <span class="text-gray-700"><%= bullet.content %></span>
+                  <span class="text-base-content/50 mr-2">•</span>
+                  <span class="text-base-content/90"><%= bullet.content %></span>
                 </li>
               <% end %>
             </ul>
@@ -35,7 +33,7 @@
       <% end %>
     </ul>
   <% else %>
-    <p class="text-gray-500 italic">No education entries added yet.</p>
+    <p class="text-base-content/60 italic">No education entries added yet.</p>
   <% end %>
 
 <% end %>

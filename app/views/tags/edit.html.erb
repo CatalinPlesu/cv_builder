@@ -1,17 +1,17 @@
-<div class="flex min-h-screen bg-gray-50 py-8">
+<div class="flex min-h-screen bg-base-200 py-8">
   <!-- Sticky Sidebar -->
-  <div class="w-64 p-6 bg-white shadow-xl rounded-r-2xl flex flex-col space-y-4 sticky top-6 h-fit self-start mt-6 ml-6">
-    <%= link_to "← Back", master_cv_index_path, class: "px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition text-center border border-gray-200" %>
-    <%= button_tag "💾 Save Changes", form: "tags-edit-form", class: "px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition shadow-lg" %>
+  <div class="w-64 p-6 bg-base-100 shadow-xl rounded-r-2xl flex flex-col space-y-4 sticky top-6 h-fit self-start mt-6 ml-6">
+    <%= link_to "← Back", master_cv_index_path, class: "px-4 py-3 bg-base-200 text-base-content font-medium rounded-lg hover:bg-base-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-base-300 transition text-center border border-base-300" %>
+    <%= button_tag "💾 Save Changes", form: "tags-edit-form", class: "px-4 py-3 btn btn-primary rounded-lg transition shadow-lg" %>
   </div>
 
   <!-- Main Content -->
   <div class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+    <div class="bg-base-100 shadow-xl rounded-lg overflow-hidden">
       <!-- Header -->
-      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
-        <h1 class="text-2xl font-bold text-white">Edit Tags</h1>
-        <p class="text-blue-100 mt-1">Manage your CV tags</p>
+      <div class="bg-primary px-6 py-4">
+        <h1 class="text-2xl font-bold text-primary-content">Edit Tags</h1>
+        <p class="text-primary-content/80 mt-1">Manage your CV tags</p>
       </div>
 
       <%= form_with url: upsert_tags_path, method: :put, local: true, html: { id: "tags-edit-form", class: "p-6 space-y-6" } do |form| %>
@@ -19,16 +19,16 @@
         <!-- Tags Section -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-gray-800">Your Tags</h3>
+            <h3 class="text-lg font-semibold text-base-content">Your Tags</h3>
           </div>
 
           <!-- Tags Container -->
           <div id="tags-container" class="space-y-3">
             <% @tags.each_with_index do |tag, index| %>
-              <div class="tag-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
+              <div class="tag-row bg-base-100 border border-base-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200" data-position="<%= index + 1 %>">
                 <div class="flex items-center space-x-4">
                   <!-- Drag Handle -->
-                  <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+                  <div class="drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-2 rounded-md hover:bg-base-200 transition-colors duration-200">
                     <i class="fas fa-grip-vertical text-lg"></i>
                   </div>
 
@@ -38,29 +38,29 @@
 
                   <!-- Name -->
                   <div class="flex-1">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Tag Name</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Tag Name</label>
                     <input type="text"
                            name="tags[][name]"
                            value="<%= tag.name %>"
                            placeholder="e.g. frontend"
-                           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                           class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
 
                   <!-- Color -->
                   <div class="flex-shrink-0">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Color</label>
+                    <label class="block text-xs font-medium text-base-content mb-1">Color</label>
                     <div class="flex items-center space-x-2">
                       <input type="color"
                              name="tags[][color]"
                              value="<%= tag.color || '#3b82f6' %>"
-                             class="w-10 h-10 border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                             class="w-10 h-10 border border-base-300 rounded-md cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100">
                     </div>
                   </div>
 
                   <!-- Remove Button -->
                   <div class="flex-shrink-0 pt-5">
                     <button type="button"
-                            class="remove-tag-button py-2 px-4 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+                            class="remove-tag-button py-2 px-4 btn btn-error rounded-md transition-colors duration-200 flex items-center justify-center">
                       <i class="fas fa-trash mr-2"></i> Remove
                     </button>
                   </div>
@@ -71,10 +71,10 @@
 
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <h3 class="text-lg font-semibold text-gray-800"></h3>
+              <h3 class="text-lg font-semibold text-base-content"></h3>
               <button type="button"
                       id="add-tag-button"
-                      class="inline-flex items-center px-4 py-3 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                      class="inline-flex items-center px-4 py-3 btn btn-success rounded-lg transition-colors duration-200">
                 <i class="fas fa-plus mr-2"></i>
                 Add Tag
               </button>
@@ -83,11 +83,11 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 justify-between">
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-base-300 justify-between">
           <%= link_to "Cancel", master_cv_index_path,
-                      class: "flex-1 sm:flex-initial px-6 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-center" %>
+                      class: "flex-1 sm:flex-initial px-6 py-3 btn btn-error rounded-lg transition-colors duration-200 text-center" %>
           <%= submit_tag "Save Tags",
-                         class: "flex-1 sm:flex-initial px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 cursor-pointer" %>
+                         class: "flex-1 sm:flex-initial px-6 py-3 btn btn-success rounded-lg transition-colors duration-200 cursor-pointer" %>
         </div>
 
       <% end %>
@@ -108,29 +108,29 @@ document.addEventListener("DOMContentLoaded", function () {
       const newPosition = currentItems + 1;
 
       const newRow = document.createElement("div");
-      newRow.className = "tag-row bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200";
+      newRow.className = "tag-row bg-base-100 border border-base-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200";
       newRow.dataset.position = newPosition;
       newRow.innerHTML = `
         <div class="flex items-center space-x-4">
-          <div class="drag-handle cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
+          <div class="drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-2 rounded-md hover:bg-base-200 transition-colors duration-200">
             <i class="fas fa-grip-vertical text-lg"></i>
           </div>
           <input type="hidden" name="tags[][position]" value="${newPosition}" class="position-input">
           <input type="hidden" name="tags[][id]" value="" class="id-input">
           <div class="flex-1">
-            <label class="block text-xs font-medium text-gray-700 mb-1">Tag Name</label>
+            <label class="block text-xs font-medium text-base-content mb-1">Tag Name</label>
             <input type="text" name="tags[][name]" value="" placeholder="e.g. frontend"
-                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                   class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
           <div class="flex-shrink-0">
-            <label class="block text-xs font-medium text-gray-700 mb-1">Color</label>
+            <label class="block text-xs font-medium text-base-content mb-1">Color</label>
             <div class="flex items-center space-x-2">
               <input type="color" name="tags[][color]" value="#3b82f6"
-                     class="w-10 h-10 border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                     class="w-10 h-10 border border-base-300 rounded-md cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100">
             </div>
           </div>
           <div class="flex-shrink-0 pt-5">
-            <button type="button" class="remove-tag-button py-2 px-4 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 flex items-center justify-center">
+            <button type="button" class="remove-tag-button py-2 px-4 btn btn-error rounded-md transition-colors duration-200 flex items-center justify-center">
               <i class="fas fa-trash mr-2"></i> Remove
             </button>
           </div>
@@ -186,8 +186,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const createPlaceholder = () => {
         const div = document.createElement("div");
-        div.className = "placeholder bg-blue-100 border-2 border-dashed border-blue-300 rounded-lg p-4 opacity-50";
-        div.innerHTML = '<div class="text-center text-blue-500 font-medium">Drop here</div>';
+        div.className = "placeholder bg-primary/10 border-2 border-dashed border-primary rounded-lg p-4 opacity-50";
+        div.innerHTML = '<div class="text-center text-primary font-medium">Drop here</div>';
         return div;
       };
 

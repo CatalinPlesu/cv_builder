@@ -1,44 +1,44 @@
 <!-- Full name -->
-<h1 class="text-3xl font-bold text-gray-800 mb-6"><%= @full_name %></h1>
+<h1 class="text-3xl font-bold text-base-content mb-6"><%= @full_name %></h1>
 
 <!-- Info box -->
-<div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-  <p class="text-blue-800 text-sm">
+<div class="bg-info/10 border border-info/30 rounded-lg p-4 mb-6">
+  <p class="text-info text-sm">
     <i class="fas fa-info-circle mr-2"></i>
     Icons are Font Awesome icons. Icon names can be found at
-    <%= link_to "https://fontawesome.com/icons  ", "https://fontawesome.com/icons  ", 
-                class: "text-blue-600 hover:text-blue-800 hover:underline font-medium", 
+    <%= link_to "https://fontawesome.com/icons", "https://fontawesome.com/icons", 
+                class: "link link-info font-medium", 
                 target: "_blank" %>.
-    PDFLaTeX uses icons from <%= link_to "this document", "https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf  ", 
-                               class: "text-blue-600 hover:text-blue-800 hover:underline font-medium", 
+    PDFLaTeX uses icons from <%= link_to "this document", "https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf", 
+                               class: "link link-info font-medium", 
                                target: "_blank" %>.
   </p>
 </div>
 
 <!-- Table -->
 <div class="overflow-x-auto">
-  <table class="min-w-full bg-white border border-gray-200">
+  <table class="min-w-full bg-base-100 border border-base-300 rounded-lg">
     <thead>
-      <tr class="bg-gray-100">
-        <th class="py-3 px-4 text-left text-gray-700 font-semibold">Icon Name</th>
-        <th class="py-3 px-4 text-left text-gray-700 font-semibold">Preview</th>
-        <th class="py-3 px-4 text-left text-gray-700 font-semibold">Text</th>
-        <th class="py-3 px-4 text-left text-gray-700 font-semibold">URL</th>
+      <tr class="bg-base-200">
+        <th class="py-3 px-4 text-left text-base-content font-semibold">Icon Name</th>
+        <th class="py-3 px-4 text-left text-base-content font-semibold">Preview</th>
+        <th class="py-3 px-4 text-left text-base-content font-semibold">Text</th>
+        <th class="py-3 px-4 text-left text-base-content font-semibold">URL</th>
       </tr>
     </thead>
     <tbody>
       <% @heading.each do |item| %>
-        <tr class="border-b border-gray-200 hover:bg-gray-50">
-          <td class="py-3 px-4 text-gray-600 font-mono text-sm">
+        <tr class="border-b border-base-300 hover:bg-base-200">
+          <td class="py-3 px-4 text-base-content font-mono text-sm">
             <%= item[:icon] %>
           </td>
-          <td class="py-3 px-4 text-gray-800">
+          <td class="py-3 px-4 text-base-content">
             <% icon_name = item[:icon].underscore.dasherize %>
             <div class="relative group">
               <i class="fas fa-<%= icon_name %>"></i>
               <i class="fa-brands fa-<%= icon_name %>"></i>
               <!-- Tooltip -->
-              <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 w-max z-10">
+              <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-base-content text-base-100 text-xs rounded py-1 px-2 w-max z-10">
                 There are 2 types of icons in Font Awesome:<br>
                 <code>fas</code> (solid) and <code>fab</code> (brand)<br>
                 I can't tell them apart<br>
@@ -46,16 +46,16 @@
               </div>
             </div>
           </td>
-          <td class="py-3 px-4 text-gray-800">
+          <td class="py-3 px-4 text-base-content">
             <%= item[:text] %>
           </td>
           <td class="py-3 px-4">
             <% if item[:url].present? %>
               <%= link_to item[:url].strip, item[:url].strip, 
-                          class: "text-blue-600 hover:text-blue-800 hover:underline break-all",
+                          class: "link link-primary break-all",
                           target: (item[:url].strip.starts_with?('http') ? '_blank' : nil) %>
             <% else %>
-              <span class="text-gray-400">-</span>
+              <span class="text-base-content/50">-</span>
             <% end %>
           </td>
         </tr>
