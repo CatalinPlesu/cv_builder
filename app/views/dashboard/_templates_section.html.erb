@@ -1,217 +1,183 @@
 <!-- Templates Section -->
-<div class="bg-white shadow-xl rounded-xl overflow-hidden mb-8">
-  <div class="bg-gradient-to-r from-purple-500 to-pink-500 p-6">
-    <div class="flex justify-between items-center">
+<div class="card bg-base-100 border border-accent">
+  <div class="card-body p-4">
+    <!-- Header matching other cards -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <div>
-        <h2 class="text-2xl font-bold text-white mb-1">CV Templates</h2>
-        <p class="text-purple-100">Tag-based templates for quick CV generation</p>
+        <h3 class="card-title text-accent">CV Templates</h3>
+        <p class="text-accent/70 text-sm">Tag-based templates for quick CV generation</p>
       </div>
-      <button onclick="openCreateModal()" class="px-4 py-2 bg-white text-purple-600 rounded-lg font-medium hover:bg-purple-50 transition-colors">
+      <button onclick="openCreateModal()" class="btn btn-outline btn-accent btn-sm">
         Create New Template
       </button>
     </div>
-  </div>
-  <div class="p-8">
-    <!-- Templates List -->
-    <div id="templates-list" class="space-y-6 mb-8">
-      <% @templates.each do |template| %>
-        <%= render partial: 'template_card', locals: { template: template } %>
-      <% end %>
-      
-      <% if @templates.empty? %>
-        <div class="text-center py-12">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">No templates yet</h3>
-          <p class="mt-1 text-sm text-gray-500">Get started by creating a new template.</p>
-        </div>
-      <% end %>
+
+    <div class="p-2">
+      <!-- Templates List -->
+      <div id="templates-list" class="space-y-4">
+        <% @templates.each do |template| %>
+          <%= render partial: 'template_card', locals: { template: template } %>
+        <% end %>
+
+        <% if @templates.empty? %>
+          <div class="text-center py-8">
+            <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
+              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+            </div>
+            <h3 class="font-medium text-base-content">No templates yet</h3>
+            <p class="text-sm text-base-content/70 mt-1">Get started by creating a new template.</p>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Create Template Modal -->
-<div id="create-template-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-  <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-    <div class="p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-bold text-gray-900">Create New Template</h3>
-        <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      <%= form_with url: create_template_path, method: :post, local: true, id: "create-template-form" do |form| %>
-        <div class="space-y-4">
-          <div>
-            <%= form.label :name, class: "block text-sm font-medium text-gray-700 mb-1" %>
-            <%= form.text_field :name, class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all", placeholder: "e.g., Frontend Specialist", required: true %>
-          </div>
-          <div>
-            <%= form.label "Tags", class: "block text-sm font-medium text-gray-700 mb-2" %>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-gray-200 rounded-lg">
-              <% @tags.each do |tag| %>
-                <label class="flex items-center space-x-2">
-                  <%= check_box_tag "template[tag_ids][]", tag.id, false, class: "rounded text-purple-600 focus:ring-purple-500" %>
-                  <span class="text-sm"><%= tag.name %></span>
-                </label>
-              <% end %>
-            </div>
-          </div>
-          <div>
-            <%= form.label "Sections", class: "block text-sm font-medium text-gray-700 mb-2" %>
-            <div class="grid grid-cols-2 gap-2">
-              <% @sections.each do |section| %>
-                <label class="flex items-center space-x-2">
-                  <%= check_box_tag "template[section_ids][]", section.id, true, class: "rounded text-purple-600 focus:ring-purple-500" %>
-                  <span class="text-sm"><%= section.label %></span>
-                </label>
-              <% end %>
-            </div>
-          </div>
-          <div class="flex justify-end space-x-3 pt-4">
-            <button type="button" onclick="closeCreateModal()" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-              Cancel
-            </button>
-            <%= form.submit "Create Template", class: "px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors" %>
+<dialog id="create-template-modal" class="modal">
+  <div class="modal-box max-w-2xl w-full max-h-[90vh]">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg mb-4">Create New Template</h3>
+    
+    <%= form_with url: create_template_path, method: :post, local: true, id: "create-template-form" do |form| %>
+      <div class="space-y-4">
+        <div>
+          <%= form.label :name, class: "block text-sm font-medium mb-1" %>
+          <%= form.text_field :name, class: "input input-bordered w-full input-sm", placeholder: "e.g., Frontend Specialist", required: true %>
+        </div>
+        <div>
+          <%= form.label "Tags", class: "block text-sm font-medium mb-2" %>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-base-300 rounded-lg bg-base-200">
+            <% @tags.each do |tag| %>
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <%= check_box_tag "template[tag_ids][]", tag.id, false, class: "checkbox checkbox-sm checkbox-primary" %>
+                <span class="text-sm label-text"><%= tag.name %></span>
+              </label>
+            <% end %>
           </div>
         </div>
-      <% end %>
-    </div>
+        <div>
+          <%= form.label "Sections", class: "block text-sm font-medium mb-2" %>
+          <div class="grid grid-cols-2 gap-2">
+            <% @sections.each do |section| %>
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <%= check_box_tag "template[section_ids][]", section.id, true, class: "checkbox checkbox-sm checkbox-secondary" %>
+                <span class="text-sm label-text"><%= section.label %></span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+        <div class="modal-action flex justify-end space-x-3 pt-4">
+          <!-- ✅ FIXED: Cancel button outside any form wrapper -->
+          <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('create-template-modal').close()">Cancel</button>
+          <%= form.submit "Create Template", class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    <% end %>
   </div>
-</div>
+</dialog>
 
 <!-- Edit Template Modal -->
-<div id="edit-template-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-  <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-    <div class="p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-bold text-gray-900">Edit Template</h3>
-        <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      <form id="edit-template-form" method="post">
-        <input type="hidden" name="_method" value="patch" />
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <input type="hidden" name="id" id="edit-template-id" />
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-            <input type="text" name="template[name]" id="edit-template-name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all" placeholder="e.g., Frontend Specialist" required>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-gray-200 rounded-lg">
-              <% @tags.each do |tag| %>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="template[tag_ids][]" value="<%= tag.id %>" class="rounded text-purple-600 focus:ring-purple-500 edit-tag-checkbox" id="edit-tag-<%= tag.id %>">
-                  <span class="text-sm"><%= tag.name %></span>
-                </label>
-              <% end %>
-            </div>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Sections</label>
-            <div class="grid grid-cols-2 gap-2">
-              <% @sections.each do |section| %>
-                <label class="flex items-center space-x-2">
-                  <input type="checkbox" name="template[section_ids][]" value="<%= section.id %>" class="rounded text-purple-600 focus:ring-purple-500 edit-section-checkbox" id="edit-section-<%= section.id %>">
-                  <span class="text-sm"><%= section.label %></span>
-                </label>
-              <% end %>
-            </div>
-          </div>
-          <div class="flex justify-end space-x-3 pt-4">
-            <button type="button" onclick="closeEditModal()" class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-              Cancel
-            </button>
-            <button type="submit" class="px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-              Update Template
-            </button>
+<dialog id="edit-template-modal" class="modal">
+  <div class="modal-box max-w-2xl w-full max-h-[90vh]">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg mb-4">Edit Template</h3>
+    <form id="edit-template-form" method="post">
+      <input type="hidden" name="_method" value="patch" />
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="id" id="edit-template-id" />
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Name</label>
+          <input type="text" name="template[name]" id="edit-template-name" class="input input-bordered w-full input-sm" placeholder="e.g., Frontend Specialist" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Tags</label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 border border-base-300 rounded-lg bg-base-200">
+            <% @tags.each do |tag| %>
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="checkbox" name="template[tag_ids][]" value="<%= tag.id %>" class="checkbox checkbox-sm checkbox-primary edit-tag-checkbox" id="edit-tag-<%= tag.id %>">
+                <span class="text-sm label-text"><%= tag.name %></span>
+              </label>
+            <% end %>
           </div>
         </div>
-      </form>
-    </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Sections</label>
+          <div class="grid grid-cols-2 gap-2">
+            <% @sections.each do |section| %>
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="checkbox" name="template[section_ids][]" value="<%= section.id %>" class="checkbox checkbox-sm checkbox-secondary edit-section-checkbox" id="edit-section-<%= section.id %>">
+                <span class="text-sm label-text"><%= section.label %></span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+        <div class="modal-action flex justify-end space-x-3 pt-4">
+          <!-- ✅ FIXED: Cancel button that works with nested forms -->
+          <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('edit-template-modal').close()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Update Template</button>
+        </div>
+      </div>
+    </form>
   </div>
-</div>
+</dialog>
 
 <script>
-// Modal functions
-function openCreateModal() {
-  document.getElementById('create-template-modal').classList.remove('hidden');
-}
-
-function closeCreateModal() {
-  document.getElementById('create-template-modal').classList.add('hidden');
-  document.getElementById('create-template-form').reset();
-}
-
-function openEditModal(templateId, templateName, selectedTagIds, selectedSectionIds) {
-  // Set form action and hidden id field
-  document.getElementById('edit-template-form').action = `/dashboard/templates/${templateId}`;
-  document.getElementById('edit-template-id').value = templateId;
-
-  // Populate form fields
-  document.getElementById('edit-template-name').value = templateName;
-
-  // Reset all checkboxes first
-  document.querySelectorAll('.edit-tag-checkbox').forEach(checkbox => {
-    checkbox.checked = false;
-  });
-
-  document.querySelectorAll('.edit-section-checkbox').forEach(checkbox => {
-    checkbox.checked = false;
-  });
-
-  // Check the selected tags
-  selectedTagIds.forEach(tagId => {
-    const checkbox = document.getElementById(`edit-tag-${tagId}`);
-    if (checkbox) {
-      checkbox.checked = true;
-    }
-  });
-
-  // Check the selected sections
-  selectedSectionIds.forEach(sectionId => {
-    const checkbox = document.getElementById(`edit-section-${sectionId}`);
-    if (checkbox) {
-      checkbox.checked = true;
-    }
-  });
-
-  // Show modal
-  document.getElementById('edit-template-modal').classList.remove('hidden');
-}
-
-function closeEditModal() {
-  document.getElementById('edit-template-modal').classList.add('hidden');
-}
-
-// Event listeners
-document.addEventListener('click', function(event) {
-  // Close modals when clicking on backdrop
-  if (event.target.id === 'create-template-modal') {
-    closeCreateModal();
-  }
-  if (event.target.id === 'edit-template-modal') {
-    closeEditModal();
-  }
-});
-
-// Close modals with Escape key
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    if (!document.getElementById('create-template-modal').classList.contains('hidden')) {
-      closeCreateModal();
-    }
-    if (!document.getElementById('edit-template-modal').classList.contains('hidden')) {
-      closeEditModal();
+  // Modal functions using Daisy UI dialog
+  function openCreateModal() {
+    const modal = document.getElementById('create-template-modal');
+    if (modal) {
+      modal.showModal();
+      document.getElementById('create-template-form').reset();
     }
   }
-});
+
+  function openEditModal(templateId, templateName, selectedTagIds, selectedSectionIds) {
+    // Set form action and hidden id field
+    document.getElementById('edit-template-form').action = `/dashboard/templates/${templateId}`;
+    document.getElementById('edit-template-id').value = templateId;
+
+    // Populate form fields
+    document.getElementById('edit-template-name').value = templateName;
+
+    // Reset all checkboxes first
+    document.querySelectorAll('.edit-tag-checkbox').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+
+    document.querySelectorAll('.edit-section-checkbox').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+
+    // Check the selected tags
+    selectedTagIds.forEach(tagId => {
+      const checkbox = document.getElementById(`edit-tag-${tagId}`);
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+    });
+
+    // Check the selected sections
+    selectedSectionIds.forEach(sectionId => {
+      const checkbox = document.getElementById(`edit-section-${sectionId}`);
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+    });
+
+    // Show modal
+    const modal = document.getElementById('edit-template-modal');
+    if (modal) {
+      modal.showModal();
+    }
+  }
+
+  // Event listeners for closing modals are handled by Daisy UI's dialog and the '✕' button.
 </script>

@@ -1,167 +1,162 @@
-<div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border border-base-300" 
-     id="template-card-<%= template.id %>">
-  <div class="card-body p-6">
-    <!-- Header with title and stats -->
-    <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+<div class="card bg-base-100 border border-primary" id="template-card-<%= template.id %>">
+  <div class="card-body p-4">
+    <!-- Main Content and Actions Row -->
+    <div class="flex flex-col lg:flex-row justify-between gap-4">
+      
+      <!-- Middle: Main Content -->
       <div class="flex-1">
-        <h2 class="card-title text-2xl mb-2"><%= template.name %></h2>
-        <div class="flex gap-2 mb-3">
-          <div class="badge badge-primary badge-lg">
+        <h2 class="card-title text-lg mb-2"><%= template.name %></h2>
+        <div class="flex flex-wrap gap-2 mb-3">
+          <div class="badge badge-primary badge-sm">
             <%= template.tags.size %> tags
           </div>
-          <div class="badge badge-secondary badge-lg">
+          <div class="badge badge-secondary badge-sm">
             <%= template.sections.size %> sections
           </div>
         </div>
-        
+
         <!-- PDF Status -->
-        <div class="mt-2" id="pdf-status-<%= template.id %>">
+        <div class="mt-2 text-sm" id="pdf-status-<%= template.id %>">
           <% if template.template_pdf %>
             <% pdf = template.template_pdf %>
             <% case pdf.status %>
             <% when 'completed' %>
-              <div class="flex items-center gap-2 text-sm">
-                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span class="text-green-600 font-medium">PDF Ready</span>
-                <span class="text-gray-400">•</span>
-                <span class="text-gray-500">
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-success rounded-full"></div>
+                <span class="text-success font-medium">PDF Ready</span>
+                <span class="text-base-content/50">•</span>
+                <span class="text-base-content/70">
                   Generated <%= time_ago_in_words(pdf.completed_at) %> ago
                 </span>
                 <% if pdf.pdf_size %>
-                  <span class="text-gray-400">•</span>
-                  <span class="text-gray-500"><%= pdf.pdf_size_human %></span>
+                  <span class="text-base-content/50">•</span>
+                  <span class="text-base-content/70"><%= pdf.pdf_size_human %></span>
                 <% end %>
               </div>
             <% when 'processing' %>
-              <div class="flex items-center gap-2 text-sm">
-                <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <span class="text-blue-600 font-medium">Generating PDF...</span>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-info rounded-full animate-pulse"></div>
+                <span class="text-info font-medium">Generating PDF...</span>
                 <% if pdf.started_at %>
-                  <span class="text-gray-400">•</span>
-                  <span class="text-gray-500">
+                  <span class="text-base-content/50">•</span>
+                  <span class="text-base-content/70">
                     Started <%= time_ago_in_words(pdf.started_at) %> ago
                   </span>
                 <% end %>
               </div>
             <% when 'pending' %>
-              <div class="flex items-center gap-2 text-sm">
-                <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-                <span class="text-yellow-600 font-medium">Queued for generation</span>
-                <span class="text-gray-400">•</span>
-                <span class="text-gray-500">Position #<%= pdf.queue_position %></span>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-warning rounded-full animate-pulse"></div>
+                <span class="text-warning font-medium">Queued for generation</span>
+                <span class="text-base-content/50">•</span>
+                <span class="text-base-content/70">Position #<%= pdf.queue_position %></span>
                 <% if pdf.estimated_wait_time_human %>
-                  <span class="text-gray-400">•</span>
-                  <span class="text-gray-500">~<%= pdf.estimated_wait_time_human %> wait</span>
+                  <span class="text-base-content/50">•</span>
+                  <span class="text-base-content/70">~<%= pdf.estimated_wait_time_human %> wait</span>
                 <% end %>
               </div>
             <% when 'failed' %>
-              <div class="flex items-center gap-2 text-sm">
-                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-                <span class="text-red-600 font-medium">Generation Failed</span>
-                <span class="text-gray-400">•</span>
-                <span class="text-gray-500">
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-error rounded-full"></div>
+                <span class="text-error font-medium">Generation Failed</span>
+                <span class="text-base-content/50">•</span>
+                <span class="text-base-content/70">
                   <%= time_ago_in_words(pdf.updated_at) %> ago
                 </span>
               </div>
             <% end %>
           <% else %>
-            <div class="flex items-center gap-2 text-sm">
-              <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
-              <span class="text-gray-500">No PDF generated yet</span>
+            <div class="flex items-center gap-2">
+              <div class="w-2 h-2 bg-base-content/30 rounded-full"></div>
+              <span class="text-base-content/70">No PDF generated yet</span>
             </div>
           <% end %>
         </div>
       </div>
-      
-      <!-- Action Buttons -->
-      <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-        <!-- Primary Actions -->
-        <div class="flex flex-col gap-2">
-          <!-- Edit Button -->
+
+       <!-- Far Right: Primary Action Buttons Column (Edit/Delete) -->
+       <div class="flex flex-col gap-2 items-end">
+        <!-- Edit Button -->
+        <%= link_to '#',
+                    onclick: "openEditModal(#{template.id}, '#{j(template.name)}', #{template.tag_ids.to_json}, #{template.section_ids.to_json}); return false;",
+                    class: "btn btn-outline btn-sm gap-2 min-w-[120px]" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+          </svg>
+          Edit
+        <% end %>
+
+        <!-- Delete Button -->
+        <%= button_to delete_template_path(template),
+                      method: :delete,
+                      form: { data: { turbo_confirm: 'Are you sure you want to delete this template?' } },
+                      class: "btn btn-outline btn-error btn-sm gap-2 min-w-[120px]" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+          Delete
+        <% end %>
+      </div>
+
+      <!-- Right: Secondary Action Buttons Column (HTML, TeX, PDF actions) -->
+      <div class="flex flex-col gap-2 items-end">
+        <!-- Preview HTML Button -->
+        <%= link_to template_path(template),
+                   class: "btn btn-outline btn-success btn-sm gap-2 min-w-[140px]" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+          </svg>
+          View HTML
+        <% end %>
+
+        <!-- Preview TeX Button -->
+        <%= link_to template_path(template, format: :txt),
+                   class: "btn btn-outline btn-info btn-sm gap-2 min-w-[140px]" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          View TeX
+        <% end %>
+
+        <!-- Download TeX Button -->
+        <%= link_to template_path(template, format: :tex),
+                   class: "btn btn-outline btn-primary btn-sm gap-2 min-w-[140px]" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          Download TeX
+        <% end %>
+
+        <!-- PDF Actions -->
+        <div class="flex flex-col gap-2 w-full" id="pdf-actions-<%= template.id %>">
+          <!-- Preview PDF Button -->
+          <% if template.template_pdf&.id %>
+            <%= link_to dashboard_preview_template_pdf_path(template.template_pdf),
+                        class: "btn btn-outline btn-warning btn-sm gap-2 min-w-[140px]" do %>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              View PDF
+            <% end %>
+          <% else %>
+            <span class="btn btn-outline btn-disabled btn-sm min-w-[140px]" id="pdf-placeholder-<%= template.id %>">
+              PDF not available
+            </span>
+          <% end %>
+
+          <!-- Generate PDF Button -->
           <%= link_to '#',
-                      onclick: "openEditModal(#{template.id}, '#{j(template.name)}', #{template.tag_ids.to_json}, #{template.section_ids.to_json}); return false;",
-                      class: "btn btn-outline btn-sm gap-2" do %>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-            </svg>
-            Edit
-          <% end %>
-
-          <!-- Delete Button -->
-          <%= button_to delete_template_path(template),
-                        method: :delete,
-                        form: { data: { turbo_confirm: 'Are you sure you want to delete this template?' } },
-                        class: "btn btn-outline btn-error btn-sm gap-2" do %>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-            </svg>
-            Delete
-          <% end %>
-        </div>
-
-        <!-- Secondary Actions -->
-        <div class="flex flex-col gap-2">
-          <!-- Preview HTML Button -->
-          <%= link_to template_path(template),
-                     class: "btn btn-outline btn-success btn-sm gap-2",
-                     target: "_blank" do %>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-            </svg>
-            View HTML
-          <% end %>
-
-          <!-- Preview TeX Button -->
-          <%= link_to template_path(template, format: :txt),
-                     class: "btn btn-outline btn-info btn-sm gap-2",
-                     target: "_blank" do %>
+              onclick: "generatePDF(#{template.id}); return false;",
+              id: "generate-btn-#{template.id}",
+              class: "btn btn-outline btn-accent btn-sm gap-2 min-w-[140px]" do %>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
-            View TeX
+            Generate PDF
           <% end %>
-
-          <!-- Download TeX Button -->
-          <%= link_to template_path(template, format: :tex),
-                     class: "btn btn-outline btn-primary btn-sm gap-2",
-                     download: true do %>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-            Download Tex
-          <% end %>
-
-          <!-- PDF Actions - This container needs a specific ID for JavaScript to target -->
-          <div class="flex flex-col gap-1" id="pdf-actions-<%= template.id %>">
-            <!-- Preview PDF Button -->
-            <% if template.template_pdf&.id %>
-              <%= link_to dashboard_preview_template_pdf_path(template.template_pdf),
-                          class: "btn btn-outline btn-warning btn-sm gap-2",
-                          target: "_blank" do %>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                View PDF
-              <% end %>
-            <% else %>
-              <span class="btn btn-outline btn-disabled btn-sm" id="pdf-placeholder-<%= template.id %>">
-                PDF not available
-              </span>
-            <% end %>
-
-            <!-- Generate PDF Button -->
-            <%= link_to '#',
-                onclick: "generatePDF(#{template.id}); return false;",
-                id: "generate-btn-#{template.id}",
-                class: "btn btn-outline btn-accent btn-sm gap-2" do %>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-              </svg>
-              Generate PDF
-            <% end %>
-          </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
