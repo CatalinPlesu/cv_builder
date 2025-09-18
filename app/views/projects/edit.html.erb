@@ -33,14 +33,14 @@
                   </div>
 
                   <!-- Position (hidden input) -->
-                  <input type="hidden" name="projects[<%= index %>][position]" value="<%= index + 1 %>" class="position-input">
-                  <input type="hidden" name="projects[<%= index %>][id]" value="<%= project.id %>" class="id-input">
+                  <input type="hidden" name="projects[][position]" value="<%= index + 1 %>" class="position-input">
+                  <input type="hidden" name="projects[][id]" value="<%= project.id %>" class="id-input">
 
                   <!-- Project Name -->
                   <div class="flex-1">
                     <label class="block text-xs font-medium text-base-content mb-1">Project Name</label>
                     <input type="text"
-                           name="projects[<%= index %>][name]"
+                           name="projects[][name]"
                            value="<%= project.name %>"
                            placeholder="E-commerce Platform"
                            class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
@@ -50,7 +50,7 @@
                   <div class="flex-1">
                     <label class="block text-xs font-medium text-base-content mb-1">Link</label>
                     <input type="text"
-                           name="projects[<%= index %>][link]"
+                           name="projects[][link]"
                            value="<%= project.link %>"
                            placeholder="https://github.com/username/project"
                            class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
@@ -62,7 +62,7 @@
                   <div>
                     <label class="block text-xs font-medium text-base-content mb-1">Start Date</label>
                     <input type="date"
-                           name="projects[<%= index %>][start_date]"
+                           name="projects[][start_date]"
                            value="<%= project.start_date %>"
                            class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
@@ -71,7 +71,7 @@
                   <div>
                     <label class="block text-xs font-medium text-base-content mb-1">End Date</label>
                     <input type="date"
-                           name="projects[<%= index %>][end_date]"
+                           name="projects[][end_date]"
                            value="<%= project.end_date %>"
                            class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
                   </div>
@@ -80,7 +80,7 @@
                   <div>
                     <label class="block text-xs font-medium text-base-content mb-1">Link Title</label>
                     <input type="text"
-                           name="projects[<%= index %>][link_title]"
+                           name="projects[][link_title]"
                            value="<%= project.link_title %>"
                            placeholder="GitHub Repository"
                            class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
@@ -98,16 +98,16 @@
                 <!-- Bullets Section -->
                 <div class="mb-3">
                   <label class="block text-xs font-medium text-base-content mb-2">Project Details/Bullets</label>
-                  <div class="space-y-2 bullets-container" data-project-index="<%= index %>">
+                  <div class="space-y-2 bullets-container">
                     <% project.project_bullets.each_with_index do |bullet, bullet_index| %>
                       <div class="bullet-row flex items-center space-x-2" data-bullet-position="<%= bullet_index + 1 %>">
                         <div class="bullet-drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-1 rounded hover:bg-base-200">
                           <i class="fas fa-grip-horizontal text-sm"></i>
                         </div>
-                        <input type="hidden" name="projects[<%= index %>][bullets][<%= bullet_index %>][position]" value="<%= bullet_index + 1 %>" class="bullet-position-input">
-                        <input type="hidden" name="projects[<%= index %>][bullets][<%= bullet_index %>][id]" value="<%= bullet.id %>" class="bullet-id-input">
+                        <input type="hidden" name="projects[][bullets][][position]" value="<%= bullet_index + 1 %>" class="bullet-position-input">
+                        <input type="hidden" name="projects[][bullets][][id]" value="<%= bullet.id %>" class="bullet-id-input">
                         <input type="text"
-                               name="projects[<%= index %>][bullets][<%= bullet_index %>][content]"
+                               name="projects[][bullets][][content]"
                                value="<%= bullet.content %>"
                                placeholder="Built responsive UI with React..."
                                class="flex-1 px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
@@ -170,33 +170,33 @@ document.addEventListener("DOMContentLoaded", function() {
           <div class="drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-2 rounded-md hover:bg-base-200 transition-colors duration-200">
             <i class="fas fa-grip-vertical text-lg"></i>
           </div>
-          <input type="hidden" name="projects[${currentItems}][position]" value="${newPosition}" class="position-input">
-          <input type="hidden" name="projects[${currentItems}][id]" value="" class="id-input">
+          <input type="hidden" name="projects[][position]" value="${newPosition}" class="position-input">
+          <input type="hidden" name="projects[][id]" value="" class="id-input">
           <div class="flex-1">
             <label class="block text-xs font-medium text-base-content mb-1">Project Name</label>
-            <input type="text" name="projects[${currentItems}][name]" value="" placeholder="E-commerce Platform"
+            <input type="text" name="projects[][name]" value="" placeholder="E-commerce Platform"
                    class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
           <div class="flex-1">
             <label class="block text-xs font-medium text-base-content mb-1">Link</label>
-            <input type="text" name="projects[${currentItems}][link]" value="" placeholder="https://github.com/username/project"
+            <input type="text" name="projects[][link]" value="" placeholder="https://github.com/username/project"
                    class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
           <div>
             <label class="block text-xs font-medium text-base-content mb-1">Start Date</label>
-            <input type="date" name="projects[${currentItems}][start_date]" value=""
+            <input type="date" name="projects[][start_date]" value=""
                    class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
           <div>
             <label class="block text-xs font-medium text-base-content mb-1">End Date</label>
-            <input type="date" name="projects[${currentItems}][end_date]" value=""
+            <input type="date" name="projects[][end_date]" value=""
                    class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
           <div>
             <label class="block text-xs font-medium text-base-content mb-1">Link Title</label>
-            <input type="text" name="projects[${currentItems}][link_title]" value="" placeholder="GitHub Repository"
+            <input type="text" name="projects[][link_title]" value="" placeholder="GitHub Repository"
                    class="w-full px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
           </div>
         </div>
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
         <div class="mb-3">
           <label class="block text-xs font-medium text-base-content mb-2">Project Details/Bullets</label>
-          <div class="space-y-2 bullets-container" data-project-index="${currentItems}">
+          <div class="space-y-2 bullets-container">
             <button type="button" class="add-bullet-button text-primary hover:text-primary/80 text-sm font-medium flex items-center">
               <i class="fas fa-plus mr-1"></i> Add Bullet Point
             </button>
@@ -249,9 +249,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     addBullet(event) {
       const button = event.target.closest('.add-bullet-button');
-      const container = button.closest('.project-row');
       const bulletsContainer = button.closest('.bullets-container');
-      const projectIndex = Array.from(container.parentNode.children).indexOf(container);
       const bulletRows = bulletsContainer.querySelectorAll('.bullet-row');
       const newIndex = bulletRows.length;
 
@@ -262,9 +260,9 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="bullet-drag-handle cursor-grab active:cursor-grabbing text-base-content/50 hover:text-base-content p-1 rounded hover:bg-base-200">
           <i class="fas fa-grip-horizontal text-sm"></i>
         </div>
-        <input type="hidden" name="projects[${projectIndex}][bullets][${newIndex}][position]" value="${newIndex + 1}" class="bullet-position-input">
-        <input type="hidden" name="projects[${projectIndex}][bullets][${newIndex}][id]" value="" class="bullet-id-input">
-        <input type="text" name="projects[${projectIndex}][bullets][${newIndex}][content]" value="" placeholder="Built responsive UI with React..."
+        <input type="hidden" name="projects[][bullets][][position]" value="${newIndex + 1}" class="bullet-position-input">
+        <input type="hidden" name="projects[][bullets][][id]" value="" class="bullet-id-input">
+        <input type="text" name="projects[][bullets][][content]" value="" placeholder="Built responsive UI with React..."
                class="flex-1 px-3 py-2 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent bg-base-100 text-base-content">
         <button type="button" class="remove-bullet-button text-error hover:text-error/80 p-2">
           <i class="fas fa-times"></i>
@@ -287,25 +285,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     updateBulletPositions(bulletsContainer) {
       const bullets = bulletsContainer.querySelectorAll('.bullet-row');
-      const projectIndex = bulletsContainer.closest('.project-row').dataset.position - 1;
       
       bullets.forEach((bullet, index) => {
         bullet.dataset.bulletPosition = index + 1;
         
         const positionInput = bullet.querySelector('.bullet-position-input');
         if (positionInput) {
-          positionInput.name = `projects[${projectIndex}][bullets][${index}][position]`;
           positionInput.value = index + 1;
-        }
-        
-        const idInput = bullet.querySelector('.bullet-id-input');
-        if (idInput) {
-          idInput.name = `projects[${projectIndex}][bullets][${index}][id]`;
-        }
-        
-        const contentInput = bullet.querySelector('input[type="text"]');
-        if (contentInput) {
-          contentInput.name = `projects[${projectIndex}][bullets][${index}][content]`;
         }
       });
     },
@@ -318,26 +304,10 @@ document.addEventListener("DOMContentLoaded", function() {
         
         const positionInput = row.querySelector('.position-input');
         if (positionInput) {
-          positionInput.name = `projects[${index}][position]`;
           positionInput.value = position;
         }
         
-        const idInput = row.querySelector('.id-input');
-        if (idInput) {
-          idInput.name = `projects[${index}][id]`;
-        }
-        
-        // Update all other inputs in this row
-        const inputs = row.querySelectorAll('input[name*="projects["]');
-        inputs.forEach(input => {
-          const name = input.name;
-          const match = name.match(/projects\[(\d+)\]/);
-          if (match) {
-            input.name = name.replace(/projects\[\d+\]/, `projects[${index}]`);
-          }
-        });
-        
-        // Update bullet positions
+        // Update bullet positions for this row
         const bulletsContainer = row.querySelector('.bullets-container');
         if (bulletsContainer) {
           this.updateBulletPositions(bulletsContainer);
@@ -369,26 +339,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         e.preventDefault();
       });
-
-      container.addEventListener('dragover', (e) => {
-        e.preventDefault();
-      });
-
-      container.addEventListener('mouseenter', (e) => {
-        if (!draggedElement) return;
-
-        const targetRow = e.target.closest('.project-row');
-        if (!targetRow || targetRow === draggedElement) return;
-
-        const rect = targetRow.getBoundingClientRect();
-        const midY = rect.top + rect.height / 2;
-
-        if (e.clientY < midY) {
-          targetRow.parentNode.insertBefore(placeholder, targetRow);
-        } else {
-          targetRow.parentNode.insertBefore(placeholder, targetRow.nextSibling);
-        }
-      }, true);
 
       document.addEventListener('mouseup', () => {
         if (!draggedElement) return;
