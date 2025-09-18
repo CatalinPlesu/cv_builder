@@ -176,8 +176,7 @@ class PdfGenerationJob < ApplicationJob
     if ENV["LATEX_SERVICE_URL"].present?
       ENV["LATEX_SERVICE_URL"]
     else
-      # Default to Docker Compose service name
-      "http://latex-service:3001"
+      "http://localhost:3001"
     end
   end
 
