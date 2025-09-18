@@ -1,64 +1,69 @@
 <!-- app/views/cv_data/new_import.html.erb -->
-<div class="hero min-h-screen bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-900">
-  <div class="hero-content text-center flex flex-col w-full max-w-6xl">
+<div class="min-h-screen bg-base-100 p-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
     <!-- Header -->
     <header class="text-center mb-12">
-      <h1 class="text-4xl md:text-6xl font-bold mb-4 text-white">Manage CV Data</h1>
-      <p class="text-xl md:text-2xl text-white opacity-90">
-        Backup, restore, or try demo data for your CV
-      </p>
+      <h1 class="text-3xl md:text-4xl font-bold mb-4 text-base-content">Manage CV Data</h1>
     </header>
 
     <!-- Warning Alert -->
     <div class="alert alert-warning shadow-lg mb-8 max-w-4xl mx-auto">
-      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-      </svg>
       <div>
-        <h3 class="font-bold">Warning: Data Replacement</h3>
-        <div class="text-base">
-          Importing data will <strong>completely replace</strong> your current CV data. 
-          This action cannot be undone. Always export your data first for backup.
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+        </svg>
+        <div>
+          <h3 class="font-bold">Warning: Data Replacement</h3>
+          <div class="text-sm">
+            Importing data will <strong>completely replace</strong> your current CV data. 
+            This action cannot be undone. Always export your data first for backup.
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Export | Import Row -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 max-w-4xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 max-w-4xl mx-auto">
       
       <!-- Export Card -->
-      <div class="card bg-base-100 shadow-xl transform hover:scale-105 transition-transform duration-300">
-        <div class="card-body">
+      <div class="card bg-base-100 border border-success shadow-sm">
+        <div class="card-body p-6">
           <div class="flex items-center mb-4">
-            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-              <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mr-4">
+              <svg class="h-6 w-6 text-success" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h2 class="text-xl font-semibold text-base-content">Export Data</h2>
+            <div>
+              <h2 class="card-title text-base-content">Export Data</h2>
+              <p class="text-sm text-base-content/70 mt-1">Backup your current CV</p>
+            </div>
           </div>
-          <p class="text-base-content mb-4">
+          <p class="text-base-content/80 mb-4">
             Download your current CV data as a JSON file for backup or transfer to another device.
           </p>
           <%= link_to 'Export CV Data',
               export_cv_data_path(format: :json),
-              class: "btn btn-success hover:btn-success hover:text-white transition-all" %>
+              class: "btn btn-success" %>
         </div>
       </div>
 
       <!-- Import Card -->
-      <div class="card bg-base-100 shadow-xl transform hover:scale-105 transition-transform duration-300">
-        <div class="card-body">
+      <div class="card bg-base-100 border border-primary shadow-sm">
+        <div class="card-body p-6">
           <div class="flex items-center mb-4">
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-              <svg class="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+              <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
               </svg>
             </div>
-            <h2 class="text-xl font-semibold text-base-content">Import Data</h2>
+            <div>
+              <h2 class="card-title text-base-content">Import Data</h2>
+              <p class="text-sm text-base-content/70 mt-1">Restore from backup</p>
+            </div>
           </div>
-          <p class="text-base-content mb-4">
+          <p class="text-base-content/80 mb-4">
             Upload a previously exported JSON file to restore your CV data.
           </p>
           
@@ -68,7 +73,7 @@
                   accept: '.json,application/json',
                   required: true,
                   class: "file-input file-input-bordered file-input-primary w-full" %>
-              <p class="mt-1 text-sm text-base-content/70">Only JSON files from this app are supported</p>
+              <p class="mt-2 text-sm text-base-content/70">Only JSON files from this app are supported</p>
             </div>
             <%= form.submit 'Import CV Data',
                 class: "btn btn-primary w-full",
@@ -79,17 +84,20 @@
     </div>
 
     <!-- Import Demo Section -->
-    <div class="card bg-base-100 shadow-xl transform hover:scale-105 transition-transform duration-300 max-w-4xl mx-auto">
-      <div class="card-body">
+    <div class="card bg-base-100 border border-secondary shadow-sm max-w-4xl mx-auto">
+      <div class="card-body p-6">
         <div class="flex items-center mb-4">
-          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-            <svg class="h-6 w-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mr-4">
+            <svg class="h-6 w-6 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h2 class="text-xl font-semibold text-base-content">Try Demo Data</h2>
+          <div>
+            <h2 class="card-title text-base-content">Try Demo Data</h2>
+            <p class="text-sm text-base-content/70 mt-1">Get started quickly</p>
+          </div>
         </div>
-        <p class="text-base-content mb-4">
+        <p class="text-base-content/80 mb-4">
           New to the CV builder? Import sample data to see how it works and get started quickly.
         </p>
         <%= button_to 'Import Demo CV',
@@ -98,11 +106,6 @@
             class: "btn btn-secondary",
             data: { confirm: 'This will replace all your current CV data with demo data. Are you sure?' } %>
       </div>
-    </div>
-
-    <!-- Back Button -->
-    <div class="mt-8">
-      <%= link_to 'Back to Dashboard', root_path, class: "btn btn-ghost text-white" %>
     </div>
 
   </div>
