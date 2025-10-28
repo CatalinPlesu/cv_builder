@@ -60,4 +60,4 @@ gem "importmap-rails", "~> 2.2"
 
 gem "jsbundling-rails", "~> 1.3"
 
-gem "tailwindcss-rails", "~> 4.3"
+gem "tailwindcss-rails", "~> 4.4"
